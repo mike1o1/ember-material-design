@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import layout from '../templates/components/md-icon';
 
 var MdIcon = Ember.Component.extend({
-
+    layout: layout,
     iconService: Ember.inject.service('icon'),
 
     tagName: 'md-icon',
@@ -33,13 +34,9 @@ var MdIcon = Ember.Component.extend({
     }),
 
     setupIcon: Ember.on('didInsertElement', function() {
-
         if (!this.get('mdFontIcon')) {
             this.loadIcon();
         }
-
-
-
     })
 
 });
