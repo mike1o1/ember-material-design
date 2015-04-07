@@ -1,0 +1,72 @@
+demo-include {
+  display: block;
+}
+
+.layout-content demo-include [layout] > div {
+  padding: 8px;
+  box-shadow: 0px 2px 5px 0 rgba(0,0,0,0.26);
+  opacity: 0.9;
+  color: white;
+}
+.layout-content demo-include [layout] > div:nth-child(1) {
+  background-color: #009688;
+}
+.layout-content demo-include [layout] > div:nth-child(2) {
+  background-color: #3949ab;
+}
+.layout-content demo-include [layout] > div:nth-child(3) {
+  background-color: #9c27b0;
+}
+.layout-content demo-include [layout] > div:nth-child(4) {
+  background-color: #8bc34a;
+}
+.layout-content md-divider {
+  margin-top: 16px;
+}
+
+.layout-demo :not([layout]) {
+  border: 1px solid #eee;
+  padding: 8px;
+}
+
+.layout-content .demo-box {
+  box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.26);
+  padding: 16px;
+}
+
+.layout-panel-parent {
+  height: 200px;
+  width: 100%;
+  position: relative;
+}
+[ng-panel] {
+  transition: 0.45s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transition: 0.45s cubic-bezier(0.35, 0, 0.25, 1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+[ng-panel].ng-enter {
+  transform: translate3d(0, -15%, 0);
+  opacity: 0.1;
+  z-index: 1;
+}
+[ng-panel].ng-enter.ng-enter-active,
+[ng-panel].ng-leave {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+[ng-panel].ng-leave.ng-leave-active {
+  transform: translate3d(0, 0, 0);
+  opacity: 0.5;
+}
+[ng-panel] .demo-content {
+  background: white;
+}
+@media screen and (-ms-high-contrast: active) {
+  .layout-content demo-include [layout] > div {
+    border: 1px solid #fff !important;
+  }
+}

@@ -6,4 +6,21 @@ var Router = Ember.Router.extend({
 });
 
 export default Router.map(function() {
+  this.route('buttons');
+  this.route('content');
+  this.route('divider');
+  this.route('card');
+  this.route('input');
+  this.route('list');
+  this.route('toolbar');
+  this.route('checkbox');
+  this.route('slider');
+  this.route('progress-circular');
+  this.route('progress-linear');
+  this.route('icon');
+  this.route('radio-button');
+  this.route('tabs');
+  this.route('typography');
+  this.route('tooltip');
+  this.route('toast'); 
 });

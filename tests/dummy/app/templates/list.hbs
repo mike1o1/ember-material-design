@@ -1,0 +1,52 @@
+<div class="doc-content" layout="column">
+    <div flex layout="column">
+
+        <section class="demo-container">
+            <demo-include class="md-whiteframe-z1 contentdemoBasicUsage">
+
+                <div class="demo-content">
+                    <div class="display-content">
+                        <md-content>
+
+                            {{#md-list}}
+
+                                {{#each todos as |item index|}}
+                                    {{#md-list-item class="md-3-line"}}
+                                        <img class="md-avatar" src="{{item.face}}?{{index}}" alt="{{item.who}}">
+                                        <div class="md-list-item-text">
+                                            <h3>{{item.who}}</h3>
+                                            <h4>{{item.what}}</h4>
+                                            <p>{{item.notes}}</p>
+                                        </div>
+                                    {{/md-list-item}}
+                                {{/each}}
+
+                                {{#md-list-item class="md-2-line"}}
+                                    <img class="md-avatar" src="{{firstTodo.face}}?20" alt="{{firstTodo.who}}"/>
+                                    <div class="md-list-item-text">
+                                        <h3>{{firstTodo.who}}</h3>
+                                        <p>Secondary Text</p>
+                                    </div>
+                                {{/md-list-item}}
+
+                                {{#md-list-item class="md-3-line"}}
+                                    <img class="md-avatar" src="{{firstTodo.face}}?25" alt="{{firstTodo.who}}"/>
+                                    <div class="md-list-item-text">
+                                        <h3>{{firstTodo.who}}</h3>
+                                        <p>Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.</p>
+                                    </div>
+                                {{/md-list-item}}
+
+                            {{/md-list}}
+
+                        </md-content>
+                    </div>
+                </div>
+
+
+            </demo-include>
+        </section>
+
+
+    </div>
+</div>

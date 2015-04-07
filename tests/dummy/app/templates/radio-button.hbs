@@ -1,0 +1,64 @@
+<div class="doc-content" layout="column">
+    <div flex layout="column">
+
+        <section class="demo-container">
+
+
+            <demo-include class="md-whiteframe-z1 radioButtondemoBasicUsage">
+
+
+                <form>
+                    <p>Selected Value: <span class="radioValue">{{ data.group1 }}</span></p>
+
+
+                    {{#md-radio-button value="Apple" selected=data.group1}}Apple{{/md-radio-button}}
+                    {{#md-radio-button value="Banana" selected=data.group1}}Banana{{/md-radio-button}}
+                    {{#md-radio-button value="Mango" selected=data.group1}}Mango{{/md-radio-button}}
+
+
+                    <hr/>
+
+                    <p>Selected Value: <span class="radioValue">{{ data.group2 }}</span></p>
+
+
+                    {{#each d in radioData}}
+                        {{#md-radio-button value=d.value
+                        selected=data.group2
+                        disabled=d.isDisabled}}
+                            {{ d.label }}
+                        {{/md-radio-button}}
+                    {{/each}}
+
+
+
+
+                    <p>
+                        {{#md-button action='addItem' type="button"}}Add{{/md-button}}
+                        {{#md-button action='removeItem' type="button"}}Remove{{/md-button}}
+                    </p>
+
+                    <hr/>
+
+                    <p style="margin-bottom: 0;">Graphic radio buttons need to be labeled with the
+                        <code>aria-label</code> attribute.</p>
+
+                    <p style="margin-top: 0;">Selected Avatar: <span class="radioValue">{{ data.group3 }}</span></p>
+
+                    {{#each it in avatarData}}
+                        {{#md-radio-button value=it.value
+                        selected=data.group3
+                        aria-label=it.title}}
+                            {{md-icon md-svg-icon=it.id}}
+                        {{/md-radio-button}}
+                    {{/each}}
+
+                </form>
+
+
+            </demo-include>
+
+
+        </section>
+    </div>
+</div>
+

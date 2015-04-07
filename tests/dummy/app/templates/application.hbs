@@ -1,3 +1,128 @@
-<h2 id="title">Welcome to Ember.js</h2>
+{{#md-sidenav classNames="site-sidenav md-sidenav-left md-whiteframe-z2"
+            md-component-id="left"
+            sidebarVisible=sidebarVisible}}
 
-{{outlet}}
+    {{#md-toolbar}}
+        <h1 class="md-toolbar-tools">
+            {{#link-to 'index' flex='' layoutType="row" class='docs-logo'}}
+                <img src="images/ember-construction-57.png" width="48" height="48">
+
+                <div class="docs-logotype">Material Design</div>
+            {{/link-to}}
+        </h1>
+    {{/md-toolbar}}
+    <md-content flex>
+        <ul class="docs-menu">
+            {{#link-to 'buttons' activeClass="parentActive" tagName='li'}}
+                {{#link-to 'buttons' class="md-button"}}Buttons{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'card' activeClass="parentActive" tagName='li'}}
+                {{#link-to 'card' class="md-button"}}Card{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'checkbox' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'checkbox' class="md-button"}}Checkbox{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'content' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'content' class="md-button"}}Content{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'divider' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'divider' class="md-button"}}Divider{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'icon' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'icon' class="md-button"}}Icon{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'input' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'input' class="md-button"}}Input{{/link-to}}
+            {{/link-to}}
+
+
+            {{#link-to 'list' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'list' class="md-button"}}List{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'progress-circular' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'progress-circular' class="md-button"}}Progress Circular{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'progress-linear' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'progress-linear' class="md-button"}}Progress Linear{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'radio-button' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'radio-button' class="md-button"}}Radio Button{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'slider' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'slider' class="md-button"}}Slider{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'tabs' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'tabs' class="md-button"}}Tabs{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'toast' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'toast' class="md-button"}}Toast{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'toolbar' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'toolbar' class="md-button"}}Toolbar{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'tooltip' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'tooltip' class="md-button"}}Tooltip{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'typography' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'typography' class="md-button"}}Typography{{/link-to}}
+            {{/link-to}}
+
+
+            {{#link-to 'index' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'index' classNames="md-button"}}Index{{/link-to}}
+            {{/link-to}}
+
+        </ul>
+    </md-content>
+
+{{/md-sidenav}}
+
+<div layout="column" role="main" flex tabindex="-1">
+    {{#md-toolbar}}
+        <div class="md-toolbar-tools">
+            <button class="docs-menu-icon" hide-gt-sm aria-label="Toggle Menu" {{action 'toggleSidebar'}}>
+                {{md-icon md-svg-src="images/icons/ic_menu_24px.svg"}}
+            </button>
+
+            <div class="fill-height" flex layout="row">
+                <div class="md-toolbar-item md-breadcrumb">
+                    <span>
+                        <span hide-sm hide-md>{{menu.currentSection.name}}</span>
+                        <span class="docs-menu-separator-icon" style="" hide-sm hide-md>
+                            <img src="images/docArrow.png" aria-hidden="true" alt="">
+                        </span>
+                    </span>
+                    <span class="md-breadcrumb-page">{{menu.currentPage}}</span>
+                </div>
+            </div>
+
+            <span flex></span>
+
+            <div class="md-toolbar-item md-tools docs-tools" layout="column" layout-gt-md="row">
+
+            </div>
+
+        </div>
+    {{/md-toolbar}}
+
+    <md-content class="md-padding" md-scroll-y flex>
+        {{outlet}}
+    </md-content>
+
+
+</div>

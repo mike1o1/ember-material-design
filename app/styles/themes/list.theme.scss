@@ -1,0 +1,28 @@
+md-list {
+  md-list-item.md-double-line .md-list-item-text,
+  md-list-item.md-triple-line .md-list-item-text {
+    h3, h4 {
+      color: color($foreground, '1');
+    }
+    p {
+      color: color($foreground, '2');
+    }
+  }
+
+  .md-proxy-focus.md-focused div.md-no-style,
+  .md-secondary:focus,
+  .md-no-style:focus {
+    background-color: color($background, '100');
+  }
+
+  md-list-item > md-icon {
+    color: color($foreground, '2');
+
+    &.md-highlight {
+      color: color($primary);
+      &.md-accent {
+        color: color($accent);
+      }
+    }
+  }
+}

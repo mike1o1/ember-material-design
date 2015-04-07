@@ -1,0 +1,91 @@
+$button-border-radius: 3px !default;
+$button-fab-border-radius: 50% !default;
+
+.md-button {
+  border-radius: $button-border-radius;
+
+  &:not([disabled]) {
+    &:focus {
+      background-color: rgba(color($background, "500"), 0.2);
+    }
+  }
+
+  &.md-fab {
+    border-radius: $button-fab-border-radius;
+    background-color: color($accent);
+    color: color($accent, 'contrast');
+    &:not([disabled]) {
+      &:focus {
+        background-color: color($accent, 'A700');
+      }
+    }
+  }
+
+  &.md-primary {
+    color: color($primary);
+    &.md-raised,
+    &.md-fab {
+      color: color($primary, contrast);
+      background-color: color($primary);
+      &:not([disabled]) {
+        &:focus {
+          background-color: color($primary, "600");
+        }
+      }
+    }
+  }
+
+  &.md-raised {
+    color: color($background, contrast);
+    background-color: color($background, "50");
+    &:not([disabled]) {
+      &:focus {
+        background-color: color($background, "200");
+      }
+    }
+  }
+
+  &.md-warn {
+    color: color($warn);
+
+    &.md-raised,
+    &.md-fab {
+      color: color($warn, 'contrast');
+      background-color: color($warn);
+      &:not([disabled]) {
+        &:focus {
+          background-color: color($warn, "700");
+        }
+      }
+    }
+  }
+
+  &.md-accent {
+    color: color($accent);
+
+    &.md-raised,
+    &.md-fab {
+      color: color($accent, contrast);
+      background-color: color($accent);
+      &:not([disabled]) {
+        &:focus {
+          background-color: color($accent, "700");
+        }
+      }
+    }
+  }
+
+  &[disabled],
+  &.md-raised[disabled],
+  &.md-fab[disabled] {
+    color: color($foreground, "2");
+    cursor: not-allowed;
+  }
+  &.md-raised[disabled],
+  &.md-fab[disabled] {
+    background-color: color($foreground, '4');
+  }
+  &[disabled] {
+    background-color: transparent;
+  }
+}

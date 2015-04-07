@@ -1,0 +1,17 @@
+md-toast {
+  background-color: #323232;
+  color: color($background, '50');
+
+  .md-button {
+    color: color($background, '50');
+    &.md-highlight {
+      color: color($primary, 'A200');
+      &.md-accent {
+        color: color($accent, 'A200');
+      }
+      &.md-warn {
+        color: color($warn, 'A200');
+      }
+    }
+  }
+}

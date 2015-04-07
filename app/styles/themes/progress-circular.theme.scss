@@ -1,0 +1,72 @@
+md-progress-circular {
+  background-color: transparent;
+  .md-inner {
+    .md-gap {
+      border-top-color: color($primary);
+      border-bottom-color: color($primary);
+    }
+    .md-left, .md-right {
+      .md-half-circle {
+        border-top-color: color($primary);
+      }
+    }
+    .md-right {
+      .md-half-circle {
+        border-right-color: color($primary);
+      }
+    }
+    .md-left {
+      .md-half-circle {
+        border-left-color: color($primary);
+      }
+    }
+  }
+
+  &.md-warn {
+    .md-inner {
+      .md-gap {
+        border-top-color: color($warn);
+        border-bottom-color: color($warn);
+      }
+      .md-left, .md-right {
+        .md-half-circle {
+          border-top-color: color($warn);
+        }
+      }
+      .md-right {
+        .md-half-circle {
+          border-right-color: color($warn);
+        }
+      }
+      .md-left {
+        .md-half-circle {
+          border-left-color: color($warn);
+        }
+      }
+    }
+  }
+
+  &.md-accent {
+    .md-inner {
+      .md-gap {
+        border-top-color: color($accent);
+        border-bottom-color: color($accent);
+      }
+      .md-left, .md-right {
+        .md-half-circle {
+          border-top-color: color($accent);
+        }
+      }
+      .md-right {
+        .md-half-circle {
+          border-right-color: color($accent);
+        }
+      }
+      .md-left {
+        .md-half-circle {
+          border-left-color: color($accent);
+        }
+      }
+    }
+  }
+}

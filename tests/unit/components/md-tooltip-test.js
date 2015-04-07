@@ -1,0 +1,29 @@
+import {
+  moduleForComponent,
+  test
+} from 'ember-qunit';
+
+import Ember from 'ember';
+import config from '../../../config/environment';
+
+moduleForComponent('md-tooltip', {
+  // Specify the other units that are required for this test
+   //needs: ['application:main']
+});
+
+test('it renders', function(assert) {
+
+  var rootElement = Ember.$(config.APP.rootElement);
+
+  assert.expect(2);
+
+  // Creates the component instance
+  var component = this.subject({
+    rootElement: rootElement
+  });
+  assert.equal(component._state, 'preRender');
+
+  // Renders the component to the page
+  this.render();
+  assert.equal(component._state, 'inDOM');
+});

@@ -3,7 +3,24 @@
 
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-var app = new EmberAddon();
+var app = new EmberAddon({
+
+  hinting: false,
+
+  autoprefixer: {
+    browsers: ['last 2 versions', 'last 4 Android versions'],
+    sourceMap: true,
+    enabled: true
+  },
+  outputPaths: {
+    app: {
+      css: {
+        'app': '/assets/dummy.css',
+        'ember-material-design': '/assets/dummy.css'
+      }
+    }
+  }
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.

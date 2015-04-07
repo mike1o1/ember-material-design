@@ -1,0 +1,72 @@
+md-toolbar {
+  background-color: color($primary);
+  color: color($primary, "contrast");
+
+  .md-button {
+    color: color($primary, "contrast");
+  }
+
+  &.md-accent {
+    background-color: color($accent, "A200");
+    color: color($accent, "contrast");
+  }
+
+  &.md-warn {
+    background-color: color($warn);
+    color: color($warn, "contrast");
+  }
+
+  &.md-hue-1 {
+    background-color: color($primary, "300");
+    color: color($foreground, "1");
+
+    &.md-warn {
+      background-color: color($warn, "300");
+    }
+
+    &.md-accent {
+      background-color: color($accent, "A100");
+    }
+
+    .md-button {
+      color: color($foreground, "1");
+    }
+
+  }
+
+  &.md-hue-2 {
+    background-color: color($primary, "800");
+    color: color($foreground, "1");
+
+    &.md-warn {
+      background-color: color($warn, "800");
+    }
+
+    &.md-accent {
+      background-color: color($accent, "A400");
+    }
+
+    .md-button {
+      color: color($foreground, "1");
+    }
+
+  }
+
+  &.md-hue-3 {
+    background-color: color($primary, "A100");
+    color: color($foreground, "1");
+
+    &.md-warn {
+      background-color: color($warn, "A100");
+    }
+
+    &.md-accent {
+      background-color: color($accent, "A700");
+    }
+
+    .md-button {
+      color: color($foreground, "1");
+    }
+
+  }
+}

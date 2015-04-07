@@ -1,0 +1,50 @@
+<div class="doc-content" layout="column">
+    <div flex layout="column">
+
+        <section class="demo-container {{showSourceClass}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            <demo-include class="md-whiteframe-z1 buttondemoBasicUsage">
+
+                <div class="demo-content checkboxDemo1">
+
+                    <div class="display-content">
+                        {{#md-checkbox checked=data.cb1 aria-label="Checkbox 1"}}
+                            Checkbox 1: {{ data.cb1 }}
+                        {{/md-checkbox}}
+
+                        {{#md-checkbox checked=data.cb2 aria-label="Checkbox 2" trueValue="'yup'" falseValue="'nope'" class="md-warn"}}
+                            Checkbox 2 (md-warn): {{ data.cb2 }}
+                        {{/md-checkbox}}
+
+                        {{#md-checkbox disabled=true aria-label="Disabled checkbox" checked=data.cb3}}
+                            Checkbox: Disabled
+                        {{/md-checkbox}}
+
+                        {{#md-checkbox disabled=true aria-label="Disabled checked checkbox" checked=data.cb4}}
+                            Checkbox: Disabled, Checked
+                        {{/md-checkbox}}
+
+                        {{#md-checkbox mdNoInk=true aria-label="Checkbox No Ink" checked=data.cb5 class="md-primary"}}
+                            Checkbox (md-primary): No Ink
+                        {{/md-checkbox}}
+                    </div>
+
+
+                </div>
+
+
+            </demo-include>
+        </section>
+    </div>
+</div>
