@@ -9,7 +9,8 @@ var MdCheckbox = Ember.Component.extend(RippleMixin, {
     classNames: ['md-checkbox'],
     classNameBindings: ['checked:md-checked'],
 
-    attributeBindings: ['isDisabled:disabled', 'aria-label', 'mdNoInk'],
+    attributeBindings: ['isDisabled:disabled', 'aria-label', 'mdNoInk', 'tabindex'],
+    tabindex: 0,
 
     isDisabled: Ember.computed('disabled', function() {
         return this.get('disabled') ? 'disabled' : null;
@@ -34,7 +35,7 @@ var MdCheckbox = Ember.Component.extend(RippleMixin, {
     },
 
     keyPress: function(event) {
-        if (event.which === this.get('constants.KEY_CODE.SPACE') || event.which === this.get('constants.KEY_CODE.ENTER')) {
+        if (event.which === this.get('constants.KEYCODE.SPACE') || event.which === this.get('constants.KEYCODE.ENTER')) {
             this.click();
         }
     }
