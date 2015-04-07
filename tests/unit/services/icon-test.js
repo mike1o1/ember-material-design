@@ -13,3 +13,7 @@ test('it exists', function(assert) {
   var service = this.subject();
   assert.ok(service);
 });
+
+test('should get a single svg icon', function(assert) {
+
+});
