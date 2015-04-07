@@ -10,7 +10,6 @@ var MdListItemComponent = Ember.Component.extend({
     setupComponent: Ember.on('didInsertElement', function() {
 
         var proxiedTypes = ['md-checkbox', 'md-switch'],
-            secondaryItem = this.$()[0].querySelector('.md-selector'),
             proxyElement;
 
         if (!this.action) {
@@ -25,14 +24,14 @@ var MdListItemComponent = Ember.Component.extend({
                 this.wrapIn('div');
             }
         } else {
-            this.wrapIn('button')
+            this.wrapIn('button');
         }
 
     }),
 
     wrapIn: function(type) {
         var container;
-        if (type == 'div') {
+        if (type === 'div') {
             container = Ember.$('<div class="md-no-style md-list-item-inner">');
             container.append(this.$().contents());
             this.$().addClass('md-proxy-focus');

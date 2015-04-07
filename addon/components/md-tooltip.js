@@ -5,7 +5,7 @@ const TOOLTIP_SHOW_DELAY = 300;
 const TOOLTIP_WINDOW_EDGE_SPACE = 8;
 
 var MdTooltip = Ember.Component.extend({
-	layout: layout,
+    layout: layout,
 
     tagName: 'md-tooltip',
 
@@ -40,7 +40,7 @@ var MdTooltip = Ember.Component.extend({
                 this.setVisible(false);
             }
 
-        })
+        });
     },
 
     showTooltip: Ember.observer('visible', function() {
@@ -74,7 +74,7 @@ var MdTooltip = Ember.Component.extend({
 
     getParentWithPointerEvents: function() {
         var parent = this.$().parent();
-        while(window.getComputedStyle(parent[0])['pointer-events'] === 'none') {
+        while (window.getComputedStyle(parent[0])['pointer-events'] === 'none') {
             parent = parent.parent();
         }
 
@@ -85,7 +85,9 @@ var MdTooltip = Ember.Component.extend({
         var current = this.$().parent()[0];
         // Look for nearest parent md-content, stopping at the root element
         while (current && current !== this.get('rootElement')[0] && current !== document.body) {
-            if (current.tagName && current.tagName.toLowerCase() == 'md-content') break;
+            if (current.tagName && current.tagName.toLowerCase() === 'md-content') {
+                break;
+            }
             current = current.parentNode;
         }
 
@@ -132,13 +134,20 @@ var MdTooltip = Ember.Component.extend({
         positionBackground();
 
         function positionBackground() {
-            var size = direction === 'left' || direction === 'right'
-                    ? Math.sqrt(Math.pow(tipRect.width, 2) + Math.pow(tipRect.height / 2, 2)) * 2
-                    : Math.sqrt(Math.pow(tipRect.width / 2, 2) + Math.pow(tipRect.height, 2)) * 2,
-                position = direction === 'left' ? { left: 100, top: 50 }
-                    : direction === 'right' ? { left: 0, top: 50 }
-                    : direction === 'top' ? { left: 50, top: 100 }
-                    : { left: 50, top: 0 };
+            var size = direction === 'left' || direction === 'right' ? Math.sqrt(Math.pow(tipRect.width, 2) + Math.pow(tipRect.height / 2, 2)) * 2 : Math.sqrt(Math.pow(tipRect.width / 2, 2) + Math.pow(tipRect.height, 2)) * 2,
+                position = direction === 'left' ? {
+                    left: 100,
+                    top: 50
+                } : direction === 'right' ? {
+                    left: 0,
+                    top: 50
+                } : direction === 'top' ? {
+                    left: 50,
+                    top: 100
+                } : {
+                    left: 50,
+                    top: 0
+                };
 
             background.css({
                 width: size + 'px',
@@ -148,27 +157,32 @@ var MdTooltip = Ember.Component.extend({
             });
         }
 
-        function fitInParent (pos) {
-            var newPosition = { left: pos.left, top: pos.top };
+        function fitInParent(pos) {
+            var newPosition = {
+                left: pos.left,
+                top: pos.top
+            };
             newPosition.left = Math.min(newPosition.left, tooltipParent.prop('scrollWidth') - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE);
             newPosition.left = Math.min(newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE);
             newPosition.top = Math.min(newPosition.top, tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE);
             newPosition.top = Math.min(newPosition.top, TOOLTIP_WINDOW_EDGE_SPACE);
-            return newPosition;
+            return newPosition; 
         }
 
-        function getPosition (dir) {
-            return dir === 'left'
-            ? { left: parentRect.left - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE,
-                top: parentRect.top + parentRect.height / 2 - tipRect.height / 2 }
-            : dir === 'right'
-            ? { left: parentRect.left + parentRect.width + TOOLTIP_WINDOW_EDGE_SPACE,
-                top: parentRect.top + parentRect.height / 2 - tipRect.height / 2 }
-            : dir === 'top'
-            ? { left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
-                top: parentRect.top - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE }
-            : { left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
-                top: parentRect.top + parentRect.height + TOOLTIP_WINDOW_EDGE_SPACE };
+        function getPosition(dir) {
+            return dir === 'left' ? {
+                left: parentRect.left - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE,
+                top: parentRect.top + parentRect.height / 2 - tipRect.height / 2
+            } : dir === 'right' ? {
+                left: parentRect.left + parentRect.width + TOOLTIP_WINDOW_EDGE_SPACE,
+                top: parentRect.top + parentRect.height / 2 - tipRect.height / 2
+            } : dir === 'top' ? {
+                left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+                top: parentRect.top - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE
+            } : {
+                left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+                top: parentRect.top + parentRect.height + TOOLTIP_WINDOW_EDGE_SPACE
+            };
         }
 
     }

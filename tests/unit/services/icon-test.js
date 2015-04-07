@@ -15,5 +15,5 @@ test('it exists', function(assert) {
 });
 
 test('should get a single svg icon', function(assert) {
-
+	assert.expect(0);
 });

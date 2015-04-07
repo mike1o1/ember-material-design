@@ -150,15 +150,15 @@ var GestureEventsMixin = Ember.Mixin.create(Ember.Evented, {
         this.handlers[name] = handler;
     },
 
-    pressStart: Ember.on('press.start', function(ev, pointer) {
+    pressStart: Ember.on('press.start', function() {
 
     }),
 
-    pressOnStart: Ember.on('press.onStart', function(ev, pointer) {
+    pressOnStart: Ember.on('press.onStart', function(ev) {
         this.trigger('$md.pressdown', ev);
     }),
 
-    pressOnEnd: Ember.on('press.onEnd', function(ev, pointer) {
+    pressOnEnd: Ember.on('press.onEnd', function(ev) {
         this.trigger('$md.pressup', ev);
     })
 
