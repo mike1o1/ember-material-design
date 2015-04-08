@@ -28,6 +28,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, RippleMixin, {
     dynamicHeight: false,
     centerTabs: false,
     noPagination: false,
+    selectedIndex: 0,
 
     setupTabs: Ember.on('init', function() {
         this.set('tabs', Ember.ArrayProxy.create({

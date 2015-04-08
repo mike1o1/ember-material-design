@@ -25,7 +25,7 @@ test('it renders', function(assert) {
   assert.expect(2);
 
   var template = Ember.HTMLBars.compile(
-    '{{#md-tabs md-border-bottom=""}}' +
+    '{{#md-tabs md-border-bottom="" selectedIndex=0}}' +
       '{{#md-tabs-wrapper}}'+
               '{{#md-tab label="test"}}' +
                   '<md-tab-label>test</md-tab-label>' +
@@ -49,5 +49,6 @@ test('it renders', function(assert) {
 
   // Renders the component to the page
   this.render();
+  
   assert.equal(component._state, 'inDOM');
 });
