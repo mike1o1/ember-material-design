@@ -3,6 +3,8 @@
 
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
+  
+
 var app = new EmberAddon({
 
   hinting: false,
@@ -34,5 +36,9 @@ var app = new EmberAddon({
 // modules that you would like to import into your application
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
+
+if (app.env === 'test') {
+  app.import( app.bowerDirectory + '/ember/ember-template-compiler.js', { type: 'test' } );
+}
 
 module.exports = app.toTree();
