@@ -1,0 +1,78 @@
+<div class="doc-content" layout="column">
+    <div flex layout="column" style="z-index: 1;">
+
+        <div class="doc-description">
+            <p>The Dynamic Tabs demo shows how internal tab views can be easily used.</p>
+        </div>
+
+        <section class="demo-container {{showSourceClass}}">
+
+            <demo-include class="md-whiteframe-z1 demoDynamicTabs">
+                <div class="demo-content ">
+
+
+
+                        <div class="sample" layout="column">
+
+                            {{#md-tabs selectedIndex=selectedIndex md-border-bottom=''}}
+
+                                {{#md-tabs-wrapper}}
+                                    {{#each tab in tabs}}
+                                        {{#md-tab disabled=tab.disabled label=tab.title}}
+                                            <md-tab-label>{{tab.title}}</md-tab-label>
+                                        {{/md-tab}}
+                                    {{/each}}
+                                {{/md-tabs-wrapper}}
+
+                                {{#md-tabs-content-wrapper}}
+                                    {{#each tab in tabs}}
+                                        {{#md-tab-content}}
+                                            <div class="demo-tab" style="padding: 25px; text-align: center;">
+                                                {{tab.title}}
+                                                <br/>
+                                                {{#md-button class="md-primary md-raised" disabled=cantRemoveTabs action='removeTab'}}
+                                                    Remove Tab{{/md-button}}
+                                            </div>
+                                        {{/md-tab-content}}
+                                    {{/each}}
+                                {{/md-tabs-content-wrapper}}
+                            {{/md-tabs}}
+
+                            <form layout="column"
+                                  style="padding-top:20px;padding-left:20px;" {{action 'addTab' on='submit'}}>
+                                <div layout="row" layout-sm="column" layout-margin>
+                                    {{#md-input-container value=selectedIndex}}
+                                        <label for="activeIndex">Active Index</label>
+                                        {{md-input type="text" id="activeIndex" disabled=true}}
+                                    {{/md-input-container}}
+
+                                    {{#md-input-container value=selectedTab.title}}
+                                        <label for="activeTitle">Active Title</label>
+                                        {{md-input type="text" id="activeTitle"}}
+                                    {{/md-input-container}}
+                                </div>
+
+                                <div layout="row" layout-sm="column" layout-margin>
+                                    <span class="title">Add a new Tab:</span>
+                                    {{#md-input-container value=tTitle}}
+                                        <label for="label">Label</label>
+                                        {{md-input type="text" id="label"}}
+                                    {{/md-input-container}}
+                                    {{#md-input-container value=tContent}}
+                                        <label for="content">Content</label>
+                                        {{md-input type="text" id="content"}}
+                                    {{/md-input-container}}
+                                    {{#md-button class="add-tab md-primary" style="max-height: 40px" }}
+                                        Add Tab
+                                    {{/md-button}}
+                                </div>
+                            </form>
+
+
+                        </div>
+                </div>
+            </demo-include>
+        </section>
+    </div>
+</div>
+
