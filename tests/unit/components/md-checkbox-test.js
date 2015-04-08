@@ -100,3 +100,22 @@ test('it should be able to be unchecked using enter key', function(assert) {
   assert.equal(component.get('checked'), false);
 
 });
+
+test('should not be able to toggle value if disabled', function(assert) {
+  var component = this.subject({
+    disabled: true,
+    checked: true
+  });
+
+  var e = Ember.$.Event('mousedown');
+  e.clientX = this.$().position().left;
+  e.clientY = this.$().position().top;
+
+  Ember.run(() => {
+    this.$().trigger(e);
+  });
+
+  assert.ok(this.$().hasClass('md-checked'));
+  assert.equal(component.get('checked'), true);
+
+});
