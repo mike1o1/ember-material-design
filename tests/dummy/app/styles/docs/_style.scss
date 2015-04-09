@@ -132,7 +132,7 @@ pre {
 }
 
 pre > code.highlight {
-  padding: 10px;
+  padding: 16px;
   font-weight: 400;
   -webkit-user-select: initial;
   -moz-user-select: initial;
@@ -151,7 +151,7 @@ pre, code {
 pre > code.highlight {
   background-color: transparent;
   font-weight: 400;
-  padding: 10px;
+  padding: 16px;
 }
 
 code {
@@ -306,7 +306,7 @@ code:not(.highlight) {
 .layout-content,
 .doc-content {
   max-width: 864px;
-  margin: auto;
+  padding: 16px;
 }
 docs-demo {
   display: block;
@@ -358,7 +358,7 @@ md-tabs.demo-source-tabs .active md-tab-label {
 .demo-content {
   position: relative;
   overflow:hidden;
-  min-height: 448px;
+
 }
 .small-demo .demo-source-tabs:not(.ng-hide) {
   min-height: 224px;
@@ -552,11 +552,14 @@ md-content.demo-source-container {
   background-color: transparent;
   border: none;
 }
+
+.demo-container > md-tabs {
+  border-radius: 0;
+}
+md-content.demo-source-container > hljs,
+md-content.demo-source-container > hljs > pre,
 md-content.demo-source-container > hljs > pre > code.highlight {
-  position : absolute;
-  top : 0px;
-  left: 0px;
-  right: 0px;
+  min-height: 100%;
 }
 
 .dashed-bottom {
@@ -588,6 +591,23 @@ md-content.demo-source-container > hljs > pre > code.highlight {
   width: 100%;
   height: 100%;
 }
+
+ul.no-style {
+  padding: 0;
+  list-style: none;
+}
+
+ul.methods {
+  padding: 0;
+  list-style: none;
+}
+ul.methods > li {
+  margin: 0;
+}
+ul.methods > li:first-child > *:first-child {
+  padding-top: 0;
+}
+
 
 /* Styles for Windows High Contrast mode */
 @media screen and (-ms-high-contrast: active) {
