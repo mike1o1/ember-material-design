@@ -39,7 +39,7 @@
         <md-ink-bar></md-ink-bar>
     </md-pagination-wrapper>
     <!--Need to add visually hidden items for accessibility-->
-    <div class="visually-hidden">
+    <div class="md-visually-hidden">
         {{#each tabs as |tab index|}}
             <md-dummy-tab id="tab-content-{{tab.id}}" tabindex="-1" role="tab">
                 <span>{{tab.label}}</span>
