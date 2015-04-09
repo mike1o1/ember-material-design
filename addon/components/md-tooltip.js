@@ -166,7 +166,7 @@ var MdTooltip = Ember.Component.extend({
             newPosition.left = Math.min(newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE);
             newPosition.top = Math.min(newPosition.top, tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE);
             newPosition.top = Math.min(newPosition.top, TOOLTIP_WINDOW_EDGE_SPACE);
-            return newPosition; 
+            return newPosition;
         }
 
         function getPosition(dir) {
