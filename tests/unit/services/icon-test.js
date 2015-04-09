@@ -14,8 +14,6 @@ moduleFor('service:icon', {
 function updateDefaults(svg) {
 	svg = Ember.$(svg);
 
-	console.log('before: ', svg[0].outerHTML);
-
 	svg[0].setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
 	svg[0].setAttribute('fit', '');
@@ -31,8 +29,6 @@ function updateDefaults(svg) {
 		'display': 'block'
 	});
 
-
-	console.log('after: ', svg[0].outerHTML);
 
 	return svg[0].outerHTML;
 }
@@ -54,9 +50,6 @@ test('should get a single svg icon', function(assert) {
 			icon = result;
 		});
 	});
-
-	console.log('expected:', expected);
-	console.log('actual:', icon[0].outerHTML);
 
 	assert.equal(icon[0].outerHTML, expected);
 });
