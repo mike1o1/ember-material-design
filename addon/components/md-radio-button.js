@@ -11,6 +11,8 @@ var MdRadioButton = Ember.Component.extend(RipplesMixin, {
 
     tagName: 'md-radio-button',
 
+
+
     setupRipples: Ember.on('didInsertElement', function() {
         if (this.get('mdNoInk')) {
             return;

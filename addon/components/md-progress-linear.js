@@ -16,6 +16,7 @@ var MdProgressLinear = Ember.Component.extend({
         this._super();
 
         this.set('isInserted', true);
+        this.$('.md-container').addClass('md-ready');
     },
 
     constants: Ember.inject.service('constants'),
@@ -26,12 +27,11 @@ var MdProgressLinear = Ember.Component.extend({
 
     transforms: new Array(101),
 
-    setupTransforms: Ember.on('didInsertElement', function() {
+    setupTransforms: Ember.on('init', function() {
         for (var i = 0; i < 101; i++) {
             this.transforms[i] = makeTransform(i);
         }
 
-        this.$('.md-container').addClass('md-ready');
     }),
 
     bar1Style: Ember.computed('clampedBufferValue', function() {
@@ -39,10 +39,16 @@ var MdProgressLinear = Ember.Component.extend({
     }),
 
     bar2Style: Ember.computed('clampedValue', function() {
+
+        if (this.get('md-mode') === 'query') {
+            return '';
+        }
+
         return Ember.String.htmlSafe(this.get('constants.CSS.TRANSFORM') + ': ' + this.transforms[this.get('clampedValue')]);
     }),
 
     clampedValue: Ember.computed('value', function() {
+
         var value = this.get('value');
         if (value > 100) {
             return 100;

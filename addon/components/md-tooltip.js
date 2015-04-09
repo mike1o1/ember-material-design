@@ -104,9 +104,7 @@ var MdTooltip = Ember.Component.extend({
                     this.setVisible.queued = false;
                 }, this.get('delay'));
             } else {
-                Ember.run.later(this, function() {
-                    this.set('visible', false);
-                }, 0);
+                this.set('visible', false);
             }
         }
     },
