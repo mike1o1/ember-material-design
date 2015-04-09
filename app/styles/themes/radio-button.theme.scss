@@ -6,6 +6,7 @@ md-radio-button {
   .md-on {
     background-color: rgba(color($accent), 0.87);
   }
+
   &.md-checked .md-off {
     border-color: rgba(color($accent), 0.87);
   }
@@ -15,32 +16,53 @@ md-radio-button {
   .md-container .md-ripple {
     color: color($accent, '600');
   }
+}
+
+md-radio-group,
+md-radio-button {
 
   &:not([disabled]) {
+    .md-primary,
     &.md-primary {
       .md-on {
         background-color: rgba(color($primary), 0.87);
       }
-      &.md-checked .md-off {
-        border-color: rgba(color($primary), 0.87);
+      .md-checked,
+      &.md-checked {
+        .md-off {
+          border-color: rgba(color($primary), 0.87);
+        }
       }
-      &.md-checked .md-ink-ripple {
-        color: rgba(color($primary), 0.87);
+      .md-checked,
+      &.md-checked {
+        .md-ink-ripple {
+          color: rgba(color($primary), 0.87);
+        }
+
       }
       .md-container .md-ripple {
         color: color($primary, '600');
       }
     }
 
+    .md-warn,
     &.md-warn {
       .md-on {
         background-color: rgba(color($warn), 0.87);
       }
-      &.md-checked .md-off {
-        border-color: rgba(color($warn), 0.87);
+      .md-checked,
+      &.md-checked {
+        .md-off {
+          border-color: rgba(color($warn), 0.87);
+        }
+
       }
-      &.md-checked .md-ink-ripple {
-        color: rgba(color($warn), 0.87);
+      .md-checked,
+      &.md-checked {
+        .md-ink-ripple {
+          color: rgba(color($warn), 0.87);
+        }
+
       }
       .md-container .md-ripple {
         color: color($warn, '600');

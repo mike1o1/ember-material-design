@@ -11,7 +11,7 @@
                     <p>Selected Value: <span class="radioValue">{{ data.group1 }}</span></p>
 
 
-                    {{#md-radio-button value="Apple" selected=data.group1}}Apple{{/md-radio-button}}
+                    {{#md-radio-button value="Apple" selected=data.group1 class="md-primary"}}Apple{{/md-radio-button}}
                     {{#md-radio-button value="Banana" selected=data.group1}}Banana{{/md-radio-button}}
                     {{#md-radio-button value="Mango" selected=data.group1}}Mango{{/md-radio-button}}
 
@@ -23,6 +23,7 @@
 
                     {{#each d in radioData}}
                         {{#md-radio-button value=d.value
+                        class="md-primary"
                         selected=data.group2
                         disabled=d.isDisabled}}
                             {{ d.label }}
@@ -33,8 +34,8 @@
 
 
                     <p>
-                        {{#md-button action='addItem' type="button"}}Add{{/md-button}}
-                        {{#md-button action='removeItem' type="button"}}Remove{{/md-button}}
+                        {{#md-button class="md-raised" action='addItem' type="button"}}Add{{/md-button}}
+                        {{#md-button class="md-raised" action='removeItem' type="button"}}Remove{{/md-button}}
                     </p>
 
                     <hr/>
