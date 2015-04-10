@@ -3,25 +3,27 @@
 
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-  
 
 var app = new EmberAddon({
 
-  hinting: false,
+    hinting: false,
 
-  autoprefixer: {
-    browsers: ['last 2 versions', 'last 4 Android versions'],
-    sourceMap: true,
-    enabled: true
-  },
-  outputPaths: {
-    app: {
-      css: {
-        'app': '/assets/dummy.css',
-        'ember-material-design': '/assets/dummy.css'
-      }
+    snippetPaths: ['tests/dummy/app/snippets'],
+    snippetSearchPaths: ['tests/dummy/app'],
+
+    autoprefixer: {
+        browsers: ['last 2 versions', 'last 4 Android versions'],
+        sourceMap: true,
+        enabled: true
+    },
+    outputPaths: {
+        app: {
+            css: {
+                'app': '/assets/dummy.css',
+                'ember-material-design': '/assets/dummy.css'
+            }
+        }
     }
-  }
 });
 
 // Use `app.import` to add additional libraries to the generated
@@ -38,7 +40,7 @@ var app = new EmberAddon({
 // along with the exports of each module as its value.
 
 if (app.env === 'test' || app.env === 'development') {
-  app.import( app.bowerDirectory + '/ember/ember-template-compiler.js', { type: 'test' } );
+    app.import(app.bowerDirectory + '/ember/ember-template-compiler.js', {type: 'test'});
 }
 
 module.exports = app.toTree();

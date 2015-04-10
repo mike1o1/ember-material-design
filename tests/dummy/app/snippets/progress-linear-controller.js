@@ -1,16 +1,6 @@
 import Ember from 'ember';
-import BaseDemoController from '../controllers/base-demo-controller';
 
-export default BaseDemoController.extend({
-    init: function() {
-        var content = [
-            {name: 'hbs', content: 'progress-linear.hbs' },
-            {name: 'controller', content: 'progress-linear-controller.js' }
-        ];
-
-        this.setSourceFiles(content);
-    },
-
+export default Ember.Controller.extend({
     mode: 'query',
     determinateValue: 30,
     determinateValue2: 30,

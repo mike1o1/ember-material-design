@@ -1,45 +1,61 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container">
-            <demo-include class="md-whiteframe-z1 contentdemoBasicUsage">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+            <demo-include class="contentdemoBasicUsage">
 
                 <div class="demo-content">
                     <div class="display-content">
-                        <md-content>
+{{! BEGIN-SNIPPET list --}}
+<md-content>
 
-                            {{#md-list}}
+    {{#md-list}}
 
-                                {{#each todos as |item index|}}
-                                    {{#md-list-item class="md-3-line"}}
-                                        <img class="md-avatar" src="{{item.face}}?{{index}}" alt="{{item.who}}">
-                                        <div class="md-list-item-text">
-                                            <h3>{{item.who}}</h3>
-                                            <h4>{{item.what}}</h4>
-                                            <p>{{item.notes}}</p>
-                                        </div>
-                                    {{/md-list-item}}
-                                {{/each}}
+        {{#each todos as |item index|}}
+            {{#md-list-item class="md-3-line"}}
+                <img class="md-avatar" src="{{item.face}}?{{index}}" alt="{{item.who}}">
+                <div class="md-list-item-text">
+                    <h3>{{item.who}}</h3>
+                    <h4>{{item.what}}</h4>
+                    <p>{{item.notes}}</p>
+                </div>
+            {{/md-list-item}}
+        {{/each}}
 
-                                {{#md-list-item class="md-2-line"}}
-                                    <img class="md-avatar" src="{{firstTodo.face}}?20" alt="{{firstTodo.who}}"/>
-                                    <div class="md-list-item-text">
-                                        <h3>{{firstTodo.who}}</h3>
-                                        <p>Secondary Text</p>
-                                    </div>
-                                {{/md-list-item}}
+        {{#md-list-item class="md-2-line"}}
+            <img class="md-avatar" src="{{firstTodo.face}}?20" alt="{{firstTodo.who}}"/>
+            <div class="md-list-item-text">
+                <h3>{{firstTodo.who}}</h3>
+                <p>Secondary Text</p>
+            </div>
+        {{/md-list-item}}
 
-                                {{#md-list-item class="md-3-line"}}
-                                    <img class="md-avatar" src="{{firstTodo.face}}?25" alt="{{firstTodo.who}}"/>
-                                    <div class="md-list-item-text">
-                                        <h3>{{firstTodo.who}}</h3>
-                                        <p>Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.</p>
-                                    </div>
-                                {{/md-list-item}}
+        {{#md-list-item class="md-3-line"}}
+            <img class="md-avatar" src="{{firstTodo.face}}?25" alt="{{firstTodo.who}}"/>
+            <div class="md-list-item-text">
+                <h3>{{firstTodo.who}}</h3>
+                <p>Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.</p>
+            </div>
+        {{/md-list-item}}
 
-                            {{/md-list}}
+    {{/md-list}}
 
-                        </md-content>
+</md-content>
+{{! END-SNIPPET --}}
                     </div>
                 </div>
 

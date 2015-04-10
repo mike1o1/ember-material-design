@@ -1,124 +1,153 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container {{showSourceClass}}">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
 
-          {{#md-toolbar classNames='demo-toolbar'}}
-              <div class="md-toolbar-tools">
-                  <span>Font Icons</span>
-                  <span flex></span>
-                {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
-                  {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
-                    <span>Source</span>
-                {{/md-button}}
-              </div>
-          {{/md-toolbar}}
-
-            <demo-include class="md-whiteframe-z1 icondemoFontIcons">
-
-                <div class="demo-content demoFontIcons">
-
-                    <div class="display-content">
-
-                        <div layout="column" layout-margin style="padding:25px;">
-
-                            <p>
-                                Display 5 font-icons, each with different sizes and colors:
-                            </p>
-
-                            <!-- Display font icons from Icomoon.io: -->
-
-                          {{#each font in icons}}
-                              <div layout="row" layout-padding layout-margin class="glyph">
-
-                                {{#each it in font.sizes}}
-                                    <div flex layout-align="center center">
-                                        <div class="preview-glyphs">
-                                          {{md-icon
-                                          mdFontIcon=font.name
-                                          class=font.theme
-                                          style=it.sizeStyle
-                                          classNames="step "}}
-                                        </div>
-
-                                        <div class="preview-scale">
-                                            <span class="step" {{bind-attr style=it.paddingScaleStyle}}>{{it.size}}</span>
-                                        </div>
-                                    </div>
-                                {{/each}}
-
-
-                              </div>
-                          {{/each}}
-
-                        </div>
-
-                    </div>
-                </div>
-            </demo-include>
-
-            <section class="demo-container {{showSourceClassFromUrl}}">
-
-              {{#md-toolbar classNames='demo-toolbar'}}
-                  <div class="md-toolbar-tools">
-                      <span>Load Svg Icons From Url</span>
-                      <span flex></span>
-                    {{#md-button action='showSourceFromUrl' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
-                      {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Font Icons</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
                         <span>Source</span>
                     {{/md-button}}
-                  </div>
-              {{/md-toolbar}}
+                </div>
+            {{/md-toolbar}}
 
-                <demo-include class="md-whiteframe-z1 icondemoLoadSvgIconsFromUrl">
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
 
-                    <div class="demo-content demoFontIcons">
-
-                        <div class="display-content">
-
-                            <div layout="column" layout-margin style="padding:25px;">
-
-                                <p>The simplest way to display a single SVG icon is by referencing it by URL:</p>
-
-                                <p>
-                                  {{md-icon md-svg-src=insertDriveIconURL
-                                  alt="Insert Drive Icon"}}
-                                </p>
-
-                                <p>Style the icon size and color with CSS:</p>
-
-                                <p>
-                                  {{md-icon md-svg-src="images/icons/cake.svg" class="s24" alt="Cake"}}
-                                  {{md-icon md-svg-src=getAndroid class="s36" alt="Android "}}
-                                  {{md-icon md-svg-src="images/icons/addShoppingCart.svg" class="s48" alt="Cart"}}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                </demo-include>
-            </section>
-
-            <demo-include class="md-whiteframe-z1 icondemoSvgIconFonts">
+            <demo-include class="icondemoFontIcons">
 
                 <div class="demo-content demoFontIcons">
 
                     <div class="display-content">
 
-                        <div layout="column" layout-margin>
+{{!-- BEGIN-SNIPPET icon-fontIcons --}}
+<div layout="column" layout-margin style="padding:25px;">
 
-                            <p>Display an icon from a pre-registered set of icons:</p>
+    <p>
+        Display 5 font-icons, each with different sizes and colors:
+    </p>
 
-                            <p>
-                              {{md-icon md-svg-icon="alarm" style="color: #0F0;" alt="Alarm Icon"}}
-                              {{md-icon md-svg-icon="social:cake" style="color: #f00;width:60px;height:60px;" alt="Cake Icon"}}
-                              {{md-icon md-svg-icon="social:people" style="color: #00F;" class="s48" alt="People Icon"}}
-                            </p>
+    <!-- Display font icons from Icomoon.io: -->
 
-                        </div>
+    {{#each font in icons}}
+        <div layout="row" layout-padding layout-margin class="glyph">
+
+            {{#each it in font.sizes}}
+                <div flex layout-align="center center">
+                    <div class="preview-glyphs">
+                        {{md-icon
+                        mdFontIcon=font.name
+                        class=font.theme
+                        style=it.sizeStyle
+                        classNames="step "}}
+                    </div>
+
+                    <div class="preview-scale">
+                        <span class="step" {{bind-attr style=it.paddingScaleStyle}}>{{it.size}}</span>
+                    </div>
+                </div>
+            {{/each}}
+
+
+        </div>
+    {{/each}}
+
+</div>
+{{!-- END-SNIPPET --}}
+
+                    </div>
+                </div>
+            </demo-include>
+        </section>
+
+
+        <section class="demo-container md-whiteframe-z1 {{showSourceClassFromUrl}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Load Svg Icons from Url</span>
+                    <span flex></span>
+                    {{#md-button action='showSourceFromUrl' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFilesFromUrl showSource=showSourceFromUrl}}
+
+
+            <demo-include class="icondemoLoadSvgIconsFromUrl">
+
+                <div class="demo-content demoFontIcons">
+
+                    <div class="display-content">
+
+{{!-- BEGIN-SNIPPET icon-fromUrl --}}
+<div layout="column" layout-margin style="padding:25px;">
+
+    <p>The simplest way to display a single SVG icon is by referencing it by URL:</p>
+
+    <p>
+        {{md-icon md-svg-src=insertDriveIconURL
+        alt="Insert Drive Icon"}}
+    </p>
+
+    <p>Style the icon size and color with CSS:</p>
+
+    <p>
+        {{md-icon md-svg-src="images/icons/cake.svg" class="s24" alt="Cake"}}
+        {{md-icon md-svg-src=getAndroid class="s36" alt="Android "}}
+        {{md-icon md-svg-src="images/icons/addShoppingCart.svg" class="s48" alt="Cart"}}
+    </p>
+
+</div>
+{{!-- END-SNIPPET --}}
+
+                    </div>
+
+
+                </div>
+            </demo-include>
+        </section>
+
+        <section class="demo-container md-whiteframe-z1 {{showSourceClassFromSet}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Svg Icon Sets</span>
+                    <span flex></span>
+                    {{#md-button action='showSourceFromSet' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFilesFromSet showSource=showSourceFromSet}}
+
+
+            <demo-include class="icondemoSvgIconFonts">
+
+                <div class="demo-content demoFontIcons">
+
+                    <div class="display-content">
+
+{{! BEGIN-SNIPPET icon-fromSet --}}
+<div layout="column" layout-margin>
+
+    <p>Display an icon from a pre-registered set of icons:</p>
+
+    <p>
+        {{md-icon md-svg-icon="alarm" style="color: #0F0;" alt="Alarm Icon"}}
+        {{md-icon md-svg-icon="social:cake" style="color: #f00;width:60px;height:60px;" alt="Cake Icon"}}
+        {{md-icon md-svg-icon="social:people" style="color: #00F;" class="s48" alt="People Icon"}}
+    </p>
+
+</div>
+{{! END-SNIPPET --}}
 
                     </div>
 
@@ -126,8 +155,8 @@
                 </div>
             </demo-include>
 
-
         </section>
+
     </div>
 </div>
 

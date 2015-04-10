@@ -11,14 +11,5 @@ export default BaseDemoController.extend({
         cb3: false,
         cb4: true,
         cb5: false
-    },
-
-    init: function() {
-        var content = [
-            {name: 'hbs', content: 'checkbox.hbs' },
-            {name: 'controller', content: 'checkbox-controller.js' }
-        ];
-
-        this.setSourceFiles(content);
     }
 });

@@ -2,7 +2,7 @@ import BaseRoute from './base-route';
 
 export default BaseRoute.extend({
 
-	demoName: 'Divider',
+	demoName: 'Divider'
 
-	
+
 });

@@ -1,17 +1,6 @@
 import Ember from 'ember';
-import BaseDemoController from '../controllers/base-demo-controller';
 
-export default BaseDemoController.extend({
-
-    init: function() {
-        var content = [
-            {name: 'hbs', content: 'list.hbs' },
-            {name: 'controller', content: 'list-controller.js' }
-        ];
-
-        this.setSourceFiles(content);
-    },
-
+export default Ember.Controller.extend({
     todos: Ember.A([
         {
             face : 'http://lorempixel.com/50/50/people',

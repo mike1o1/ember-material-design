@@ -2,5 +2,5 @@ import BaseRoute from './base-route';
 
 export default BaseRoute.extend({
 
-	demoName: 'Input',
+	demoName: 'Input'
 });

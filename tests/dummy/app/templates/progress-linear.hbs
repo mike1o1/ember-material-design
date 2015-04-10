@@ -1,22 +1,37 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container">
-            <demo-include class="md-whiteframe-z1 buttondemoBasicUsage">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+            <demo-include class="buttondemoBasicUsage">
 
                 <div class="demo-content progressCircularDemo1">
 
                     <div class="display-content">
+{{! BEGIN-SNIPPET progress-linear --}}
+<div layout="column" layout-margin style="padding:25px;">
 
-                        <div layout="column" layout-margin style="padding:25px;">
+    {{md-progress-linear md-mode="indeterminate"}}
 
-                            {{md-progress-linear md-mode="indeterminate"}}
+    {{md-progress-linear class="md-warn" md-mode="buffer" value=determinateValue md-buffer-value=determinateValue2}}
 
-                            {{md-progress-linear class="md-warn" md-mode="buffer" value=determinateValue md-buffer-value=determinateValue2}}
+    {{md-progress-linear class="md-accent" md-mode=mode value=determinateValue}}
 
-                            {{md-progress-linear class="md-accent" md-mode=mode value=determinateValue}}
-
-                        </div>
+</div>
+{{! END-SNIPPET --}}
                     </div>
                 </div>
             </demo-include>

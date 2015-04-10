@@ -1,52 +1,68 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container">
-            <demo-include class="md-whiteframe-z1 contentdemoBasicUsage">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+            <demo-include class="contentdemoBasicUsage">
 
                 <div class="demo-content">
                     <div class="display-content">
-                        <md-content>
+{{! BEGIN-SNIPPET toolbar }}
+<md-content>
 
-                          {{#md-toolbar}}
-                              <div class="md-toolbar-tools">
-                                {{#md-button class="md-icon-button"}}
-                                  {{md-icon md-svg-icon="images/icons/menu.svg"}}
-                                {{/md-button}}
-                                  <h2>
-                                      <span>Toolbar with icon buttons</span>
-                                  </h2>
-                                  <span flex></span>
-                                {{#md-button class="md-icon-button"}}
-                                  {{md-icon md-svg-icon="images/icons/favorite.svg"}}
-                                {{/md-button}}
-                                {{#md-button class="md-icon-button"}}
-                                  {{md-icon md-svg-icon="images/icons/more_vert.svg"}}
-                                {{/md-button}}
-                              </div>
-                          {{/md-toolbar}}
+  {{#md-toolbar}}
+      <div class="md-toolbar-tools">
+        {{#md-button class="md-icon-button"}}
+          {{md-icon md-svg-icon="images/icons/menu.svg"}}
+        {{/md-button}}
+          <h2>
+              <span>Toolbar with icon buttons</span>
+          </h2>
+          <span flex></span>
+        {{#md-button class="md-icon-button"}}
+          {{md-icon md-svg-icon="images/icons/favorite.svg"}}
+        {{/md-button}}
+        {{#md-button class="md-icon-button"}}
+          {{md-icon md-svg-icon="images/icons/more_vert.svg"}}
+        {{/md-button}}
+      </div>
+  {{/md-toolbar}}
 
-                            <br>
+    <br>
 
-                            <br>
+    <br>
 
-                          {{#md-toolbar class="md-tall md-accent"}}
-                              <h2 class="md-toolbar-tools">
-                                  <span>Toolbar: tall (md-accent)</span>
-                              </h2>
-                          {{/md-toolbar}}
+  {{#md-toolbar class="md-tall md-accent"}}
+      <h2 class="md-toolbar-tools">
+          <span>Toolbar: tall (md-accent)</span>
+      </h2>
+  {{/md-toolbar}}
 
-                            <br>
+    <br>
 
-                          {{#md-toolbar class="md-tall md-warn md-hue-3"}}
-                              <span flex></span>
+  {{#md-toolbar class="md-tall md-warn md-hue-3"}}
+      <span flex></span>
 
-                              <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-                                  <span class="md-flex">Toolbar: tall with actions pin to the bottom (md-warn md-hue-3)</span>
-                              </h2>
-                          {{/md-toolbar}}
+      <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+          <span class="md-flex">Toolbar: tall with actions pin to the bottom (md-warn md-hue-3)</span>
+      </h2>
+  {{/md-toolbar}}
 
-                        </md-content>
+</md-content>
+{{! END-SNIPPET }}
                     </div>
                 </div>
 

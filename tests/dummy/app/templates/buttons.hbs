@@ -1,7 +1,7 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container {{showSourceClass}}">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
 
             {{#md-toolbar classNames='demo-toolbar'}}
                 <div class="md-toolbar-tools">
@@ -14,91 +14,95 @@
                 </div>
             {{/md-toolbar}}
 
-            <demo-include class="md-whiteframe-z1 buttondemoBasicUsage">
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+            <demo-include class="buttondemoBasicUsage">
 
                 <div class="demo-content buttonsDemo1">
 
                     <div class="display-content">
-                        <md-content>
+{{!-- BEGIN-SNIPPET buttons --}}
+<md-content>
 
-                            <section layout="row" layout-sm="column" layout-align="center center">
-                                {{#md-button}}Button{{/md-button}}
-                                {{#md-button mdNoInk="true" classNames="md-primary"}}Primary (md-noink){{/md-button}}
-                                {{#md-button disabled="true" classNames="md-primary"}}Disabled{{/md-button}}
-                                {{#md-button class="md-warn"}}Warn{{/md-button}}
-                            </section>
+    <section layout="row" layout-sm="column" layout-align="center center">
+        {{#md-button}}Button{{/md-button}}
+        {{#md-button mdNoInk="true" classNames="md-primary"}}Primary (md-noink){{/md-button}}
+        {{#md-button disabled="true" classNames="md-primary"}}Disabled{{/md-button}}
+        {{#md-button class="md-warn"}}Warn{{/md-button}}
+    </section>
 
-                            <section layout="row" layout-sm="column" layout-align="center center">
-                                {{#md-button class="md-raised"}}Button{{/md-button}}
-                                {{#md-button class="md-raised md-primary"}}Primary{{/md-button}}
-                                {{#md-button disabled="true" class="md-raised md-primary"}}Disabled{{/md-button}}
-                                {{#md-button class="md-raised md-warn"}}Warn{{/md-button}}
-                                <div class="label">raised</div>
-                            </section>
+    <section layout="row" layout-sm="column" layout-align="center center">
+        {{#md-button class="md-raised"}}Button{{/md-button}}
+        {{#md-button class="md-raised md-primary"}}Primary{{/md-button}}
+        {{#md-button disabled="true" class="md-raised md-primary"}}Disabled{{/md-button}}
+        {{#md-button class="md-raised md-warn"}}Warn{{/md-button}}
+        <div class="label">raised</div>
+    </section>
 
-                            <section layout="row" layout-sm="column" layout-align="center center">
-                                {{#md-button class="md-fab" aria-label="Eat cake"}}
-                                    {{md-icon md-svg-src="images/icons/cake.svg"}}
-                                {{/md-button}}
+    <section layout="row" layout-sm="column" layout-align="center center">
+        {{#md-button class="md-fab" aria-label="Eat cake"}}
+            {{md-icon md-svg-src="images/icons/cake.svg"}}
+        {{/md-button}}
 
-                                {{#md-button class="md-fab md-primary" aria-label="Use Android"}}
-                                    {{md-icon md-svg-src="images/icons/android.svg"}}
-                                {{/md-button}}
+        {{#md-button class="md-fab md-primary" aria-label="Use Android"}}
+            {{md-icon md-svg-src="images/icons/android.svg"}}
+        {{/md-button}}
 
-                                {{#md-button class="md-fab" disabled="true" aria-label="Comment"}}
-                                    {{md-icon md-svg-src="images/icons/ic_comment_24px.svg"}}
-                                {{/md-button}}
+        {{#md-button class="md-fab" disabled="true" aria-label="Comment"}}
+            {{md-icon md-svg-src="images/icons/ic_comment_24px.svg"}}
+        {{/md-button}}
 
-                                {{#md-button class="md-fab md-primary md-hue-2" aria-label="Profile"}}
-                                    {{md-icon md-svg-src="images/icons/ic_people_24px.svg"}}
-                                {{/md-button}}
+        {{#md-button class="md-fab md-primary md-hue-2" aria-label="Profile"}}
+            {{md-icon md-svg-src="images/icons/ic_people_24px.svg"}}
+        {{/md-button}}
 
-                                {{#md-button class="md-fab md-mini" aria-label="Eat cake"}}
-                                    {{md-icon md-svg-src="images/icons/cake.svg"}}
-                                {{/md-button}}
+        {{#md-button class="md-fab md-mini" aria-label="Eat cake"}}
+            {{md-icon md-svg-src="images/icons/cake.svg"}}
+        {{/md-button}}
 
-                                {{#md-button class="md-fab md-mini md-primary" aria-label="Use Android"}}
-                                    {{md-icon md-svg-src="images/icons/android.svg" style="color: greenyellow;"}}
-                                {{/md-button}}
+        {{#md-button class="md-fab md-mini md-primary" aria-label="Use Android"}}
+            {{md-icon md-svg-src="images/icons/android.svg" style="color: greenyellow;"}}
+        {{/md-button}}
 
-                                <div class="label">FAB</div>
-                            </section>
+        <div class="label">FAB</div>
+    </section>
 
-                            <section layout="row" layout-sm="column" layout-align="center center">
-                                {{#md-button tagName="a" href="http://www.emberjs.com" target="_blank"}}Default
-                                                                                                        Link{{/md-button}}
-                                {{#md-button tagName="a" class="md-primary" href="http://www.emberjs.com" target="_blank"}}
-                                                                                                        Primary
-                                                                                                        Link{{/md-button}}
+    <section layout="row" layout-sm="column" layout-align="center center">
+        {{#md-button tagName="a" href="http://www.emberjs.com" target="_blank"}}Default
+                                                                                Link{{/md-button}}
+        {{#md-button tagName="a" class="md-primary" href="http://www.emberjs.com" target="_blank"}}
+                                                                                Primary
+                                                                                Link{{/md-button}}
 
-                                {{#md-button}}Default Button{{/md-button}}
-                                <div class="label">Link vs. Button</div>
-                            </section>
+        {{#md-button}}Default Button{{/md-button}}
+        <div class="label">Link vs. Button</div>
+    </section>
 
-                            <section layout="row" layout-sm="column" layout-align="center center">
-                                {{#md-button class="md-primary md-hue-1"}}Primary Hue 1{{/md-button}}
-                                {{#md-button class="md-warn md-raised md-hue-2"}}Warn Hue 2{{/md-button}}
-                                {{#md-button class="md-accent"}}Accent{{/md-button}}
-                                {{#md-button class="md-accent md-raised md-hue-1"}}Accent Hue 1{{/md-button}}
-                                <div class="label">Themed</div>
-                            </section>
+    <section layout="row" layout-sm="column" layout-align="center center">
+        {{#md-button class="md-primary md-hue-1"}}Primary Hue 1{{/md-button}}
+        {{#md-button class="md-warn md-raised md-hue-2"}}Warn Hue 2{{/md-button}}
+        {{#md-button class="md-accent"}}Accent{{/md-button}}
+        {{#md-button class="md-accent md-raised md-hue-1"}}Accent Hue 1{{/md-button}}
+        <div class="label">Themed</div>
+    </section>
 
-                            <section layout="row" layout-sm="column" layout-align="center center">
-                                {{#md-button class="md-icon-button md-primary"}}
-                                    {{md-icon md-svg-icon="images/icons/menu.svg"}}
-                                {{/md-button}}
-                                {{#md-button class="md-icon-button md-accent"}}
-                                    {{md-icon md-svg-icon="images/icons/favorite.svg" style="color: greenyellow;"}}
-                                {{/md-button}}
-                                {{#md-button class="md-icon-button"}}
-                                    {{md-icon md-svg-icon="images/icons/more_vert.svg"}}
-                                {{/md-button}}
+    <section layout="row" layout-sm="column" layout-align="center center">
+        {{#md-button class="md-icon-button md-primary"}}
+            {{md-icon md-svg-icon="images/icons/menu.svg"}}
+        {{/md-button}}
+        {{#md-button class="md-icon-button md-accent"}}
+            {{md-icon md-svg-icon="images/icons/favorite.svg" style="color: greenyellow;"}}
+        {{/md-button}}
+        {{#md-button class="md-icon-button"}}
+            {{md-icon md-svg-icon="images/icons/more_vert.svg"}}
+        {{/md-button}}
 
 
-                                <div class="label">Icon Button</div>
-                            </section>
+        <div class="label">Icon Button</div>
+    </section>
 
-                        </md-content>
+</md-content>
+{{!-- END-SNIPPET --}}
                     </div>
 
 

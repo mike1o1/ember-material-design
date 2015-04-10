@@ -1,72 +1,77 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container {{showSourceClass}}">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
 
-          {{#md-toolbar classNames='demo-toolbar'}}
-              <div class="md-toolbar-tools">
-                  <span>Basic Usage</span>
-                  <span flex></span>
-                {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
-                  {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
-                    <span>Source</span>
-                {{/md-button}}
-              </div>
-          {{/md-toolbar}}
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
 
-            <demo-include class="md-whiteframe-z1 contentdemoBasicUsage">
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+
+            <demo-include class="contentdemoBasicUsage">
                 <div class="demo-content">
 
-                    <div class="display-content">
-                      {{#md-toolbar class="md-theme-light"}}
-                          <h2 class="md-toolbar-tools">
-                              <span>Full Bleed</span>
-                          </h2>
-                      {{/md-toolbar}}
+{{!-- BEGIN-SNIPPET divider --}}
+<div class="display-content">
+  {{#md-toolbar class="md-theme-light"}}
+      <h2 class="md-toolbar-tools">
+          <span>Full Bleed</span>
+      </h2>
+  {{/md-toolbar}}
 
-                        <md-content>
-                          {{#md-list}}
-                            {{#each item in messages}}
-                              {{#md-list-item class="md-3-line"}}
-                                  <div class="md-list-item-text">
-                                      <h3>{{item.what}}</h3>
-                                      <h4>{{item.who}}</h4>
+    <md-content>
+      {{#md-list}}
+        {{#each item in messages}}
+          {{#md-list-item class="md-3-line"}}
+              <div class="md-list-item-text">
+                  <h3>{{item.what}}</h3>
+                  <h4>{{item.who}}</h4>
 
-                                      <p>
-                                        {{item.notes}}
-                                      </p>
-                                  </div>
-                                  <md-divider></md-divider>
-                              {{/md-list-item}}
-                            {{/each}}
-                          {{/md-list}}
-                        </md-content>
+                  <p>
+                    {{item.notes}}
+                  </p>
+              </div>
+              <md-divider></md-divider>
+          {{/md-list-item}}
+        {{/each}}
+      {{/md-list}}
+    </md-content>
 
-                      {{#md-toolbar class="md-theme-light"}}
-                          <h2 class="md-toolbar-tools">
-                              <span>Inset</span>
-                          </h2>
-                      {{/md-toolbar}}
+  {{#md-toolbar class="md-theme-light"}}
+      <h2 class="md-toolbar-tools">
+          <span>Inset</span>
+      </h2>
+  {{/md-toolbar}}
 
-                        <md-content>
-                          {{#md-list}}
-                            {{#each item in messages}}
-                              {{#md-list-item class="md-3-line"}}
-                                  <img src="{{item.face}}" alt="{{item.who}}" class="face">
-                                  <div class="md-list-item-text">
-                                      <h3>{{item.what}}</h3>
-                                      <h4>{{item.who}}</h4>
+    <md-content>
+      {{#md-list}}
+        {{#each item in messages}}
+          {{#md-list-item class="md-3-line"}}
+              <img src="{{item.face}}" alt="{{item.who}}" class="face">
+              <div class="md-list-item-text">
+                  <h3>{{item.what}}</h3>
+                  <h4>{{item.who}}</h4>
 
-                                      <p>
-                                        {{item.notes}}
-                                      </p>
-                                  </div>
-                                  <md-divider md-inset></md-divider>
-                              {{/md-list-item}}
-                            {{/each}}
-                          {{/md-list}}
-                        </md-content>
-                    </div>
+                  <p>
+                    {{item.notes}}
+                  </p>
+              </div>
+              <md-divider md-inset></md-divider>
+          {{/md-list-item}}
+        {{/each}}
+      {{/md-list}}
+    </md-content>
+</div>
+{{!-- END-SNIPPET --}}
 
 
                 </div>

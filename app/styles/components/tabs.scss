@@ -45,7 +45,7 @@ md-tabs {
   }
   &[md-border-bottom] {
     md-tabs-wrapper {
-      border-width: 1px;
+      border-width: 0 0 1px;
       border-style: solid;
     }
   }

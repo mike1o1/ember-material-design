@@ -1,7 +1,7 @@
 <div class="doc-content" layout="column">
     <div flex layout="column">
 
-        <section class="demo-container {{showSourceClass}}">
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
 
             {{#md-toolbar classNames='demo-toolbar'}}
                 <div class="md-toolbar-tools">
@@ -14,32 +14,34 @@
                 </div>
             {{/md-toolbar}}
 
-            <demo-include class="md-whiteframe-z1 buttondemoBasicUsage">
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+            <demo-include class="buttondemoBasicUsage">
 
                 <div class="demo-content checkboxDemo1">
+{{!-- BEGIN-SNIPPER checkbox --}}
+<div class="display-content">
+    {{#md-checkbox checked=data.cb1 aria-label="Checkbox 1"}}
+        Checkbox 1: {{ data.cb1 }}
+    {{/md-checkbox}}
 
-                    <div class="display-content">
-                        {{#md-checkbox checked=data.cb1 aria-label="Checkbox 1"}}
-                            Checkbox 1: {{ data.cb1 }}
-                        {{/md-checkbox}}
+    {{#md-checkbox checked=data.cb2 aria-label="Checkbox 2" trueValue="'yup'" falseValue="'nope'" class="md-warn"}}
+        Checkbox 2 (md-warn): {{ data.cb2 }}
+    {{/md-checkbox}}
 
-                        {{#md-checkbox checked=data.cb2 aria-label="Checkbox 2" trueValue="'yup'" falseValue="'nope'" class="md-warn"}}
-                            Checkbox 2 (md-warn): {{ data.cb2 }}
-                        {{/md-checkbox}}
+    {{#md-checkbox disabled=true aria-label="Disabled checkbox" checked=data.cb3}}
+        Checkbox: Disabled
+    {{/md-checkbox}}
 
-                        {{#md-checkbox disabled=true aria-label="Disabled checkbox" checked=data.cb3}}
-                            Checkbox: Disabled
-                        {{/md-checkbox}}
+    {{#md-checkbox disabled=true aria-label="Disabled checked checkbox" checked=data.cb4}}
+        Checkbox: Disabled, Checked
+    {{/md-checkbox}}
 
-                        {{#md-checkbox disabled=true aria-label="Disabled checked checkbox" checked=data.cb4}}
-                            Checkbox: Disabled, Checked
-                        {{/md-checkbox}}
-
-                        {{#md-checkbox mdNoInk=true aria-label="Checkbox No Ink" checked=data.cb5 class="md-primary"}}
-                            Checkbox (md-primary): No Ink
-                        {{/md-checkbox}}
-                    </div>
-
+    {{#md-checkbox mdNoInk=true aria-label="Checkbox No Ink" checked=data.cb5 class="md-primary"}}
+        Checkbox (md-primary): No Ink
+    {{/md-checkbox}}
+</div>
+{{!-- END-SNIPPET --}}
 
                 </div>
 
