@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import config from './config/environment';
+import googlePageView from './mixins/google-page-view';
 
-var Router = Ember.Router.extend({
-  location: config.locationType
+var Router = Ember.Router.extend(googlePageView, {
+    location: config.locationType
 });
 
 export default Router.map(function() {
@@ -22,5 +23,5 @@ export default Router.map(function() {
   this.route('tabs');
   this.route('typography');
   this.route('tooltip');
-  this.route('toast'); 
+  this.route('toast');
 });
