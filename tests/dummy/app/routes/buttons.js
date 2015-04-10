@@ -1,4 +1,9 @@
 import Ember from 'ember';
+import BaseRoute from './base-route';
 
-export default Ember.Route.extend({
+export default BaseRoute.extend({
+
+	demoName: 'Buttons',
+
+	
 });

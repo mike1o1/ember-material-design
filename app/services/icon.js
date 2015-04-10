@@ -223,9 +223,7 @@ var IconService = Ember.Service.extend({
 
   announceNotFound: function(err) {
     var msg = (typeof err === 'string') ? err : (err.message || err.data || err.statusText);
-    debugger;
-    console.log(msg);
-
+    
     return Ember.RSVP.Promise.reject(msg);
   },
 

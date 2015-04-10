@@ -63,7 +63,7 @@ var twoTabTemplate = Ember.HTMLBars.compile(
   '{{/md-tabs-content-wrapper}}');
 
 test('it renders', function(assert) {
-  assert.expect(2);
+  assert.expect(2); 
 
 
 
