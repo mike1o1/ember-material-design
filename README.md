@@ -10,7 +10,7 @@ I could make it. Most of the credit for this work belongs to that team.
 
 ## Demo
 
-Visit (http://mike1234.com/ember-material-design) to view the components in action.
+Visit http://mike1234.com/ember-material-design to view the components in action.
 
 
 ## Installation
