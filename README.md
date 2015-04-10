@@ -1,25 +1,28 @@
+
+
 # Ember-material-design
 
-This README outlines the details of collaborating on this Ember addon.
+The **Ember Material Design** project is an implementation of Material Design in EmberJS. This project 
+attempts to provide a set of reusable, well-tested and accessible UI components based on the Material Design system.
+
+This project is as close to a reference implementation of [Angular Material](http://material.angularjs.org) as 
+I could make it. Most of the credit for this work belongs to that team.
+
+## Demo
+
+Visit (http://mike1234.com/ember-material-design) to view the components in action.
+
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+Install the ember-cli addon into project
 
-## Running
+```
+$ ember install:addon ember-material-design
+````
 
-* `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+This project uses SASS for compiling spreadsheets. Import them into your styles.scss
+ 
+ ```sass
+ @import "ember-material-design";
+ ```

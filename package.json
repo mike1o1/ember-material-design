@@ -1,7 +1,7 @@
 {
   "name": "ember-material-design",
-  "version": "0.0.1",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.5.0",
+  "description": "This addon attempts to implement Google's Material design in an Ember way.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -13,9 +13,9 @@
   },
   "repository": "https://github.com/mike1o1/ember-material-design",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12.0"
   },
-  "author": "",
+  "author": "Mike Wilson",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
