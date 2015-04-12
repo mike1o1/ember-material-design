@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import RipplesMixin from '../mixins/ripples';
 import layout from '../templates/components/md-radio-button';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdRadioButton = Ember.Component.extend(RipplesMixin, {
+var MdRadioButton = Ember.Component.extend(LayoutRules, RipplesMixin, {
 	layout: layout,
 
     attributeBindings: ['disabled'],

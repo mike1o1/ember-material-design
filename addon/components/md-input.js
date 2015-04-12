@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-input';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdInputComponent = Ember.TextField.extend({
+var MdInputComponent = Ember.TextField.extend(LayoutRules, {
 
 	layout: layout,
     classNames: ['md-input'],

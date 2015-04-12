@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-progress-circular';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdProgressCircular = Ember.Component.extend({
+var MdProgressCircular = Ember.Component.extend(LayoutRules, {
 	layout: layout,
     constants: Ember.inject.service('constants'),
 
@@ -20,7 +21,7 @@ var MdProgressCircular = Ember.Component.extend({
         var value = this.get('value');
 
         return Math.max(0, Math.min(value || 0, 100));
-        
+
     }),
 
     circleStyle: Ember.computed('scale', function() {

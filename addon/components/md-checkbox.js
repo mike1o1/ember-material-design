@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import RippleMixin from '../mixins/ripples';
 import layout from '../templates/components/md-checkbox';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdCheckbox = Ember.Component.extend(RippleMixin, {
+
+var MdCheckbox = Ember.Component.extend(LayoutRules, RippleMixin, {
 	layout: layout,
     constants: Ember.inject.service('constants'),
     tagName: 'md-checkbox',

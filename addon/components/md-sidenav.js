@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdSidenav = Ember.Component.extend({
+var MdSidenav = Ember.Component.extend(LayoutRules, {
   tagName: 'md-sidenav',
 
   mediaQueries: Ember.inject.service('media-queries'),

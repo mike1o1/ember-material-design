@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-input-container';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdInputContainer = Ember.Component.extend({
+var MdInputContainer = Ember.Component.extend(LayoutRules, {
 	layout: layout,
     tagName: 'md-input-container',
 

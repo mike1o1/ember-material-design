@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-textarea';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdTextArea = Ember.TextArea.extend({
+var MdTextArea = Ember.TextArea.extend(LayoutRules, {
 	layout: layout,
     classNames: ['md-input'],
 

@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-tabs-wrapper';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdTabWrapper = Ember.Component.extend({
+var MdTabWrapper = Ember.Component.extend(LayoutRules, {
 	layout: layout,
     tagName: 'md-tabs-wrapper',
     classNameBindings: ['shouldStretchTabs:md-stretch-tabs'],

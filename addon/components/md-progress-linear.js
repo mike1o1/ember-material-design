@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-progress-linear';
+import LayoutRules from '../mixins/layout-rules';
 
 function makeTransform(value) {
     var scale = value / 100;
@@ -7,7 +8,7 @@ function makeTransform(value) {
     return 'translateX(' + translateX.toString() + '%) scale(' + scale.toString() + ', 1)';
 }
 
-var MdProgressLinear = Ember.Component.extend({
+var MdProgressLinear = Ember.Component.extend(LayoutRules, {
 	layout: layout,
 
     isInserted: false,

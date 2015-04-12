@@ -1,17 +1,16 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-tooltip';
+import LayoutRules from '../mixins/layout-rules';
 
 const TOOLTIP_SHOW_DELAY = 300;
 const TOOLTIP_WINDOW_EDGE_SPACE = 8;
 
-var MdTooltip = Ember.Component.extend({
+var MdTooltip = Ember.Component.extend(LayoutRules, {
     layout: layout,
 
     tagName: 'md-tooltip',
 
     utilityService: Ember.inject.service('utility'),
-
-    //attributeBindings: ['mdVisible', 'mdDelay', 'mdAutohide'],
 
     parent: null,
     background: null,

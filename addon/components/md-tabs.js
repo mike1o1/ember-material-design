@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import RippleMixin from '../mixins/ripples';
 import layout from '../templates/components/md-tabs';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdTabs = Ember.Component.extend(Ember.Evented, RippleMixin, {
+var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
 	layout: layout,
     tagName: 'md-tabs',
 
@@ -16,7 +17,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, RippleMixin, {
 
     attributeBindings: ['selectedIndex', 'tabs', 'md-border-bottom', 'md-stretch-tabs'],
 
-    tabs: [], 
+    tabs: [],
 
     elements: null,
     lastSelectedIndex: null,
@@ -91,7 +92,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, RippleMixin, {
         elements.contents = elements.contentsWrapper.getElementsByTagName('md-tab-content');
 
         this.elements = elements;
-    })), 
+    })),
 
     keyDown: function(event) {
         switch (event.keyCode) {
@@ -349,7 +350,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, RippleMixin, {
     },
 
     updateInkBarStyles: function() {
-        if (this.elements.tabs.length <= 0) { 
+        if (this.elements.tabs.length <= 0) {
             return;
         }
 

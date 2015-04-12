@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/md-list-item';
+import LayoutRules from '../mixins/layout-rules';
 
-var MdListItemComponent = Ember.Component.extend({
+var MdListItemComponent = Ember.Component.extend(LayoutRules, {
 	layout: layout,
     tagName: 'md-list-item',
     classNameBindings: ['hasProxiedElement::md-no-proxy'],

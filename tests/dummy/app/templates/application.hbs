@@ -95,9 +95,9 @@
 <div layout="column" role="main" flex tabindex="-1">
     {{#md-toolbar}}
         <div class="md-toolbar-tools">
-            <button class="docs-menu-icon" hide-gt-sm aria-label="Toggle Menu" {{action 'toggleSidebar'}}>
+            {{#md-button class="md-icon-button" hide-gt-sm='' aria-label="Toggle Menu" action='toggleSidebar'}}
                 {{md-icon md-svg-src="images/icons/ic_menu_24px.svg"}}
-            </button>
+            {{/md-button}}
 
             <div class="fill-height" flex layout="row">
                 <h2 class="md-toolbar-item md-breadcrumb">
