@@ -2,62 +2,48 @@ import Ember from 'ember';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdSidenav = Ember.Component.extend(LayoutRules, {
-  tagName: 'md-sidenav',
+    tagName: 'md-sidenav',
 
-  mediaQueries: Ember.inject.service('media-queries'),
+    classNames: ['md-closed'],
+    classNameBindings: ['isLockedOpen:md-locked-open'],
 
-  classNames: ['md-closed'],
-  classNameBindings: ['mediaQueries.isGtSm:md-locked-open'],
+    isLockedOpen: null,
 
-  setupMediaQuery: Ember.on('didInsertElement', function() {
-    this.get('mediaQueries').match('gt-sm', '(min-width: 600px)');
-  }),
+    backdrop: Ember.computed('', function() {
+        return Ember.$('<md-backdrop class="md-sidenav-backdrop md-opaque">');
+    }),
 
-  backdrop: Ember.computed('', function() {
-    return Ember.$('<md-backdrop class="md-sidenav-backdrop md-opaque">');
-  }),
+    toggleSidebar: Ember.observer('sidebarVisible', function() {
 
-  isLocked: Ember.observer('mediaQueries.isGtSm', function() {
-    // how to animate?
-    if (this.get('mediaQueries.isGtSm')) {
-      this.$().addClass('md-locked-open');
-    } else {
-      this.$().removeClass('md-locked-open');
-    }
+        var sidebarVisible = this.get('sidebarVisible');
 
-  }),
+        var backdrop = this.get('backdrop');
 
-  toggleSidebar: Ember.observer('sidebarVisible', function() {
+        var closeBackdrop = (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
 
-    var sidebarVisible = this.get('sidebarVisible');
+            this.set('sidebarVisible', false);
+        };
 
-    var backdrop = this.get('backdrop');
+        backdrop[sidebarVisible ? 'on' : 'off']('click', closeBackdrop);
 
-    var closeBackdrop = (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
+        if (sidebarVisible) {
+            this.$().removeClass('md-closed');
+            this.get('parentView').$().prepend(backdrop);
+            backdrop.addClass('ng-enter');
+            backdrop.removeClass('ng-leave');
+        } else {
+            this.$().addClass('md-closed');
+            backdrop.removeClass('ng-enter');
+            backdrop.addClass('ng-leave');
 
-      this.set('sidebarVisible', false);
-    };
-
-    backdrop[sidebarVisible ? 'on' : 'off']('click', closeBackdrop);
-
-    if (sidebarVisible) {
-      this.$().removeClass('md-closed');
-      this.get('parentView').$().prepend(backdrop);
-      backdrop.addClass('ng-enter');
-      backdrop.removeClass('ng-leave');
-    } else {
-      this.$().addClass('md-closed');
-      backdrop.removeClass('ng-enter');
-      backdrop.addClass('ng-leave');
-
-      Ember.run.later(() => {
-        backdrop.remove();
-      }, 0.2 * 1000);
-      //backdrop.remove();
-    }
-  })
+            Ember.run.later(() => {
+                backdrop.remove();
+            }, 0.2 * 1000);
+            //backdrop.remove();
+        }
+    })
 
 
 });
