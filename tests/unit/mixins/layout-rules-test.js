@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import LayoutMixin from '../../../mixins/layout-rules';
+import LayoutMixin from 'ember-material-design/mixins/layout-rules';
 import { module, test } from 'qunit';
 
 module('LayoutRulesMixin');
