@@ -1,7 +1,7 @@
 html, body {
   height: 100%;
-  color: rgba(0, 0, 0, 0.87);
-  background: white;
+  color: $base-color;
+  background: $base-background-color;
   position: relative;
 }
 
@@ -23,8 +23,8 @@ button.md-no-style {
   background-color: inherit;
   text-align: left;
   border: none;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
 }
 
 select,
