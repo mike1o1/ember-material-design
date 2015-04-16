@@ -50,3 +50,15 @@ $primary: 'red';
 
 @import "ember-material-design";
 ```
+
+
+## Fonts
+
+By default, the `RobotoDraft` font is used from the Google Fonts api. To include this font, add the following line in the 
+`<head>` section of your index page.
+
+```html
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+```
+
+If you wish to use another font, overwrite the `$font-family` in a .scss file before your `@import "ember-material-design";`.
