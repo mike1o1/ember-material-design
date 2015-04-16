@@ -1,0 +1,32 @@
+/*
+ember-material-design
+
+card.styl
+
+Author: michael
+
+Created on 16/04/2015 by PhpStorm
+*/
+
+$card-margin = 8px
+$card-padding = 16px
+$card-box-shadow = $whiteframe-shadow-z1
+md-card
+  box-sizing: border-box
+  display: flex
+  flex-direction: column
+  margin: $card-margin
+  box-shadow: $card-box-shadow
+  > img,
+  > :not(md-card-content) img
+    order: 0
+    width: 100%
+  md-card-content
+    order: 1
+    padding: $card-padding
+  md-card-footer
+    order: 2
+    padding: $card-padding
+@media screen and (-ms-high-contrast: active)
+  md-card
+    border: 1px solid #fff

@@ -1,0 +1,126 @@
+/*
+ember-material-design
+
+input.styl
+
+Author: michael
+
+Created on 16/04/2015 by PhpStorm
+*/
+
+$input-container-padding = 2px
+$input-label-default-offset = 24px
+$input-label-default-scale = 1
+$input-label-float-offset = 4px
+$input-label-float-scale = 0.75
+$input-placeholder-offset = $input-label-default-offset
+$input-border-width-default = 1px
+$input-border-width-focused = 2px
+$input-line-height = 26px
+$input-padding-top = 2px
+$input-error-font-size = 12px
+$input-error-height = 24px
+md-input-container
+  display: flex
+  position: relative
+  flex-direction: column
+  overflow-x: hidden
+  padding: $input-container-padding
+  padding-bottom: ($input-container-padding + $input-error-height)
+  > md-icon
+    position: absolute
+    top: 5px
+    left: 2px
+    + input
+      margin-left: (28px * 2)
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="color"]
+    /* remove default appearance from all input/textarea */
+    -moz-appearance: none
+    -webkit-appearance: none
+  textarea
+    resize: none
+    overflow: hidden
+  textarea.md-input
+    min-height: (2 * $input-line-height + $input-border-width-focused + $input-padding-top)
+    -ms-flex-preferred-size: auto
+  label:not(.md-no-float),
+  .md-placeholder
+    order: 1
+    pointer-events: none
+    -webkit-font-smoothing: antialiased
+    padding-left: $input-container-padding
+    z-index: 1
+    transform: translate3d(0, $input-label-default-offset, 0) scale($input-label-default-scale)
+    transform-origin: left top
+    transition: transform $swift-ease-out-timing-function 0.25s
+  .md-placeholder
+    position: absolute
+    top: 0
+    opacity: 0
+    transition-property: opacity, transform
+    transform: translate3d(0, $input-placeholder-offset + $baseline-grid * 0.75, 0)
+  &.md-input-focused .md-placeholder
+    opacity: 1
+    transform: translate3d(0, $input-placeholder-offset, 0)
+  .md-input-has-value .md-placeholder
+    transition: none
+    opacity: 0
+  &:not(.md-input-has-value) input:not(:focus)
+    color: transparent
+  /*
+   * The .md-input class is added to the input/textarea
+   */
+  .md-input
+    flex: 1 1 auto
+    order: 2
+    display: block
+    background: none
+    padding-top: $input-padding-top
+    padding-bottom: ($input-border-width-focused - $input-border-width-default)
+    padding-left: 2px
+    padding-right: 2px
+    border-width: 0 0 $input-border-width-default 0
+    line-height: $input-line-height
+    -ms-flex-preferred-size: $input-line-height
+    border-radius: 0
+    &:focus
+      outline: none
+    &:invalid
+      outline: none
+      box-shadow: none
+  // TODO: validation messages
+  .md-char-counter
+    bottom: $input-container-padding
+    right: $input-container-padding
+  &.md-input-focused,
+  &.md-input-has-value
+    label:not(.md-no-float)
+      transform: translate3d(0, $input-label-float-offset, 0) scale($input-label-float-scale)
+  // TODO: replace with validation
+  &.md-input-focused .md-input,
+  .md-input.ng-invalid.ng-dirty
+    padding-bottom: 0px
+    border-width: 0 0 $input-border-width-focused 0
+  .md-input
+    &[disabled],
+    [disabled] &
+      background-position: 0 bottom
+      background-size: 3px 1px
+      background-repeat: repeat-x
+@media screen and (-ms-high-contrast: active)
+  md-input-container > md-icon
+    fill: #fff
