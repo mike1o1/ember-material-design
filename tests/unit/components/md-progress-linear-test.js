@@ -70,4 +70,67 @@ test('it should not set transition in query mode', function(assert) {
 
 });
 
+test('it should have min attribute', function(assert) {
+    let component = this.subject();
 
+    this.render();
+
+    assert.ok(component.$().attr('min'));
+});
+
+test('it should have max attribute', function(assert) {
+    let component = this.subject();
+
+    this.render();
+
+    assert.ok(component.$().attr('max'));
+});
+
+test('it should not have min or max attributes when min exceeds max', function(assert) {
+    assert.expect(3);
+    let component = this.subject(
+        {
+            min: 100,
+            max: 40
+        }
+    );
+
+    this.render();
+
+    assert.equal(component.$().attr('min'), undefined);
+    assert.equal(component.$().attr('max'), undefined);
+    assert.ok(component.get('invalidMinMax'));
+});
+
+test('it should not have invalidMinMax when min and max are valid', function(assert) {
+    let component = this.subject(
+        {
+            min: 0,
+            max: 100
+        }
+    );
+
+    this.render();
+
+    assert.equal(component.get('invalidMinMax'), false);
+});
+
+test('it should have indeterminate class when no value present', function(assert) {
+    let component = this.subject();
+
+    this.render();
+
+    assert.ok(component.$().hasClass('indeterminate'));
+});
+
+test('it should have determinate class when value is present', function(assert) {
+    let component = this.subject(
+        {
+            value: 50
+        }
+    );
+
+    this.render();
+
+    assert.ok(component.$().hasClass('determinate'));
+});
