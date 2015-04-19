@@ -30,6 +30,18 @@ export default BaseDemoController.extend({
         this.set('sourceFilesStaticTabs', sourceFiles);
     }),
 
+    setDynamicHeightContent: Ember.on('init', function() {
+        var demoName = 'tabs-dynamicHeight';
+
+        var sourceFiles = Ember.ArrayProxy.create({
+            content: Ember.A([
+                {name: 'hbs', content: demoName + '.hbs'}
+            ])
+        });
+
+        this.set('sourceFilesDynamicHeight', sourceFiles);
+    }),
+
     tabs: Ember.ArrayProxy.create({
         content: Ember.A([
             { title: 'One', content: "Tabs will become paginated if there isn't enough room for them."},
@@ -69,6 +81,10 @@ export default BaseDemoController.extend({
 
         showSourceStaticTabs: function() {
             this.toggleProperty('showSourceStaticTabs');
+        },
+
+        showSourceDynamicHeight: function() {
+            this.toggleProperty('showSourceDynamicHeight');
         },
 
         addTab: function() {

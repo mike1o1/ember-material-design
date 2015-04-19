@@ -32,7 +32,7 @@ md-tabs {
   overflow: hidden;
   position: relative;
   transition: height $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
-  &:not(.md-no-tab-content) {
+  &:not(.md-no-tab-content):not([md-dynamic-height]) {
     min-height: 200 + $tabs-header-height;
   }
   &[md-align-tabs="bottom"] {
@@ -43,14 +43,14 @@ md-tabs {
     md-tabs-content-wrapper {
       min-height: 0;
       position: relative;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
       overflow: visible;
     }
     md-tab-content {
-      &:not(.md-left):not(.md-right) {
+      &.md-active {
         position: relative;
       }
     }
@@ -68,6 +68,9 @@ md-tabs {
     md-tabs-wrapper {
       border-width: 0 0 1px;
       border-style: solid;
+      .md-tab {
+        padding-bottom: 11px;
+      }
     }
   }
 }

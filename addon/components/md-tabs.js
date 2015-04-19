@@ -15,7 +15,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
 
     constants: Ember.inject.service('constants'),
 
-    attributeBindings: ['selectedIndex', 'tabs', 'md-border-bottom', 'md-stretch-tabs'],
+    attributeBindings: ['md-border-bottom'],
 
     tabs: [],
 
@@ -26,10 +26,12 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
     hasContent: true,
     hasFocus: false,
     lastClick: false,
+    borderBottom: false,
     dynamicHeight: false,
     centerTabs: false,
     noPagination: false,
     selectedIndex: 0,
+
 
     setupTabs: Ember.on('init', function() {
         this.set('tabs', Ember.ArrayProxy.create({
