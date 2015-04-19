@@ -8,7 +8,7 @@ var MdButtonComponent = Ember.Component.extend(LayoutRules, RipplesMixin, {
 
     classNames: ['md-button'],
 
-    attributeBindings: ['disabled', 'href', 'type'],
+    attributeBindings: ['disabled', 'href', 'type', 'target'],
 
     setupRipples: Ember.on('didInsertElement', function() {
         if (this.get('mdNoInk')) {
