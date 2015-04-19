@@ -15,7 +15,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
 
     constants: Ember.inject.service('constants'),
 
-    attributeBindings: ['md-border-bottom'],
+    attributeBindings: ['md-border-bottom', 'md-align-tabs'],
 
     tabs: [],
 

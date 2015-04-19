@@ -180,7 +180,7 @@
 <div class="display-content sample">
 
 
-    {{#md-tabs selectedIndex=data.selectedIndex class="md-accent"}}
+    {{#md-tabs selectedIndex=data.selectedIndex class="md-accent" md-align-tabs=alignTabs}}
         {{#md-tabs-wrapper}}
             {{#md-tab id="tab1"}}
                 <md-tab-label>Item One</md-tab-label>
@@ -209,15 +209,12 @@
     {{/md-tabs}}
 
     <div class="after-tabs-area" layout="row" layout-sm="column" layout-margin layout-align="left center">
-        {{#md-input-container}}
-            <label for="selectedIndex">Selected Index</label>
-            {{md-input type="number" id="selectedIndex" value=data.selectedIndex}}
-        {{/md-input-container}}
-
-        <div flex></div>
-        <span>Item Two: </span>
         {{#md-checkbox checked=data.secondLocked aria-label="Disabled"}}
-            Disabled
+            Disable item two?
+        {{/md-checkbox}}
+
+        {{#md-checkbox checked=data.bottom}}
+            Align tabs to bottom?
         {{/md-checkbox}}
 
 
