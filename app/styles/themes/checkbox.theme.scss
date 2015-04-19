@@ -65,6 +65,10 @@ md-checkbox {
     &.md-checked .md-icon {
       background-color: color($foreground, "3");
     }
+
+    .md-label {
+      color: color($foreground, "3");
+    }
   }
 
 }
