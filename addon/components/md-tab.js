@@ -25,7 +25,8 @@ var MdTab = Ember.Component.extend(LayoutRules, {
             data = this.get('tabsComponent').insertTab({
                 index: index,
                 tabContent: this.getTemplate(),
-                label: this.getLabel()
+                label: this.getLabel(),
+                disabled: this.get('disabled')
             }, index);
 
         this.set('data', data);
@@ -66,7 +67,11 @@ var MdTab = Ember.Component.extend(LayoutRules, {
     getTemplate: function() {
         var content = this.$().find('md-tab-template');
         return content.length ? content.html() : this.get('label') ? this.$().html() : null;
-    }
+    },
+
+    getDisabled: Ember.observer('disabled', function() {
+        this.set('data.disabled', this.get('disabled'));
+    })
 
 
 });

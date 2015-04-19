@@ -81,7 +81,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         // TODO: make these components and have them auto register?
         var elements = {};
         elements.wrapper = this.$()[0].getElementsByTagName('md-tabs-wrapper')[0];
-        elements.canvas = elements.wrapper.getElementsByTagName('md-tab-canvas')[0];
+        elements.canvas = elements.wrapper.getElementsByTagName('md-tabs-canvas')[0];
         elements.paging = elements.canvas.getElementsByTagName('md-pagination-wrapper')[0];
         elements.tabs = elements.paging.getElementsByTagName('md-tab-item');
         elements.dummies = elements.canvas.getElementsByTagName('md-dummy-tab');
@@ -247,7 +247,6 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
 
         if (typeof tabData.tabContent !== 'string') {
             self.set('hasContent', false);
-
         }
 
         if (Ember.isPresent(index)) {

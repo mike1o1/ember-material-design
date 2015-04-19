@@ -9,8 +9,26 @@ export default BaseDemoController.extend({
             {name: 'controller', content: 'tabs-controller.js' }
         ];
 
+        var staticTabContent = [
+            {name: 'hbs', content: 'tabsStaticTabs.hbs'}
+        ];
+
         this.setSourceFiles(content);
+
     },
+
+    setStaticTabsContent: Ember.on('init', function() {
+        var demoName = 'tabs-StaticTabs';
+
+        var sourceFiles = Ember.ArrayProxy.create({
+            content: Ember.A([
+                {name: 'hbs', content: demoName + '.hbs'},
+                {name: 'controller', content: 'tabs-staticTabs-controller.js'}
+            ])
+        });
+
+        this.set('sourceFilesStaticTabs', sourceFiles);
+    }),
 
     tabs: Ember.ArrayProxy.create({
         content: Ember.A([
@@ -38,9 +56,19 @@ export default BaseDemoController.extend({
         return this.get('tabs').objectAt(this.get('selectedIndex'));
     }),
 
+    data: {
+        selectedIndex: 0,
+        secondLocked: true,
+        secondLabel: "Item Two"
+    },
+
     actions: {
         showSource: function() {
             this.toggleProperty('showSource');
+        },
+
+        showSourceStaticTabs: function() {
+            this.toggleProperty('showSourceStaticTabs');
         },
 
         addTab: function() {

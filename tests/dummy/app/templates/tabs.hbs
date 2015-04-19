@@ -88,6 +88,87 @@
                 </div>
             </demo-include>
         </section>
+
+        <section class="demo-container md-whiteframe-z1 {{showSourceClassStaticTabs}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Static Tabs</span>
+                    <span flex></span>
+                    {{#md-button action='showSourceStaticTabs' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFilesStaticTabs showSource=showSourceStaticTabs}}
+
+
+            <demo-include class="icondemoLoadSvgIconsFromUrl">
+
+                <div class="demo-content demoStaticTabs">
+{{! BEGIN-SNIPPET tabs-StaticTabs }}
+<div class="display-content sample">
+
+
+    {{#md-tabs selectedIndex=data.selectedIndex class="md-accent"}}
+        {{#md-tabs-wrapper}}
+            {{#md-tab id="tab1"}}
+                <md-tab-label>Item One</md-tab-label>
+            {{/md-tab}}
+            {{#md-tab id="tab2" disabled=data.secondLocked}}
+                <md-tab-label>{{data.secondLabel}}</md-tab-label>
+            {{/md-tab}}
+            {{#md-tab id="tab3"}}
+                <md-tab-label>Item Three</md-tab-label>
+            {{/md-tab}}
+        {{/md-tabs-wrapper}}
+        {{#md-tabs-content-wrapper}}
+            {{#md-tab-content}}
+                View for Item #1 <br/>
+                data.selectedIndex = 0;
+            {{/md-tab-content}}
+            {{#md-tab-content}}
+                View for Item #2 <br/>
+                data.selectedIndex = 1;
+            {{/md-tab-content}}
+            {{#md-tab-content}}
+                View for Item #3 <br/>
+                data.selectedIndex = 2;
+            {{/md-tab-content}}
+        {{/md-tabs-content-wrapper}}
+    {{/md-tabs}}
+
+    <div class="after-tabs-area" layout="row" layout-sm="column" layout-margin layout-align="left center">
+        {{#md-input-container}}
+            <label for="selectedIndex">Selected Index</label>
+            {{md-input type="number" id="selectedIndex" value=data.selectedIndex}}
+        {{/md-input-container}}
+
+        <div flex></div>
+        <span>Item Two: </span>
+        {{#md-checkbox checked=data.secondLocked aria-label="Disabled"}}
+            Disabled
+        {{/md-checkbox}}
+
+
+    </div>
+
+
+
+</div>
+{{! END-SNIPPET }}
+
+
+                </div>
+            </demo-include>
+        </section>
+
+
+
+
+
     </div>
 </div>
 

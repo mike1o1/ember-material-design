@@ -6,7 +6,7 @@ var MdTabItem = Ember.Component.extend(LayoutRules, {
 	layout: layout,
     tagName: 'md-tab-item',
 
-    attributeBindings: ['tab', 'role', 'disabled', 'label'],
+    attributeBindings: ['tab', 'role', 'label', 'style'],
     classNameBindings: ['isActive:md-active', 'isFocused:md-focus', 'isDisabled:md-disabled'],
 
     tabWrapperComponent: Ember.computed.alias('parentView'),
@@ -26,6 +26,10 @@ var MdTabItem = Ember.Component.extend(LayoutRules, {
 
     isFocused: Ember.computed('tabsComponent.selectedIndex', function() {
         return this.get('tab').hasFocus();
+    }),
+
+    isDisabled: Ember.computed('tab.disabled', function() {
+        return this.get('tab.disabled');
     })
 
 });
