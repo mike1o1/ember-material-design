@@ -1,0 +1,58 @@
+md-select {
+
+  &:not([disabled]):focus {
+    .md-select-label {
+      border-bottom-color: color($primary);
+      color: color($foreground, "1");
+      &.md-placeholder {
+        color: color($foreground, "1");
+      }
+    }
+
+    &.md-accent .md-select-label {
+      border-bottom-color: color($accent);
+    }
+
+    &.md-warn .md-select-label {
+      border-bottom-color: color($warn);
+    }
+  }
+  &[disabled] {
+    .md-select-label {
+      color: color($foreground, "3");
+      &.md-placeholder {
+        color: color($foreground, "3");
+      }
+    }
+  }
+  .md-select-label {
+    &.md-placeholder {
+      color: color($foreground, "2");
+    }
+    border-bottom-color: color($foreground, "4");
+  }
+}
+
+md-select-menu {
+  md-optgroup {
+    color: color($foreground, "2");
+    md-option {
+      color: color($foreground, "1");
+    }
+  }
+  md-option[selected] {
+    color: color($primary, "500");
+    &:focus {
+      color: color($primary, "600");
+    }
+    &.md-accent {
+      color: color($accent, "500");
+      &:focus {
+        color: color($accent, "600");
+      }
+    }
+  }
+  md-option:focus:not([selected]) {
+    background: color($background, "200");
+  }
+}

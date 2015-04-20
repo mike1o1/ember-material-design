@@ -33,6 +33,15 @@
   @return $map-str + '}';
 }
 
+@mixin bidi-style($prop, $value, $inverse-prop, $default-value) {
+  #{$prop}: $value;
+
+  html[dir=rtl] & {
+    #{$inverse-prop}: $value;
+    #{$prop}: $default-value;
+  }
+}
+
 @mixin pie-clearfix {
   &:after {
     content: '';

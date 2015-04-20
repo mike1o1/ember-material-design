@@ -1,0 +1,174 @@
+$select-option-height: 48px;
+$select-option-padding: 16px;
+$select-container-padding: 16px;
+$select-container-transition-duration: 350ms;
+
+$select-max-visible-options: 5;
+
+.md-select-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  opacity: 0;
+
+  &:not(.md-clickable) {
+    pointer-events: none;
+  }
+
+  md-progress-circular {
+    display: table;
+    margin: 3 * $baseline-grid auto !important;
+  }
+
+  &.md-active {
+    opacity: 1;
+    md-select-menu {
+      transition: transform $swift-ease-out;
+      transition-duration: 200ms;
+      > * {
+        opacity: 1;
+        transition: $swift-ease-in;
+        transition-duration: 200ms;
+        transition-delay: 100ms;
+      }
+    }
+  }
+
+  &.md-leave {
+    opacity: 0;
+    transition: $swift-ease-in;
+    transition-duration: 250ms;
+  }
+}
+
+md-input-container > md-select {
+  margin: 0;
+  margin-top: 1.4em;
+}
+
+md-select {
+  display: inline-block;
+  margin-top: 1.5em;
+  margin-bottom: 1.625em;
+  margin-left: 2px;
+  margin-right: 2px;
+  &:focus {
+    outline: none;
+  }
+  &[disabled]:hover {
+    cursor: default;
+  }
+  &:not([disabled]) {
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      .md-select-label {
+        border-bottom: 2px solid;
+        padding-bottom: $baseline-grid - 1;
+      }
+    }
+  }
+}
+
+.md-select-label {
+  display: flex;
+  align-items: center;
+  padding-top: $baseline-grid + 1;
+  padding-bottom: $baseline-grid;
+  border-bottom: 1px solid;
+  font-size: 1.6rem;
+  line-height: 0.8rem;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 8 * $baseline-grid;
+
+  *:first-child {
+    flex: 1;
+  }
+
+  .md-select-icon {
+    align-items: flex-end;
+    text-align: end;
+    width: 3 * $baseline-grid;
+    margin: 0 .5 * $baseline-grid;
+  }
+
+  .md-select-icon:after {
+    display: block;
+    content: '\25BC';
+    position: relative;
+    top: 2px;
+    speak: none;
+    transform: scaleY(0.6) scaleX(1);
+  }
+}
+
+md-select-menu {
+  display: flex;
+  flex-direction: column;
+  &.md-reverse {
+    flex-direction: column-reverse;
+  }
+
+  &:not(.md-overflow) {
+    md-content {
+      padding-top: $baseline-grid;
+      padding-bottom: $baseline-grid;
+    }
+  }
+
+  box-shadow: $whiteframe-shadow-z1;
+  max-height: ($select-option-height * $select-max-visible-options) + 2 * $baseline-grid;
+  overflow-y: hidden;
+
+  @include bidi-style(transform-origin, left top, transform-origin, right top);
+  transform: scale(1.0);
+
+  md-content {
+    min-width: 136px;
+    max-height: ($select-option-height * $select-max-visible-options) + 2 * $baseline-grid;
+    overflow-y: auto;
+  }
+
+  > * {
+    opacity: 0;
+  }
+}
+
+md-option {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: auto;
+
+  &:focus {
+    outline: none;
+  }
+
+  .md-text {
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.6rem;
+  }
+
+  padding: 0 $select-option-padding 0 $select-option-padding;
+  height: $select-option-height;
+}
+
+md-optgroup {
+  display: block;
+  label {
+    display: block;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    padding: $baseline-grid * 2 $baseline-grid;
+  }
+  md-option {
+    padding-left: $baseline-grid + $select-option-padding;
+  }
+}
