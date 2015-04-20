@@ -1,0 +1,72 @@
+/*
+ember-material-design
+
+toolbar.styl
+
+Author: michael
+
+Created on 16/04/2015 by PhpStorm
+*/
+$toolbar-tools-height = 64px
+$toolbar-height = 64px
+$toolbar-medium-tall-height = 88px
+$toolbar-tall-height = 128px
+$toolbar-indent-margin = 64px
+$toolbar-padding = 16px
+$icon-button-margin-offset = -0.8rem
+md-toolbar
+  box-sizing: border-box
+  display: flex
+  flex-direction: column
+  position: relative
+  z-index: 2
+  font-size: 2.0rem
+  min-height: ($baseline-grid * 8)
+  width: 100%
+  *,
+  *:before,
+  *:after
+    box-sizing: border-box
+  &.md-tall
+    height: $toolbar-tall-height
+    min-height: $toolbar-tall-height
+    max-height: $toolbar-tall-height
+  &.md-medium-tall
+    height: $toolbar-medium-tall-height
+    min-height: $toolbar-medium-tall-height
+    max-height: $toolbar-medium-tall-height
+    .md-toolbar-tools
+      height: 48px
+      min-height: 48px
+      max-height: 48px
+  .md-indent
+    margin-left: $toolbar-indent-margin
+.md-toolbar-tools
+  @extend .md-title
+  font-weight: 400
+  display: flex
+  align-items: center
+  flex-direction: row
+  width: 100%
+  height: $toolbar-tools-height
+  max-height: $toolbar-tools-height
+  padding: 0 $toolbar-padding
+  margin: 0
+  h2, h3
+    font-size: inherit
+    font-weight: inherit
+    margin: inherit
+  a
+    color: inherit
+    text-decoration: none
+  .fill-height
+    display: flex
+    align-items: center
+  .md-tools
+    margin-left: auto
+  .md-button:first-of-type
+    margin-left: $icon-button-margin-offset
+  .md-button:last-of-type:not(:first-of-type)
+    margin-right: $icon-button-margin-offset
+  @media screen and (-ms-high-contrast: active)
+  border-bottom: 1px solid #fff

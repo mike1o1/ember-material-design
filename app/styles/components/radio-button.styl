@@ -1,0 +1,76 @@
+/*
+ember-material-design
+
+radio-button.styl
+
+Author: michael
+
+Created on 16/04/2015 by PhpStorm
+*/
+$radio-width = 16px
+$radio-height = $radio-width
+md-radio-button,
+.md-switch-button
+  box-sizing: border-box
+  display: block
+  margin: 15px
+  white-space: nowrap
+  cursor: pointer
+  *,
+  *:before,
+  *:after
+    box-sizing: border-box
+  input
+    display: none
+  .md-container
+    position: relative
+    top: 4px
+    display: inline-block
+    width: $radio-width
+    height: $radio-width
+    cursor: pointer
+    .md-ripple-container
+      position: absolute
+      display: block
+      width: ($radio-width * 3)
+      height: ($radio-width * 3)
+      left: -1*$radio-width
+      top: -1*$radio-width
+  .md-off
+    position: absolute
+    top: 0px
+    left: 0px
+    width: $radio-width
+    height: $radio-width
+    border: solid 2px
+    border-radius: 50%
+    transition: border-color ease 0.28s
+  .md-on
+    position: absolute
+    top: 0px
+    left: 0px
+    width: $radio-width
+    height: $radio-width
+    border-radius: 50%
+    transition: transform ease 0.28s
+    transform: scale(0)
+  &.md-checked .md-on
+    transform: scale(0.5)
+  .md-label
+    position: relative
+    display: inline-block
+    margin-left: 10px
+    margin-right: 10px
+    vertical-align: middle
+    white-space: normal
+    pointer-events: none
+    width: auto
+  .circle
+    border-radius: 50%
+md-radio-group
+  border: 1px dotted transparent
+  display: block
+  outline: none
+@media screen and (-ms-high-contrast: active)
+  md-radio-button .md-on
+    background-color: #fff
