@@ -44,6 +44,7 @@ $icon-button-margin: 0.600rem !default;
   padding: $button-padding;
   margin: $button-margin;
   line-height: $button-line-height;
+  height: $button-line-height;
   background: transparent;
   white-space: nowrap;
 
@@ -130,10 +131,8 @@ $icon-button-margin: 0.600rem !default;
     background-clip: padding-box;
     overflow: hidden;
 
-    transform: translate3d(0, 0, 0);
-
     transition: 0.2s linear;
-    transition-property: transform, box-shadow;
+    transition-property: background-color, box-shadow;
 
     .md-ripple-container {
       border-radius: 50%;

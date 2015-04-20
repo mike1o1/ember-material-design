@@ -1,10 +1,14 @@
 $button-border-radius: 3px !default;
 $button-fab-border-radius: 50% !default;
 
+a.button,
 .md-button {
   border-radius: $button-border-radius;
 
   &:not([disabled]) {
+    &:hover {
+      background-color: rgba(color($background, "500"), 0.2);
+    }
     &:focus {
       background-color: rgba(color($background, "500"), 0.2);
     }
@@ -20,6 +24,9 @@ $button-fab-border-radius: 50% !default;
     }
 
     &:not([disabled]) {
+      &:hover {
+        background-color: color($accent);
+      }
       &:focus {
         background-color: color($accent, 'A700');
       }
@@ -38,9 +45,26 @@ $button-fab-border-radius: 50% !default;
       }
 
       &:not([disabled]) {
+        &:hover {
+          background-color: color($primary);
+        }
         &:focus {
           background-color: color($primary, "600");
         }
+      }
+    }
+  }
+
+  &.md-fab {
+    border-radius: $button-fab-border-radius;
+    background-color: color($accent);
+    color: color($accent, contrast);
+    &:not([disabled]) {
+      &:hover {
+        background-color: color($accent, "A700");
+      }
+      .md-focused {
+        background-color: color($accent, "A700");
       }
     }
   }
@@ -49,6 +73,9 @@ $button-fab-border-radius: 50% !default;
     color: color($background, contrast);
     background-color: color($background, "50");
     &:not([disabled]) {
+      &:hover {
+        background-color: color($background, "50");
+      }
       &:focus {
         background-color: color($background, "200");
       }
@@ -68,6 +95,9 @@ $button-fab-border-radius: 50% !default;
       }
 
       &:not([disabled]) {
+        &:hover {
+          background-color: color($warn);
+        }
         &:focus {
           background-color: color($warn, "700");
         }
@@ -88,6 +118,9 @@ $button-fab-border-radius: 50% !default;
       }
 
       &:not([disabled]) {
+        &:hover {
+          background-color: color($accent);
+        }
         &:focus {
           background-color: color($accent, "700");
         }
