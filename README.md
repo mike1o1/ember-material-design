@@ -22,7 +22,7 @@ Install the ember-cli addon into project
 $ ember install ember-material-design
 ```
 
-This project uses SASS for compiling spreadsheets. Import them into your styles.scss. 
+This project uses SASS for compiling stylesheets. Import them into your styles.scss. 
 
 ```sass
 @import "ember-material-design";
