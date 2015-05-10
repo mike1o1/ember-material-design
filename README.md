@@ -1,4 +1,5 @@
-
+![Build Status](https://travis-ci.org/mike1o1/ember-material-design.svg?branch=master)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-material-design.svg)](http://emberobserver.com/addons/ember-material-design)
 
 # Ember-material-design
 
