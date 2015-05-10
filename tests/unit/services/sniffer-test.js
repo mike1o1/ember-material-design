@@ -16,8 +16,9 @@ test('it exists', function(assert) {
 
 test('it should return the correct vendor prefix based on the browser', function(assert) {
     var expectedPrefix;
-    var ua = window.navigator.userAgent.toLowerCase();
 
+    var ua = window.navigator.userAgent.toLowerCase();
+    
     if (/chrome/i.test(ua) || /safari/i.test(ua) || /webkit/i.test(ua)) {
         expectedPrefix = 'Webkit';
     } else if (/firefox/i.test(ua)) {
@@ -29,7 +30,7 @@ test('it should return the correct vendor prefix based on the browser', function
     var service = this.subject();
     var vendorPrefix = service.get('vendorPrefix');
 
-    assert.equal(expectedPrefix, vendorPrefix);
+    assert.equal(expectedPrefix.toLowerCase(), vendorPrefix.toLowerCase());
 });
 
 test('it should work with older version of webkit', function(assert) {

@@ -15,6 +15,7 @@ moduleForComponent('md-tabs', {
       'component:md-tab-content',
       'component:md-tabs-content-wrapper',
       'component:md-tabs-wrapper',
+      'component:md-icon',
       'service:media-queries',
       'service:sniffer',
       'service:ripple',
@@ -63,7 +64,7 @@ var twoTabTemplate = Ember.HTMLBars.compile(
   '{{/md-tabs-content-wrapper}}');
 
 test('it renders', function(assert) {
-  assert.expect(2); 
+  assert.expect(2);
 
 
 
