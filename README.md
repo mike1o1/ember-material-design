@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/mike1o1/ember-material-design.svg?branch=master)](https://travis-ci.org/mike1o1/ember-material-design)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-material-design.svg)](http://emberobserver.com/addons/ember-material-design)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/ember_md.svg?auth=4224566d3e5343c119fbee3ab24f34c7)](https://saucelabs.com/u/ember_md)
+
 
 # Ember-material-design
 
