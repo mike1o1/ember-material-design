@@ -1,11 +1,124 @@
 {
   "framework": "qunit",
-  "test_page": "tests/index.html?hidepassed",
+  "host": "lvh.me",
+  "test_page": "tests/index.html?hidepassed&coverage",
   "launch_in_ci": [
-    "PhantomJS"
+    "PhantomJS",
+    "SL_internet_explorer_9_Windows_7",
+    "SL_internet_explorer_10_Windows_7",
+    "SL_internet_explorer_11_Windows_8.1",
+    "SL_firefox",
+    "SL_chrome",
+    "SL_safari",
+    "SL_iPhone_82",
+    "SL_android_51"
   ],
   "launch_in_dev": [
     "PhantomJS",
-    "Chrome"
-  ]
+    "Chrome",
+    "Firefox",
+    "Safari"
+  ],
+  "parallel": 4,
+  "launchers": {
+    "SL_chrome": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "chrome",
+        "-p",
+        "Windows 8.1",
+        "--at",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    },
+    "SL_safari": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "safari",
+        "-v",
+        "8",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    },
+    "SL_internet_explorer_10_Windows_7": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "internet explorer",
+        "-v",
+        "10",
+        "-p",
+        "Windows 7",
+        "--at",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    },
+    "SL_internet_explorer_11_Windows_8.1": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "internet explorer",
+        "-v",
+        "11",
+        "-p",
+        "Windows 8.1",
+        "--at",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    },
+    "SL_firefox": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "firefox",
+        "--at",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    },
+    "SL_iPhone_82": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "iphone",
+        "-v",
+        "8.2",
+        "-p",
+        "OS X 10.10",
+        "-dn",
+        "iPhone Simulator",
+        "--at",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    },
+    "SL_android_51": {
+      "exe": "./node_modules/.bin/ember-cli-sauce",
+      "args": [
+        "-b",
+        "android",
+        "-v",
+        "5.1",
+        "-p",
+        "Linux",
+        "-dn",
+        "Android Emulator",
+        "--no-ct",
+        "--u"
+      ],
+      "protocol": "browser"
+    }
+  }
 }
