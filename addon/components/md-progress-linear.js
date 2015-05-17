@@ -13,8 +13,13 @@ var MdProgressLinear = Ember.Component.extend(LayoutRules, {
 
     isInserted: false,
 
-    didInsertElement: function() {
-        this._super();
+    init() {
+        this._super(...arguments);
+        this.setupTransforms();
+    },
+
+    didInsertElement() {
+        this._super(...arguments);
 
         this.set('isInserted', true);
         this.$('.md-container').addClass('md-ready');
@@ -28,12 +33,12 @@ var MdProgressLinear = Ember.Component.extend(LayoutRules, {
 
     transforms: new Array(101),
 
-    setupTransforms: Ember.on('init', function() {
+    setupTransforms() {
         for (var i = 0; i < 101; i++) {
             this.transforms[i] = makeTransform(i);
         }
 
-    }),
+    },
 
     bar1Style: Ember.computed('clampedBufferValue', function() {
         return Ember.String.htmlSafe(this.get('constants.CSS.TRANSFORM') + ': ' + this.transforms[this.get('clampedBufferValue')]);

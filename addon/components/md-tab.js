@@ -18,7 +18,17 @@ var MdTab = Ember.Component.extend(LayoutRules, {
 
     data: null,
 
-    setupComponent: Ember.on('didInsertElement', function() {
+    didInsertElement() {
+        this._super(...arguments);
+        this.setupComponent();
+    },
+
+    willDestroyElement() {
+        this._super(...arguments);
+        this.removeTab();
+    },
+
+    setupComponent() {
 
         var tabs = this.$().parent()[0].getElementsByTagName('md-tab'),
             index = Array.prototype.indexOf.call(tabs, this.$()[0]),
@@ -30,11 +40,11 @@ var MdTab = Ember.Component.extend(LayoutRules, {
             }, index);
 
         this.set('data', data);
-    }),
+    },
 
-    removeTab: Ember.on('willDestroyElement', function() {
+    removeTab() {
         this.get('tabsComponent').removeTab(this.get('data'));
-    }),
+    },
 
     setActive: Ember.observer('active', function() {
         if (this.get('active')) {
@@ -47,7 +57,7 @@ var MdTab = Ember.Component.extend(LayoutRules, {
         this.get('tabsComponent').updateInkBarStyles();
     }),
 
-    getLabel: function() {
+    getLabel() {
 
         // if label provided, then send label
         if (this.get('label')) {
@@ -64,7 +74,7 @@ var MdTab = Ember.Component.extend(LayoutRules, {
         return 'Missing Label';
     },
 
-    getTemplate: function() {
+    getTemplate() {
         var content = this.$().find('md-tab-template');
         return content.length ? content.html() : this.get('label') ? this.$().html() : null;
     },

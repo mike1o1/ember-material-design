@@ -10,6 +10,11 @@ var MdIcon = Ember.Component.extend(LayoutRules, {
 
     attributeBindings: ['style'],
 
+    didInsertElement() {
+        this._super(...arguments);
+        this.setupIcon();
+    },
+
     iconName: Ember.computed('md-svg-icon', 'md-svg-src', function() {
         return this.get('md-svg-icon') || this.get('md-svg-src') || '';
     }),
@@ -34,11 +39,11 @@ var MdIcon = Ember.Component.extend(LayoutRules, {
         }
     }),
 
-    setupIcon: Ember.on('didInsertElement', function() {
+    setupIcon() {
         if (!this.get('mdFontIcon')) {
             this.loadIcon();
         }
-    })
+    }
 
 });
 

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import RippleMixin from '../mixins/ripples';
 import layout from '../templates/components/md-checkbox';
 import LayoutRules from '../mixins/layout-rules';
+import setupRipples from '../utils/setup-ripples';
 
 
 var MdCheckbox = Ember.Component.extend(LayoutRules, RippleMixin, {
@@ -13,22 +14,18 @@ var MdCheckbox = Ember.Component.extend(LayoutRules, RippleMixin, {
 
     attributeBindings: ['isDisabled:disabled', 'aria-label', 'mdNoInk', 'tabindex'],
     tabindex: 0,
+    checked: false,
+
+    didInsertElement() {
+        this._super(...arguments);
+        setupRipples(this, this.$('.md-container'));
+    },
 
     isDisabled: Ember.computed('disabled', function() {
         return this.get('disabled') ? 'disabled' : null;
     }),
 
-    setupRipples: Ember.on('didInsertElement', function() {
-        if (this.get('mdNoInk')) {
-            return;
-        }
-        this.get('rippleService').attachCheckboxBehavior(this.$('.md-container'));
-
-    }),
-
-    checked: false,
-
-    click: function() {
+    click() {
         if (this.get('disabled')) {
             return;
         }
@@ -36,7 +33,7 @@ var MdCheckbox = Ember.Component.extend(LayoutRules, RippleMixin, {
         this.toggleProperty('checked');
     },
 
-    keyPress: function(event) {
+    keyPress(event) {
         if (event.which === this.get('constants.KEYCODE.SPACE') || event.which === this.get('constants.KEYCODE.ENTER')) {
             this.click();
         }

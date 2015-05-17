@@ -22,12 +22,17 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
 
     visible: false,
 
-    rootElement: Ember.computed('', function() {
+    didInsertElement() {
+        this._super(...arguments);
+        this.setupComponent();
+    },
+
+    rootElement: Ember.computed(function() {
         var re = this.container.lookup('application:main').get('rootElement');
         return Ember.$(re);
     }),
 
-    bindEvents: function() {
+    bindEvents() {
         var parent = this.get('parent');
 
         parent.on('focus mouseenter touchstart', () => {
@@ -52,11 +57,9 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
         tooltipParent.append(this.$());
 
         this.positionTooltip();
-
-
     }),
 
-    setupComponent: Ember.on('didInsertElement', function() {
+    setupComponent() {
 
         this.parent = this.getParentWithPointerEvents();
         this.background = Ember.$(this.$()[0].getElementsByClassName('md-background')[0]);
@@ -64,14 +67,10 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
         this.current = this.getNearestContentElement();
         this.tooltipParent = Ember.$(this.current || document.body);
 
-        Ember.run.schedule('afterRender', this, function() {
-            this.bindEvents();
-        });
+        Ember.run.schedule('afterRender', () => this.bindEvents());
+    },
 
-
-    }),
-
-    getParentWithPointerEvents: function() {
+    getParentWithPointerEvents() {
         var parent = this.$().parent();
         while (window.getComputedStyle(parent[0])['pointer-events'] === 'none') {
             parent = parent.parent();
@@ -80,7 +79,7 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
         return parent;
     },
 
-    getNearestContentElement: function() {
+    getNearestContentElement() {
         var current = this.$().parent()[0];
         // Look for nearest parent md-content, stopping at the root element
         while (current && current !== this.get('rootElement')[0] && current !== document.body) {
@@ -93,12 +92,12 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
         return current;
     },
 
-    setVisible: function(value) {
+    setVisible(value) {
         this.setVisible.value = !!value;
         if (!this.setVisible.queued) {
             if (value) {
                 this.setVisible.queued = true;
-                Ember.run.later(this, function() {
+                Ember.run.later(() => {
                     this.set('visible', this.setVisible.value);
                     this.setVisible.queued = false;
                 }, this.get('delay'));
@@ -108,7 +107,7 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
         }
     },
 
-    positionTooltip: function() {
+    positionTooltip() {
 
         var direction = this.get('direction');
         var background = this.get('background');

@@ -8,7 +8,12 @@ var MdListItemComponent = Ember.Component.extend(LayoutRules, {
     classNameBindings: ['hasProxiedElement::md-no-proxy'],
     hasProxiedElement: false,
 
-    setupComponent: Ember.on('didInsertElement', function() {
+    didInsertElement() {
+        this._super(...arguments);
+        this.setupComponent();
+    },
+
+    setupComponent() {
 
         var proxiedTypes = ['md-checkbox', 'md-switch'],
             proxyElement;
@@ -28,7 +33,7 @@ var MdListItemComponent = Ember.Component.extend(LayoutRules, {
             this.wrapIn('button');
         }
 
-    }),
+    },
 
     wrapIn: function(type) {
         var container;

@@ -16,14 +16,16 @@ var MdTabContent = Ember.Component.extend(LayoutRules, {
 
     index: null,
 
-    setupTabContent: Ember.on('didInsertElement', function() {
+    didInsertElement() {
+        this._super(...arguments);
+        this.setupTabContent();
+    },
 
+    setupTabContent() {
         var tabs = this.$().parent()[0].getElementsByTagName('md-tab-content'),
             index = Array.prototype.indexOf.call(tabs, this.$()[0]);
-
         this.set('index', index);
-
-    }),
+    },
 
     recalculateTabIndex: Ember.observer('tabs.[]', function() {
 

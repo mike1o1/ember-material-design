@@ -14,7 +14,17 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, {
 
     originalPlaceholder: '',
 
-    setupPlaceholder: Ember.on('willInsertElement', function() {
+    willDestroyElement() {
+        this._super(...arguments);
+        this.resetContainer();
+    },
+
+    willInsertElement() {
+        this._super(...arguments);
+        this.setupPlaceholder();
+    },
+
+    setupPlaceholder() {
 
         this.set('originalPlaceholder', this.get('placeholder'));
 
@@ -37,11 +47,12 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, {
 
         this.processInput();
 
-    }),
+    },
 
-    resetContainer: Ember.on('willDestroyElement', function() {
+
+    resetContainer() {
         this.get('inputContainer').set('isFocused', false);
-    }),
+    },
 
     setFocused: Ember.on('focusIn', 'focusOut', function(ev) {
         var focused = ev.type === 'focusin';

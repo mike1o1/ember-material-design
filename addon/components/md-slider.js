@@ -19,7 +19,7 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
     step: 1,
     tabindex: 0,
 
-    trackContainer: Ember.computed('', function() {
+    trackContainer: Ember.computed(function() {
         var element = this.$()[0];
 
         return this.$(element.querySelector('.md-track-container'));
@@ -35,53 +35,53 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
         return Ember.String.htmlSafe("left: " + (percent * 100) + "%");
     }),
 
-    isMinimum: Ember.computed('percent', function() {
-        return this.get('percent') === 0;
+    isMinimum: Ember.computed('percent', 'min', function() {
+        return this.get('percent') === this.get('min');
     }),
 
-    percent: Ember.computed('value', function() {
-        var min = parseInt(this.get('min'));
-        var max = parseInt(this.get('max'));
+    percent: Ember.computed('value','min', 'max', function() {
+        var min = parseInt(this.get('min'), 10);
+        var max = parseInt(this.get('max'), 10);
 
         return (this.get('value') - min) / (max - min);
     }),
 
-    positionToPercent: function(x) {
+    positionToPercent(x) {
         return Math.max(0, Math.min(1, (x - this.get('sliderDimensions.left')) / this.get('sliderDimensions.width')));
     },
 
-    percentToValue: function(x) {
-        var min = parseInt(this.get('min'));
-        var max = parseInt(this.get('max'));
+    percentToValue(x) {
+        var min = parseInt(this.get('min'), 10);
+        var max = parseInt(this.get('max'), 10);
         return (min + x * (max - min));
     },
 
-    minMaxValidator: function(value) {
-        var min = parseInt(this.get('min'));
-        var max = parseInt(this.get('max'));
+    minMaxValidator(value) {
+        var min = parseInt(this.get('min'), 10);
+        var max = parseInt(this.get('max'), 10);
         return Math.max(min, Math.min(max, value));
     },
 
-    stepValidator: function(value) {
-        var step = parseInt(this.get('step'));
+    stepValidator(value) {
+        var step = parseInt(this.get('step'), 10);
         return Math.round(value / step) * step;
     },
 
     active: false,
     dragging: false,
 
-    sliderDimensions: Ember.computed('', function() {
+    sliderDimensions: Ember.computed(function() {
         return this.get('trackContainer')[0].getBoundingClientRect();
     }),
 
-    setValueFromEvent: function(event) {
+    setValueFromEvent(event) {
         var exactVal = this.percentToValue(this.positionToPercent(event.clientX || event.originalEvent.touches[0].clientX));
         var closestVal = this.minMaxValidator( this.stepValidator(exactVal));
 
         this.set('value', closestVal);
     },
 
-    start: function(event) {
+    start(event) {
         if (this.get('disabled')) {
             return;
         }
@@ -95,7 +95,7 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
         this.setValueFromEvent(event);
     },
 
-    end: function(event) {
+    end(event) {
         if (this.get('disabled')) {
             return;
         }
@@ -108,7 +108,7 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
         this.endPropertyChanges();
     },
 
-    move: function(event) {
+    move(event) {
         if (this.get('disabled') || !this.get('dragging')) {
             return;
         }
@@ -119,7 +119,7 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
 
     },
 
-    keyDown: function(event) {
+    keyDown(event) {
         if (this.get('disabled')) {
             return;
         }

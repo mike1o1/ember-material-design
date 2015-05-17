@@ -12,11 +12,12 @@ var MdTabItem = Ember.Component.extend(LayoutRules, {
     tabWrapperComponent: Ember.computed.alias('parentView'),
     tabsComponent: Ember.computed.alias('tabWrapperComponent.parentView'),
 
-    setupRipples: Ember.on('didInsertElement', function() {
+    didInsertElement() {
+        this._super(...arguments);
         this.get('tabsComponent').attachRipple(this.$());
-    }),
+    },
 
-    click: function() {
+    click() {
         this.get('tabsComponent').select(this.get('tab').getIndex());
     },
 

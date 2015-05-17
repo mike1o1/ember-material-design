@@ -9,7 +9,7 @@ var MdSidenav = Ember.Component.extend(LayoutRules, {
 
     isLockedOpen: null,
 
-    backdrop: Ember.computed('', function() {
+    backdrop: Ember.computed(function() {
         return Ember.$('<md-backdrop class="md-sidenav-backdrop md-opaque">');
     }),
 

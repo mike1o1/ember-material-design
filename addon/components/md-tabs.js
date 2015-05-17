@@ -33,38 +33,54 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
     selectedIndex: 0,
 
 
-    setupTabs: Ember.on('init', function() {
+    init() {
+        this._super(...arguments);
+        this.setupTabs();
+    },
+
+    didInsertElement() {
+        this._super(...arguments);
+        this.setupComponent();
+        this.setupWindowResize();
+        this.getElements();
+    },
+
+    willDestroyElement() {
+        this._super(...arguments);
+        this.removeWindowResize();
+    },
+
+    setupTabs() {
         this.set('tabs', Ember.ArrayProxy.create({
             content: Ember.A([])
         }));
-    }),
+    },
 
     tabElements: {},
 
 
-    setupComponent: Ember.on('didInsertElement', function() {
+    setupComponent() {
         this.set('tabs.content', this.get('tabs').sortBy('index'));
-        Ember.run.schedule('afterRender', this, function() {
+        Ember.run.schedule('afterRender', () => {
             this.calculatePagination();
             this.select(this.get('selectedIndex'));
             this.set('offsetLeft', this.get('offsetLeft'));
             this.updateInkBarStyles();
             this.updateHeightFromContent();
         });
-    }),
+    },
 
-    setupWindowResize: Ember.on('didInsertElement', function() {
-        var self = this;
-        Ember.$(window).on('resize', function() {
-            Ember.run.schedule('sync', self, function() {
-                self.handleWindowResize();
+    setupWindowResize() {
+        Ember.$(window).on('resize', () => {
+            Ember.run.schedule('sync', () => {
+                this.handleWindowResize();
             });
         });
-    }),
+    },
 
-    removeWindowResize: Ember.on('willDestroyElement', function() {
+    removeWindowResize() {
         Ember.$(window).off('resize');
-    }),
+    },
 
     handleWindowResize: Ember.on('resize', function() {
         // recalculate pagination
@@ -76,7 +92,11 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.updateHeightFromContent();
     }),
 
-    getElements: Ember.on('didInsertElement', Ember.observer('tabs.[]', function() {
+    getElementsObserver: Ember.observer('tabs.[]', function () {
+        this.getElements();
+    }),
+
+    getElements() {
         if (!this.$()) {
             return;
         }
@@ -94,9 +114,9 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         elements.contents = elements.contentsWrapper.getElementsByTagName('md-tab-content');
 
         this.elements = elements;
-    })),
+    },
 
-    keyDown: function(event) {
+    keyDown(event) {
         switch (event.keyCode) {
             case this.get('constants.KEYCODE.LEFT_ARROW'):
                 event.preventDefault();
@@ -115,7 +135,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.set('lastClick', false);
     },
 
-    incrementSelectedIndex: function(inc, focus) {
+    incrementSelectedIndex(inc, focus) {
         var newIndex,
             index = focus ? this.get('focusIndex') : this.get('selectedIndex');
         for (newIndex = index + inc;
@@ -150,7 +170,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.elements.dummies[this.get('focusIndex')].focus();
     }),
 
-    adjustOffset: function() {
+    adjustOffset() {
         if (this.get('shouldCenterTabs')) {
             return;
         }
@@ -174,7 +194,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         return Ember.String.htmlSafe(newValue);
     }),
 
-    attachRipple: function(element) {
+    attachRipple(element) {
 
         if (!this.elements) {
             return;
@@ -207,11 +227,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
             return false;
         }
         var canvasWidth = this.$().prop('clientWidth');
-        Ember.EnumerableUtils.forEach(this.elements.tabs, function(tab) {
-            canvasWidth -= tab.offsetWidth;
-        });
-
-
+        Ember.EnumerableUtils.forEach(this.elements.tabs, tab => canvasWidth -= tab.offsetWidth);
 
         var shouldPaginate = canvasWidth < 0;
 
@@ -226,22 +242,22 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
 
     shouldPaginate: false,
 
-    insertTab: function(tabData, index) {
+    insertTab(tabData, index) {
         var self = this;
         var proto = {
-                getIndex: function() {
+                getIndex() {
                     return self.get('tabs').indexOf(tab);
                 },
-                isActive: function() {
+                isActive() {
                     return this.getIndex() === self.get('selectedIndex');
                 },
-                isLeft: function() {
+                isLeft() {
                     return this.getIndex() < self.get('selectedIndex');
                 },
-                isRight: function() {
+                isRight() {
                     return this.getIndex() > self.get('selectedIndex');
                 },
-                hasFocus: function() {
+                hasFocus() {
                     return !self.get('lastClick') && self.get('hasFocus') && this.getIndex() === self.get('focusIndex');
                 }
             },
@@ -264,7 +280,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
             this.get('tabs').addObject(tab);
         }
 
-        Ember.run.schedule('afterRender', this, function() {
+        Ember.run.schedule('afterRender', () => {
             if (!this.elements) {
             } else {
                 this.updateInkBarStyles();
@@ -274,7 +290,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         return tab;
     },
 
-    removeTab: function(tabData) {
+    removeTab(tabData) {
         this.get('tabs').removeAt(tabData.getIndex());
         this.refreshIndex();
 
@@ -282,7 +298,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         Ember.run.schedule('afterRender', this, this.updateInkBarStyles);
     },
 
-    select: function(index) {
+    select(index) {
         this.beginPropertyChanges();
         this.set('focusIndex', index);
         this.set('selectedIndex', index);
@@ -290,7 +306,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.endPropertyChanges();
     },
 
-    scroll: function(event) {
+    scroll(event) {
         if (!this.get('shouldPaginate')) {
             return;
         }
@@ -300,7 +316,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.set('offsetLeft', this.fixOffset(this.get('offsetLeft') - event.wheelDelta));
     },
 
-    fixOffset: function(value) {
+    fixOffset(value) {
         var lastTab = this.elements.tabs[this.elements.tabs.length - 1],
             totalWidth = lastTab.offsetLeft + lastTab.offsetWidth;
 
@@ -325,7 +341,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         return lastTab && lastTab.offsetLeft + lastTab.offsetWidth > this.elements.canvas.clientWidth + this.get('offsetLeft');
     }),
 
-    refreshIndex: function() {
+    refreshIndex() {
         this.set('selectedIndex', this.getNearestSafeIndex(this.get('selectedIndex')));
         this.set('focusIndex', this.getNearestSafeIndex(this.get('focusIndex')));
     },
@@ -337,7 +353,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.set('lastSelectedIndex', this.get('selectedIndex'));
     }),
 
-    updateHeightFromContent: function() {
+    updateHeightFromContent() {
         if (!this.get('dynamicHeight')) {
             return this.$().css('height', '');
         }
@@ -350,7 +366,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.$().css('height', newHeight + 'px');
     },
 
-    updateInkBarStyles: function() {
+    updateInkBarStyles() {
         if (this.elements.tabs.length <= 0) {
             return;
         }
@@ -365,7 +381,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         Ember.$(this.elements.inkBar).css({left: left + 'px', right: right + 'px'});
     },
 
-    updateInkBarClassName: function() {
+    updateInkBarClassName() {
         var newIndex = this.get('selectedIndex'),
             oldIndex = this.get('lastSelectedIndex'),
             ink = Ember.$(this.elements.inkBar);
@@ -382,7 +398,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         }
     },
 
-    getNearestSafeIndex: function(newIndex) {
+    getNearestSafeIndex(newIndex) {
         var maxOffset = Math.max(this.get('tabs.length') - newIndex, newIndex),
             i, tab;
 
@@ -401,7 +417,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
     },
 
     actions: {
-        nextPage: function() {
+        nextPage() {
             var viewportWidth = this.elements.canvas.clientWidth,
                 totalWidth = viewportWidth + this.get('offsetLeft'),
                 i, tab;
@@ -415,7 +431,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
             this.set('offsetLeft', this.fixOffset(tab.offsetLeft));
         },
 
-        previousPage: function() {
+        previousPage() {
             var i, tab;
             for (i = 0; i < this.elements.tabs.length; i++) {
                 tab = this.elements.tabs[i];
