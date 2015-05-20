@@ -93,7 +93,7 @@ var RippleService = Ember.Service.extend({
         this.attachTabBehavior(element);
     },
 
-    attachButtonBehavior: function(element, options) {
+    attachButtonBehavior(element, options) {
         return this.attach(element, $.extend({
             fullRipple: true,
             isMenuItem: element.hasClass('md-menu-item'),
@@ -102,7 +102,7 @@ var RippleService = Ember.Service.extend({
         }, options));
     },
 
-    attachCheckboxBehavior: function(element, options) {
+    attachCheckboxBehavior(element, options) {
         return this.attach(element, Ember.merge({
             center: true,
             dimBackground: false,
@@ -110,7 +110,7 @@ var RippleService = Ember.Service.extend({
         }, options));
     },
 
-    attachTabBehavior: function(element, options) {
+    attachTabBehavior(element, options) {
         return this.attach(element, Ember.merge({
             center: false,
             dimBackground: true,
@@ -119,7 +119,7 @@ var RippleService = Ember.Service.extend({
         }, options));
     },
 
-    attach: function(element, options) {
+    attach(element, options) {
 
         // check if element has md-no-ink attribute
         if (element[0].hasAttribute('mdNoInk')) {
@@ -174,7 +174,7 @@ var RippleService = Ember.Service.extend({
                 return container;
             }
 
-            container = $('<div class="md-ripple-container">');
+            container = Ember.$('<div class="md-ripple-container">');
             element.append(container);
             element.data('$mdRippleContainer', container);
             return container;
@@ -273,7 +273,7 @@ var RippleService = Ember.Service.extend({
              * @returns {*|jQuery|HTMLElement} the generated ripple element
              */
             function getRippleElement(css) {
-                var elem = $('<div class="md-ripple" data-counter="' + counter++ + '">');
+                var elem = Ember.$('<div class="md-ripple" data-counter="' + counter++ + '">');
                 ripples.unshift(elem);
                 states.unshift({animating: true});
                 container.append(elem);

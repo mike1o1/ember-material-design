@@ -68,7 +68,7 @@ var IconService = Ember.Service.extend({
   iconCache: {},
   templateCache: {},
 
-  preloadIcons: function() {
+  preloadIcons() {
 
     var svgRegistry = [{
       id: 'tabs-arrow',
@@ -100,12 +100,12 @@ var IconService = Ember.Service.extend({
 
   },
 
-  init: function() {
-    this._super();
+  init() {
+    this._super(...arguments);
     this.preloadIcons();
   },
 
-  getIcon: function(id) {
+  getIcon(id) {
     id = id || '';
 
 
@@ -130,7 +130,7 @@ var IconService = Ember.Service.extend({
       .then(this.cacheIcon(id));
   },
 
-  icon: function(id, url, iconSize) {
+  icon(id, url, iconSize) {
     if (id.indexOf(':') == -1) {
       id = '$default:' + id;
     }
@@ -141,14 +141,14 @@ var IconService = Ember.Service.extend({
     };
   },
 
-  iconSet: function(id, url, iconSize) {
+  iconSet(id, url, iconSize) {
     config[id] = {
       url: url,
       iconSize: iconSize || config.defaultIconSize
     };
   },
 
-  defaultIconSet: function(url, iconSize) {
+  defaultIconSet(url, iconSize) {
     var setName = '$default';
 
     if (!config[setName]) {
@@ -159,15 +159,15 @@ var IconService = Ember.Service.extend({
     }
   },
 
-  loadByID: function(id) {
+  loadByID(id) {
     var iconConfig = config[id];
 
-    return !iconConfig ? Ember.RSVP.Promise.reject(id) : this.loadByURL(iconConfig.url).then(function(icon) {
+    return !iconConfig ? Ember.RSVP.Promise.reject(id) : this.loadByURL(iconConfig.url).then(icon => {
       return new Icon(icon, iconConfig);
     });
   },
 
-  loadFromIconSet: function(id) {
+  loadFromIconSet(id) {
     var setName = id.substring(0, id.lastIndexOf(':')) || '$default';
     var iconSetConfig = config[setName];
 
@@ -180,7 +180,7 @@ var IconService = Ember.Service.extend({
     }
   },
 
-  loadByURL: function(url) {
+  loadByURL(url) {
 
     // first check templateCache
 
@@ -195,7 +195,7 @@ var IconService = Ember.Service.extend({
     }
 
     return req
-      .then(function(response) {
+      .then(response => {
         // if its an actual ajax request, just get the response text
         if (response.jqXHR) {
           response = response.jqXHR.responseText;
@@ -210,28 +210,28 @@ var IconService = Ember.Service.extend({
       });
   },
 
-  announceIdNotFound: function(id) {
+  announceIdNotFound(id) {
     var msg;
 
     if (typeof id === 'string') {
       msg = 'icon ' + id + ' not found';
-      console.log(msg);
+      Ember.Logger.log(msg);
     }
 
     return Ember.RSVP.Promise.reject(msg || id);
   },
 
-  announceNotFound: function(err) {
+  announceNotFound(err) {
     var msg = (typeof err === 'string') ? err : (err.message || err.data || err.statusText);
-    
+
     return Ember.RSVP.Promise.reject(msg);
   },
 
-  isIcon: function(target) {
+  isIcon(target) {
     return (typeof target.element !== 'undefined') && (typeof target.config !== 'undefined');
   },
 
-  cacheIcon: function(id) {
+  cacheIcon(id) {
     var self = this;
     return function updateCache(icon) {
       self.iconCache[id] = self.isIcon(icon) ? icon : new Icon(icon, config[id]);

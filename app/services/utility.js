@@ -6,7 +6,7 @@ function getNode(el) {
 
 var UtilityService = Ember.Service.extend({
 
-    clientRect: function(element, offsetParent, isOffsetRect) {
+    clientRect(element, offsetParent, isOffsetRect) {
         var node = getNode(element);
         offsetParent = getNode(offsetParent || node.offsetParent || document.body);
         var nodeRect = node.getBoundingClientRect();
@@ -23,7 +23,7 @@ var UtilityService = Ember.Service.extend({
         };
     },
 
-    offsetRect: function(element, offsetParent) {
+    offsetRect(element, offsetParent) {
         return this.clientRect(element, offsetParent, true);
     }
 

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const isString = (value) => {
+const isString = value => {
     return typeof value === 'string';
 };
 
@@ -24,8 +24,8 @@ var SnifferService = Ember.Service.extend({
         return toInt((/android (\d+)/.exec(lowercase((this.get('window').navigator || {}).userAgent)) || [])[1]);
     }),
 
-    init: function() {
-        this._super();
+    init() {
+        this._super(...arguments);
 
         var bodyStyle = this.get('document').body && this.get('document').body.style;
         var vendorPrefix;
