@@ -108,17 +108,13 @@ test('it should wait for delay before being visible on mouseenter', function(ass
 
     Ember.run(() => {
         Ember.$(component.get('parent')).trigger(e);
-    });
-
-    Ember.run.later(this, () => {
         assert.equal(component.get('visible'), false, 'Tooltip still invisible');
-    }, 2);
 
-    Ember.run.later(this, () => {
-
-        assert.equal(component.get('visible'), true, 'Tooltip is visible');
-        done();
-    }, 15);
+        setTimeout(() => {
+            assert.equal(component.get('visible'), true, 'Tooltip is visible');
+            done();
+        }, 15);
+    });
 });
 
 test('it should show if setVisible is set to true', function(assert) {

@@ -72,6 +72,27 @@ var RippleService = Ember.Service.extend({
 
     constants: Ember.inject.service('constants'),
 
+    setupCheckbox(component, element) {
+        if (component.get('mdNoInk')) {
+            return;
+        }
+        this.attachCheckboxBehavior(element);
+    },
+
+    setupButton(component, element) {
+        if (component.get('mdNoInk')) {
+            return;
+        }
+        this.attachButtonBehavior(element);
+    },
+
+    setupTab(component, element) {
+        if (component.get('mdNoInk')) {
+            return;
+        }
+        this.attachTabBehavior(element);
+    },
+
     attachButtonBehavior: function(element, options) {
         return this.attach(element, $.extend({
             fullRipple: true,

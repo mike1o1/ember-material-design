@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import RipplesMixin from '../mixins/ripples';
 import LayoutRules from '../mixins/layout-rules';
-import setupRipples from '../utils/setup-ripples';
 
 var MdButtonComponent = Ember.Component.extend(LayoutRules, RipplesMixin, {
 
@@ -13,14 +12,7 @@ var MdButtonComponent = Ember.Component.extend(LayoutRules, RipplesMixin, {
 
     didInsertElement() {
         this._super(...arguments);
-        setupRipples(this, this.$());
-    },
-
-    setupRipples() {
-        if (this.get('mdNoInk')) {
-            return;
-        }
-        this.get('rippleService').attachButtonBehavior(this.$());
+        this.get('rippleService').setupButton(this, this.$());
     },
 
     buttonClassNames: Ember.computed('classNames', function() {

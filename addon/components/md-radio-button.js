@@ -2,7 +2,6 @@ import Ember from 'ember';
 import RipplesMixin from '../mixins/ripples';
 import layout from '../templates/components/md-radio-button';
 import LayoutRules from '../mixins/layout-rules';
-import setupRipples from '../utils/setup-ripples';
 
 var MdRadioButton = Ember.Component.extend(LayoutRules, RipplesMixin, {
 	layout: layout,
@@ -15,7 +14,7 @@ var MdRadioButton = Ember.Component.extend(LayoutRules, RipplesMixin, {
 
     didInsertElement() {
         this._super(...arguments);
-        setupRipples(this, this.$('.md-container'));
+        this.get('rippleService').setupCheckbox(this, this.$('.md-container'));
     },
 
     checked: Ember.computed('value', 'selected', function() {

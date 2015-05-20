@@ -2,8 +2,6 @@ import Ember from 'ember';
 import RippleMixin from '../mixins/ripples';
 import layout from '../templates/components/md-checkbox';
 import LayoutRules from '../mixins/layout-rules';
-import setupRipples from '../utils/setup-ripples';
-
 
 var MdCheckbox = Ember.Component.extend(LayoutRules, RippleMixin, {
 	layout: layout,
@@ -18,7 +16,7 @@ var MdCheckbox = Ember.Component.extend(LayoutRules, RippleMixin, {
 
     didInsertElement() {
         this._super(...arguments);
-        setupRipples(this, this.$('.md-container'));
+        this.get('rippleService').setupCheckbox(this, this.$('.md-container'));
     },
 
     isDisabled: Ember.computed('disabled', function() {
