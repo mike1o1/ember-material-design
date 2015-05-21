@@ -254,19 +254,37 @@ define('dummy/components/md-tooltip', ['exports', 'ember-material-design/compone
 });
 define('dummy/controllers/application', ['exports', 'ember'], function (exports, Ember) {
 
-  'use strict';
+    'use strict';
 
-  var ApplicationController = Ember['default'].Controller.extend({
+    var ApplicationController = Ember['default'].Controller.extend({
 
-    actions: {
-      toggleSidebar: function toggleSidebar() {
-        this.toggleProperty("sidebarVisible");
-      }
-    }
+        mediaQueries: Ember['default'].inject.service('media-queries'),
 
-  });
+        init: function init() {
+            this.get('mediaQueries').match('gt-sm', '(min-width: 600px)');
+            //this.set('sidebarLocked', this.get('mediaQueries.isGtSm'));
+        },
 
-  exports['default'] = ApplicationController;
+        sidebarLocked: Ember['default'].computed('mediaQueries.isGtSm', function () {
+            return this.get('mediaQueries.isGtSm');
+        }),
+
+        actions: {
+            toggleSidebar: function toggleSidebar() {
+                this.toggleProperty('sidebarVisible');
+            }
+        }
+
+    });
+
+    exports['default'] = ApplicationController;
+
+});
+define('dummy/controllers/array', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Controller;
 
 });
 define('dummy/controllers/base-demo-controller', ['exports', 'ember'], function (exports, Ember) {
@@ -276,34 +294,34 @@ define('dummy/controllers/base-demo-controller', ['exports', 'ember'], function 
     var BaseDemoController = Ember['default'].Controller.extend({
         showSource: false,
 
-        showSourceClass: Ember['default'].computed("showSource", function () {
-            var showSourceClass = this.get("showSource") ? "show-source" : "";
+        showSourceClass: Ember['default'].computed('showSource', function () {
+            var showSourceClass = this.get('showSource') ? 'show-source' : '';
             return Ember['default'].String.htmlSafe(showSourceClass);
             //return showSourceClass.htmlSafe();
         }),
 
-        demoName: "",
+        demoName: '',
 
         sourceFiles: null,
 
         setSourceFiles: function setSourceFiles(demoContent) {
             this._super();
-            var demoName = this.get("demoName");
+            var demoName = this.get('demoName');
 
             var sourceFiles = Ember['default'].ArrayProxy.create({
-                content: Ember['default'].A([{ name: "hbs", content: demoName + "-index.hbs" }, { name: "controller", content: demoName + "-controller.js" }, { name: "route", content: demoName + "-route.js" }, { name: "css", content: demoName + "-style.css" }])
+                content: Ember['default'].A([{ name: 'hbs', content: demoName + '-index.hbs' }, { name: 'controller', content: demoName + '-controller.js' }, { name: 'route', content: demoName + '-route.js' }, { name: 'css', content: demoName + '-style.css' }])
             });
 
             var sf = Ember['default'].ArrayProxy.create({
                 content: Ember['default'].A(demoContent)
             });
 
-            this.set("sourceFiles", sf);
+            this.set('sourceFiles', sf);
         },
 
         actions: {
             showSource: function showSource() {
-                this.toggleProperty("showSource");
+                this.toggleProperty('showSource');
             }
         }
     });
@@ -316,10 +334,10 @@ define('dummy/controllers/buttons', ['exports', 'ember', 'dummy/controllers/base
     'use strict';
 
     var ButtonsController = BaseDemoController['default'].extend({
-        demoName: "buttons",
+        demoName: 'buttons',
 
         init: function init() {
-            var content = [{ name: "hbs", content: "buttons.hbs" }, { name: "controller", content: "buttons-controller.js" }];
+            var content = [{ name: 'hbs', content: 'buttons.hbs' }, { name: 'controller', content: 'buttons-controller.js' }];
 
             this.setSourceFiles(content);
         }
@@ -333,10 +351,10 @@ define('dummy/controllers/card', ['exports', 'ember', 'dummy/controllers/base-de
     'use strict';
 
     var CardController = BaseDemoController['default'].extend({
-        demoName: "buttons",
+        demoName: 'buttons',
 
         init: function init() {
-            var content = [{ name: "hbs", content: "card.hbs" }];
+            var content = [{ name: 'hbs', content: 'card.hbs' }];
 
             this.setSourceFiles(content);
         }
@@ -351,7 +369,7 @@ define('dummy/controllers/checkbox', ['exports', 'ember', 'dummy/controllers/bas
 
     exports['default'] = BaseDemoController['default'].extend({
 
-        demoName: "checkbox",
+        demoName: 'checkbox',
 
         data: {
             cb1: true,
@@ -362,7 +380,7 @@ define('dummy/controllers/checkbox', ['exports', 'ember', 'dummy/controllers/bas
         },
 
         init: function init() {
-            var content = [{ name: "hbs", content: "checkbox.hbs" }, { name: "controller", content: "checkbox-controller.js" }];
+            var content = [{ name: 'hbs', content: 'checkbox.hbs' }, { name: 'controller', content: 'checkbox-controller.js' }];
 
             this.setSourceFiles(content);
         }
@@ -374,10 +392,10 @@ define('dummy/controllers/content', ['exports', 'ember', 'dummy/controllers/base
     'use strict';
 
     exports['default'] = BaseDemoController['default'].extend({
-        demoName: "content",
+        demoName: 'content',
 
         init: function init() {
-            var content = [{ name: "hbs", content: "content.hbs" }];
+            var content = [{ name: 'hbs', content: 'content.hbs' }];
 
             this.setSourceFiles(content);
         }
@@ -390,45 +408,45 @@ define('dummy/controllers/divider', ['exports', 'ember', 'dummy/controllers/base
     'use strict';
 
     exports['default'] = BaseDemoController['default'].extend({
-        demoName: "divider",
+        demoName: 'divider',
 
         init: function init() {
 
-            var content = [{ name: "hbs", content: "divider.hbs" }, { name: "controller", content: "divider-controller.js" }];
+            var content = [{ name: 'hbs', content: 'divider.hbs' }, { name: 'controller', content: 'divider-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
         messages: Ember['default'].A([{
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }])
     });
 
@@ -439,87 +457,87 @@ define('dummy/controllers/icon', ['exports', 'ember', 'dummy/controllers/base-de
 
     exports['default'] = BaseDemoController['default'].extend({
 
-        demoName: "icon-fontIcons",
+        demoName: 'icon-fontIcons',
 
         init: function init() {
-            var content = [{ name: "hbs", content: "icon-fontIcons.hbs" }, { name: "controller", content: "icon-controller.js" }];
+            var content = [{ name: 'hbs', content: 'icon-fontIcons.hbs' }, { name: 'controller', content: 'icon-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
         showSourceFromUrl: false,
 
-        showSourceClassFromUrl: Ember['default'].computed("showSourceFromUrl", function () {
-            return this.get("showSourceFromUrl") ? "show-source" : "";
+        showSourceClassFromUrl: Ember['default'].computed('showSourceFromUrl', function () {
+            return this.get('showSourceFromUrl') ? 'show-source' : '';
         }),
 
         sourceFilesFromUrl: null,
 
-        setSourceFilesFromUrl: Ember['default'].on("init", function () {
-            var demoName = "icon-fromUrl";
+        setSourceFilesFromUrl: Ember['default'].on('init', function () {
+            var demoName = 'icon-fromUrl';
 
             var sourceFiles = Ember['default'].ArrayProxy.create({
-                content: Ember['default'].A([{ name: "hbs", content: demoName + ".hbs" }, { name: "controller", content: "icon-controller.js" }])
+                content: Ember['default'].A([{ name: 'hbs', content: demoName + '.hbs' }, { name: 'controller', content: 'icon-controller.js' }])
             });
 
-            this.set("sourceFilesFromUrl", sourceFiles);
+            this.set('sourceFilesFromUrl', sourceFiles);
         }),
 
         showSourceFromSet: false,
 
-        showSourceClassFromSet: Ember['default'].computed("showSourceFromSet", function () {
-            return this.get("showSourceFromSet") ? "show-source" : "";
+        showSourceClassFromSet: Ember['default'].computed('showSourceFromSet', function () {
+            return this.get('showSourceFromSet') ? 'show-source' : '';
         }),
 
         sourceFilesFromSet: null,
 
-        setSourceFilesFromSet: Ember['default'].on("init", function () {
-            var demoName = "icon-fromSet";
+        setSourceFilesFromSet: Ember['default'].on('init', function () {
+            var demoName = 'icon-fromSet';
 
             var sourceFiles = Ember['default'].ArrayProxy.create({
-                content: Ember['default'].A([{ name: "hbs", content: demoName + ".hbs" }, { name: "controller", content: "icon-controller.js" }])
+                content: Ember['default'].A([{ name: 'hbs', content: demoName + '.hbs' }, { name: 'controller', content: 'icon-controller.js' }])
             });
 
-            this.set("sourceFilesFromSet", sourceFiles);
+            this.set('sourceFilesFromSet', sourceFiles);
         }),
 
         actions: {
             showSourceFromUrl: function showSourceFromUrl() {
-                this.toggleProperty("showSourceFromUrl");
+                this.toggleProperty('showSourceFromUrl');
             },
 
             showSourceFromSet: function showSourceFromSet() {
-                this.toggleProperty("showSourceFromSet");
+                this.toggleProperty('showSourceFromSet');
             }
         },
 
-        iconData: [{ name: "icon-home", color: "#777" }, { name: "icon-user-plus", color: "rgb(89, 226, 168)" }, { name: "icon-google-plus2", color: "#A00" }, { name: "icon-youtube4", color: "#00A" },
+        iconData: [{ name: 'icon-home', color: '#777' }, { name: 'icon-user-plus', color: 'rgb(89, 226, 168)' }, { name: 'icon-google-plus2', color: '#A00' }, { name: 'icon-youtube4', color: '#00A' },
         // Use theming to color the font-icon
-        { name: "icon-settings", color: "#A00", theme: "md-warn md-hue-5" }],
+        { name: 'icon-settings', color: '#A00', theme: 'md-warn md-hue-5' }],
 
-        sizes: [{ size: 12, padding: 0, previewScaleStyle: "padding-left: 0px", sizeStyle: "font-size: 12px; height: 12px;" }, { size: 21, padding: 2, previewScaleStyle: "padding-left: 2px", sizeStyle: "font-size: 21px; height: 21px;" }, { size: 36, padding: 6, previewScaleStyle: "padding-left: 6px", sizeStyle: "font-size: 36px; height: 36px;" }, { size: 48, padding: 10, previewScaleStyle: "padding-left: 10px", sizeStyle: "font-size: 48px; height: 48px;" }],
+        sizes: [{ size: 12, padding: 0, previewScaleStyle: 'padding-left: 0px', sizeStyle: 'font-size: 12px; height: 12px;' }, { size: 21, padding: 2, previewScaleStyle: 'padding-left: 2px', sizeStyle: 'font-size: 21px; height: 21px;' }, { size: 36, padding: 6, previewScaleStyle: 'padding-left: 6px', sizeStyle: 'font-size: 36px; height: 36px;' }, { size: 48, padding: 10, previewScaleStyle: 'padding-left: 10px', sizeStyle: 'font-size: 48px; height: 48px;' }],
 
-        icons: Ember['default'].computed("iconData", function () {
+        icons: Ember['default'].computed('iconData', function () {
             var self = this;
 
-            var iconData = this.get("iconData");
+            var iconData = this.get('iconData');
 
             iconData.forEach(function (i) {
                 i.sizes = Ember['default'].A(Ember['default'].copy(self.sizes, true));
 
                 i.sizes.forEach(function (size) {
                     var color = !i.theme && i.color;
-                    size.sizeStyle = size.sizeStyle + " color: " + color + "; ";
+                    size.sizeStyle = size.sizeStyle + ' color: ' + color + '; ';
                 });
             });
 
-            return Ember['default'].A(this.get("iconData"));
+            return Ember['default'].A(this.get('iconData'));
         }),
 
-        insertDriveIconURL: "images/icons/ic_insert_drive_file_24px.svg",
+        insertDriveIconURL: 'images/icons/ic_insert_drive_file_24px.svg',
 
-        getAndroid: Ember['default'].computed("", function () {
-            return "images/icons/android.svg";
+        getAndroid: Ember['default'].computed('', function () {
+            return 'images/icons/android.svg';
         })
 
     });
@@ -531,54 +549,54 @@ define('dummy/controllers/input', ['exports', 'ember', 'dummy/controllers/base-d
 
     exports['default'] = BaseDemoController['default'].extend({
         init: function init() {
-            var content = [{ name: "hbs", content: "input.hbs" }, { name: "controller", content: "input-controller.js" }];
+            var content = [{ name: 'hbs', content: 'input.hbs' }, { name: 'controller', content: 'input-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
         showSourceIcons: false,
 
-        showSourceClassIcons: Ember['default'].computed("showSourceIcons", function () {
-            return this.get("showSourceIcons") ? "show-source" : "";
+        showSourceClassIcons: Ember['default'].computed('showSourceIcons', function () {
+            return this.get('showSourceIcons') ? 'show-source' : '';
         }),
 
         sourceFilesIcons: null,
 
-        setSourceFilesIcons: Ember['default'].on("init", function () {
-            var demoName = "input-Icons";
+        setSourceFilesIcons: Ember['default'].on('init', function () {
+            var demoName = 'input-Icons';
 
             var sourceFiles = Ember['default'].ArrayProxy.create({
-                content: Ember['default'].A([{ name: "hbs", content: demoName + ".hbs" }, { name: "controller", content: "input-controller.js" }])
+                content: Ember['default'].A([{ name: 'hbs', content: demoName + '.hbs' }, { name: 'controller', content: 'input-controller.js' }])
             });
 
-            this.set("sourceFilesIcons", sourceFiles);
+            this.set('sourceFilesIcons', sourceFiles);
         }),
 
         actions: {
             showSourceIcons: function showSourceIcons() {
-                this.toggleProperty("showSourceIcons");
+                this.toggleProperty('showSourceIcons');
             }
         },
 
         user: {
-            title: "Developer",
-            email: "ipsum@lorem.com",
-            firstName: "",
-            lastName: "",
-            company: "Google",
-            address: "1600 Amphitheatre Pkwy",
-            city: "Mountain View",
-            state: "CA",
-            biography: "Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!",
-            postalCode: "94043",
+            title: 'Developer',
+            email: 'ipsum@lorem.com',
+            firstName: '',
+            lastName: '',
+            company: 'Google',
+            address: '1600 Amphitheatre Pkwy',
+            city: 'Mountain View',
+            state: 'CA',
+            biography: 'Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!',
+            postalCode: '94043',
             submissionDate: null
         },
 
         user2: {
-            name: "John Doe",
-            email: "",
-            phone: "",
-            address: "Mountain View, CA"
+            name: 'John Doe',
+            email: '',
+            phone: '',
+            address: 'Mountain View, CA'
         }
     });
 
@@ -590,47 +608,54 @@ define('dummy/controllers/list', ['exports', 'ember', 'dummy/controllers/base-de
     exports['default'] = BaseDemoController['default'].extend({
 
         init: function init() {
-            var content = [{ name: "hbs", content: "list.hbs" }, { name: "controller", content: "list-controller.js" }];
+            var content = [{ name: 'hbs', content: 'list.hbs' }, { name: 'controller', content: 'list-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
         todos: Ember['default'].A([{
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }]),
 
-        firstTodo: Ember['default'].computed("", function () {
-            return this.get("todos")[0];
+        firstTodo: Ember['default'].computed('', function () {
+            return this.get('todos')[0];
         })
     });
+
+});
+define('dummy/controllers/object', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Controller;
 
 });
 define('dummy/controllers/progress-circular', ['exports', 'ember', 'dummy/controllers/base-demo-controller'], function (exports, Ember, BaseDemoController) {
@@ -640,19 +665,19 @@ define('dummy/controllers/progress-circular', ['exports', 'ember', 'dummy/contro
     exports['default'] = BaseDemoController['default'].extend({
 
         init: function init() {
-            var content = [{ name: "hbs", content: "progress-circular.hbs" }, { name: "controller", content: "progress-circular-controller.js" }];
+            var content = [{ name: 'hbs', content: 'progress-circular.hbs' }, { name: 'controller', content: 'progress-circular-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
-        mode: "query",
+        mode: 'query',
         determinateValue: 30,
 
         setupTimer: function setupTimer() {
             Ember['default'].run.later(this, function () {
-                this.incrementProperty("determinateValue", 1);
-                if (this.get("determinateValue") > 100) {
-                    this.set("determinateValue", 30);
+                this.incrementProperty('determinateValue', 1);
+                if (this.get('determinateValue') > 100) {
+                    this.set('determinateValue', 30);
                 }
 
                 Ember['default'].run.later(this, this.setupTimer);
@@ -667,22 +692,22 @@ define('dummy/controllers/progress-linear', ['exports', 'ember', 'dummy/controll
 
     exports['default'] = BaseDemoController['default'].extend({
         init: function init() {
-            var content = [{ name: "hbs", content: "progress-linear.hbs" }, { name: "controller", content: "progress-linear-controller.js" }];
+            var content = [{ name: 'hbs', content: 'progress-linear.hbs' }, { name: 'controller', content: 'progress-linear-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
-        mode: "query",
+        mode: 'query',
         determinateValue: 30,
         determinateValue2: 30,
 
         setupTimer: function setupTimer() {
             Ember['default'].run.later(this, function () {
-                this.incrementProperty("determinateValue", 1);
-                this.incrementProperty("determinateValue2", 1.5);
-                if (this.get("determinateValue") > 100) {
-                    this.set("determinateValue", 30);
-                    this.set("determinateValue2", 30);
+                this.incrementProperty('determinateValue', 1);
+                this.incrementProperty('determinateValue2', 1.5);
+                if (this.get('determinateValue') > 100) {
+                    this.set('determinateValue', 30);
+                    this.set('determinateValue2', 30);
                 }
 
                 Ember['default'].run.later(this, this.setupTimer);
@@ -691,7 +716,7 @@ define('dummy/controllers/progress-linear', ['exports', 'ember', 'dummy/controll
 
         setupTimer2: function setupTimer2() {
             Ember['default'].run.later(this, function () {
-                this.set("mode", this.get("mode") == "query" ? "determinate" : "query");
+                this.set('mode', this.get('mode') == 'query' ? 'determinate' : 'query');
                 Ember['default'].run.later(this, this.setupTimer2);
             }, 7200);
         }
@@ -704,33 +729,33 @@ define('dummy/controllers/radio-button', ['exports', 'ember', 'dummy/controllers
 
     exports['default'] = BaseDemoController['default'].extend({
         init: function init() {
-            var content = [{ name: "hbs", content: "radio-button.hbs" }, { name: "controller", content: "radio-button-controller.js" }];
+            var content = [{ name: 'hbs', content: 'radio-button.hbs' }, { name: 'controller', content: 'radio-button-controller.js' }];
 
             this.setSourceFiles(content);
         },
 
         data: {
-            group1: "Banana",
+            group1: 'Banana',
             group2: 2,
-            group3: "avatar-1"
+            group3: 'avatar-1'
         },
 
         avatarData: Ember['default'].A([{
-            id: "avatars:svg-1",
-            title: "avatar 1",
-            value: "avatar-1"
+            id: 'avatars:svg-1',
+            title: 'avatar 1',
+            value: 'avatar-1'
         }, {
-            id: "avatars:svg-2",
-            title: "avatar 2",
-            value: "avatar-2"
+            id: 'avatars:svg-2',
+            title: 'avatar 2',
+            value: 'avatar-2'
         }, {
-            id: "avatars:svg-3",
-            title: "avatar 3",
-            value: "avatar-3"
+            id: 'avatars:svg-3',
+            title: 'avatar 3',
+            value: 'avatar-3'
         }]),
 
         radioData: Ember['default'].ArrayProxy.create({
-            content: Ember['default'].A([{ label: "1", value: 1 }, { label: "2", value: 2 }, { label: "3", value: "3", isDisabled: true }, { label: "4", value: "4" }])
+            content: Ember['default'].A([{ label: '1', value: 1 }, { label: '2', value: 2 }, { label: '3', value: '3', isDisabled: true }, { label: '4', value: '4' }])
         }),
 
         //radioData: [
@@ -743,17 +768,17 @@ define('dummy/controllers/radio-button', ['exports', 'ember', 'dummy/controllers
 
         actions: {
             submit: function submit() {
-                alert("submit");
+                alert('submit');
             },
 
             addItem: function addItem() {
                 var r = Math.ceil(Math.random() * 1000);
-                this.get("radioData").addObject({ label: r, value: r });
+                this.get('radioData').addObject({ label: r, value: r });
                 return false;
             },
 
             removeItem: function removeItem() {
-                this.get("radioData").popObject();
+                this.get('radioData').popObject();
                 return false;
             }
         }
@@ -766,7 +791,7 @@ define('dummy/controllers/slider', ['exports', 'ember', 'dummy/controllers/base-
 
     exports['default'] = BaseDemoController['default'].extend({
         init: function init() {
-            var content = [{ name: "hbs", content: "slider.hbs" }, { name: "controller", content: "slider-controller.js" }];
+            var content = [{ name: 'hbs', content: 'slider.hbs' }, { name: 'controller', content: 'slider-controller.js' }];
 
             this.setSourceFiles(content);
         },
@@ -777,8 +802,8 @@ define('dummy/controllers/slider', ['exports', 'ember', 'dummy/controllers/base-
             blue: Math.floor(Math.random() * 255)
         },
 
-        colorStyle: Ember['default'].computed("color.red", "color.green", "color.blue", function () {
-            return Ember['default'].String.htmlSafe("border: 1px solid #333; background: rgb(" + this.get("color.red") + "," + this.get("color.green") + "," + this.get("color.blue") + ")");
+        colorStyle: Ember['default'].computed('color.red', 'color.green', 'color.blue', function () {
+            return Ember['default'].String.htmlSafe('border: 1px solid #333; background: rgb(' + this.get('color.red') + ',' + this.get('color.green') + ',' + this.get('color.blue') + ')');
         }),
 
         rating1: 3,
@@ -797,43 +822,84 @@ define('dummy/controllers/tabs', ['exports', 'ember', 'dummy/controllers/base-de
     exports['default'] = BaseDemoController['default'].extend({
 
         init: function init() {
-            var content = [{ name: "hbs", content: "tabs.hbs" }, { name: "controller", content: "tabs-controller.js" }];
+            var content = [{ name: 'hbs', content: 'tabs.hbs' }, { name: 'controller', content: 'tabs-controller.js' }];
+
+            var staticTabContent = [{ name: 'hbs', content: 'tabsStaticTabs.hbs' }];
 
             this.setSourceFiles(content);
         },
 
-        tabs: Ember['default'].ArrayProxy.create({
-            content: Ember['default'].A([{ title: "One", content: "Tabs will become paginated if there isn't enough room for them." }, { title: "Two", content: "You can swipe left and right on a mobile device to change tabs." }, { title: "Three", content: "You can bind the selected tab via the selected attribute on the md-tabs element." }, { title: "Four", content: "If you set the selected tab binding to -1, it will leave no tab selected." }, { title: "Five", content: "If you remove a tab, it will try to select a new one." }, { title: "Six", content: "There's an ink bar that follows the selected tab, you can turn it off if you want." }, { title: "Seven", content: "If you set ng-disabled on a tab, it becomes unselectable. If the currently selected tab becomes disabled, it will try to select the next tab." }, { title: "Eight", content: "If you look at the source, you're using tabs to look at a demo for tabs. Recursion!" }, { title: "Nine", content: "If you set md-theme=\"green\" on the md-tabs element, you'll get green tabs." }, { title: "Ten", content: "If you're still reading this, you should just go check out the API docs for tabs!" }])
+        setStaticTabsContent: Ember['default'].on('init', function () {
+            var demoName = 'tabs-StaticTabs';
+
+            var sourceFiles = Ember['default'].ArrayProxy.create({
+                content: Ember['default'].A([{ name: 'hbs', content: demoName + '.hbs' }, { name: 'controller', content: 'tabs-staticTabs-controller.js' }])
+            });
+
+            this.set('sourceFilesStaticTabs', sourceFiles);
         }),
 
-        cantRemoveTabs: Ember['default'].computed("tabs.length", function () {
+        setDynamicHeightContent: Ember['default'].on('init', function () {
+            var demoName = 'tabs-dynamicHeight';
 
-            return this.get("tabs.length") <= 1;
+            var sourceFiles = Ember['default'].ArrayProxy.create({
+                content: Ember['default'].A([{ name: 'hbs', content: demoName + '.hbs' }])
+            });
+
+            this.set('sourceFilesDynamicHeight', sourceFiles);
+        }),
+
+        tabs: Ember['default'].ArrayProxy.create({
+            content: Ember['default'].A([{ title: 'One', content: 'Tabs will become paginated if there isn\'t enough room for them.' }, { title: 'Two', content: 'You can swipe left and right on a mobile device to change tabs.' }, { title: 'Three', content: 'You can bind the selected tab via the selected attribute on the md-tabs element.' }, { title: 'Four', content: 'If you set the selected tab binding to -1, it will leave no tab selected.' }, { title: 'Five', content: 'If you remove a tab, it will try to select a new one.' }, { title: 'Six', content: 'There\'s an ink bar that follows the selected tab, you can turn it off if you want.' }, { title: 'Seven', content: 'If you set ng-disabled on a tab, it becomes unselectable. If the currently selected tab becomes disabled, it will try to select the next tab.' }, { title: 'Eight', content: 'If you look at the source, you\'re using tabs to look at a demo for tabs. Recursion!' }, { title: 'Nine', content: 'If you set md-theme="green" on the md-tabs element, you\'ll get green tabs.' }, { title: 'Ten', content: 'If you\'re still reading this, you should just go check out the API docs for tabs!' }])
+        }),
+
+        cantRemoveTabs: Ember['default'].computed('tabs.length', function () {
+
+            return this.get('tabs.length') <= 1;
         }),
 
         selectedIndex: 2,
 
-        selectedTab: Ember['default'].computed("selectedIndex", "tabs.[]", function () {
-            return this.get("tabs").objectAt(this.get("selectedIndex"));
+        selectedTab: Ember['default'].computed('selectedIndex', 'tabs.[]', function () {
+            return this.get('tabs').objectAt(this.get('selectedIndex'));
+        }),
+
+        data: {
+            selectedIndex: 0,
+            secondLocked: true,
+            secondLabel: 'Item Two',
+            bottom: false
+        },
+
+        alignTabs: Ember['default'].computed('data.bottom', function () {
+            return this.get('data.bottom') ? 'bottom' : 'top';
         }),
 
         actions: {
             showSource: function showSource() {
-                this.toggleProperty("showSource");
+                this.toggleProperty('showSource');
+            },
+
+            showSourceStaticTabs: function showSourceStaticTabs() {
+                this.toggleProperty('showSourceStaticTabs');
+            },
+
+            showSourceDynamicHeight: function showSourceDynamicHeight() {
+                this.toggleProperty('showSourceDynamicHeight');
             },
 
             addTab: function addTab() {
-                var title = this.get("tTitle"),
-                    content = this.get("tContent");
+                var title = this.get('tTitle'),
+                    content = this.get('tContent');
 
-                this.get("tabs").pushObject({
+                this.get('tabs').pushObject({
                     title: title,
-                    content: content || title + " Content View"
+                    content: content || title + ' Content View'
                 });
             },
 
             removeTab: function removeTab() {
-                this.get("tabs").removeAt(this.get("selectedIndex"));
+                this.get('tabs').removeAt(this.get('selectedIndex'));
             }
         }
     });
@@ -845,7 +911,7 @@ define('dummy/controllers/toolbar', ['exports', 'ember', 'dummy/controllers/base
 
     exports['default'] = BaseDemoController['default'].extend({
         init: function init() {
-            var content = [{ name: "hbs", content: "toolbar.hbs" }];
+            var content = [{ name: 'hbs', content: 'toolbar.hbs' }];
 
             this.setSourceFiles(content);
         }
@@ -859,7 +925,7 @@ define('dummy/controllers/tooltip', ['exports', 'ember', 'dummy/controllers/base
 
     exports['default'] = BaseDemoController['default'].extend({
         init: function init() {
-            var content = [{ name: "hbs", content: "tooltip.hbs" }, { name: "controller", content: "tooltip-controller.js" }];
+            var content = [{ name: 'hbs', content: 'tooltip.hbs' }, { name: 'controller', content: 'tooltip-controller.js' }];
 
             this.setSourceFiles(content);
         },
@@ -872,9 +938,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-backdrop.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-backdrop.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-backdrop.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-backdrop.js should pass jshint.');
   });
 
 });
@@ -882,9 +948,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-button-link.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-button-link.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-button-link.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-button-link.js should pass jshint.');
   });
 
 });
@@ -892,9 +958,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-button.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-button.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-button.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-button.js should pass jshint.');
   });
 
 });
@@ -902,9 +968,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-checkbox.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-checkbox.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-checkbox.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-checkbox.js should pass jshint.');
   });
 
 });
@@ -912,9 +978,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-icon.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-icon.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-icon.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-icon.js should pass jshint.');
   });
 
 });
@@ -922,9 +988,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-input-container.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-input-container.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-input-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-input-container.js should pass jshint.');
   });
 
 });
@@ -932,9 +998,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-input.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-input.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-input.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-input.js should pass jshint.');
   });
 
 });
@@ -942,9 +1008,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-list-item.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-list-item.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-list-item.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-list-item.js should pass jshint.');
   });
 
 });
@@ -952,9 +1018,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-list.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-list.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-list.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-list.js should pass jshint.');
   });
 
 });
@@ -962,9 +1028,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-progress-circular.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-progress-circular.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-progress-circular.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-progress-circular.js should pass jshint.');
   });
 
 });
@@ -972,9 +1038,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-progress-linear.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-progress-linear.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-progress-linear.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-progress-linear.js should pass jshint.');
   });
 
 });
@@ -982,9 +1048,19 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-radio-button.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-radio-button.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-radio-button.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-radio-button.js should pass jshint.');
+  });
+
+});
+define('dummy/ember-material-design/tests/modules/ember-material-design/components/md-select.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-select.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-select.js should pass jshint.');
   });
 
 });
@@ -992,9 +1068,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-sidenav.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-sidenav.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-sidenav.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-sidenav.js should pass jshint.');
   });
 
 });
@@ -1002,9 +1078,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-slider.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-slider.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-slider.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-slider.js should pass jshint.');
   });
 
 });
@@ -1012,9 +1088,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tab-content.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tab-content.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tab-content.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tab-content.js should pass jshint.');
   });
 
 });
@@ -1022,9 +1098,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tab-item.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tab-item.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tab-item.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tab-item.js should pass jshint.');
   });
 
 });
@@ -1032,9 +1108,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tab.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tab.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tab.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tab.js should pass jshint.');
   });
 
 });
@@ -1042,9 +1118,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tabs-content-wrapper.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tabs-content-wrapper.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tabs-content-wrapper.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tabs-content-wrapper.js should pass jshint.');
   });
 
 });
@@ -1052,9 +1128,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tabs-wrapper.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tabs-wrapper.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tabs-wrapper.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tabs-wrapper.js should pass jshint.');
   });
 
 });
@@ -1062,9 +1138,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tabs.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tabs.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tabs.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tabs.js should pass jshint.');
   });
 
 });
@@ -1072,9 +1148,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-textarea.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-textarea.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-textarea.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-textarea.js should pass jshint.');
   });
 
 });
@@ -1082,9 +1158,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-toast.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-toast.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-toast.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-toast.js should pass jshint.');
   });
 
 });
@@ -1092,9 +1168,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-toolbar.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-toolbar.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-toolbar.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-toolbar.js should pass jshint.');
   });
 
 });
@@ -1102,9 +1178,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/componen
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/components");
-  test("modules/ember-material-design/components/md-tooltip.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/components/md-tooltip.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/components');
+  test('modules/ember-material-design/components/md-tooltip.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/components/md-tooltip.js should pass jshint.');
   });
 
 });
@@ -1112,9 +1188,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/e
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/mixins");
-  test("modules/ember-material-design/mixins/events.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/mixins/events.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/mixins');
+  test('modules/ember-material-design/mixins/events.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/mixins/events.js should pass jshint.');
   });
 
 });
@@ -1122,9 +1198,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/g
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/mixins");
-  test("modules/ember-material-design/mixins/gesture-events.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/mixins/gesture-events.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/mixins');
+  test('modules/ember-material-design/mixins/gesture-events.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/mixins/gesture-events.js should pass jshint.');
   });
 
 });
@@ -1132,9 +1208,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/h
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/mixins");
-  test("modules/ember-material-design/mixins/has-flex.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/mixins/has-flex.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/mixins');
+  test('modules/ember-material-design/mixins/has-flex.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/mixins/has-flex.js should pass jshint.');
   });
 
 });
@@ -1142,9 +1218,19 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/h
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/mixins");
-  test("modules/ember-material-design/mixins/has-layout.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/mixins/has-layout.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/mixins');
+  test('modules/ember-material-design/mixins/has-layout.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/mixins/has-layout.js should pass jshint.');
+  });
+
+});
+define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/layout-rules.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - modules/ember-material-design/mixins');
+  test('modules/ember-material-design/mixins/layout-rules.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/mixins/layout-rules.js should pass jshint.');
   });
 
 });
@@ -1152,9 +1238,9 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/r
 
   'use strict';
 
-  module("JSHint - modules/ember-material-design/mixins");
-  test("modules/ember-material-design/mixins/ripples.js should pass jshint", function () {
-    ok(true, "modules/ember-material-design/mixins/ripples.js should pass jshint.");
+  module('JSHint - modules/ember-material-design/mixins');
+  test('modules/ember-material-design/mixins/ripples.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/mixins/ripples.js should pass jshint.');
   });
 
 });
@@ -1166,7 +1252,7 @@ define('dummy/initializers/app-version', ['exports', 'dummy/config/environment',
   var registered = false;
 
   exports['default'] = {
-    name: "App Version",
+    name: 'App Version',
     initialize: function initialize(container, application) {
       if (!registered) {
         var appName = classify(application.toString());
@@ -1194,7 +1280,7 @@ define('dummy/initializers/export-application-global', ['exports', 'ember', 'dum
   ;
 
   exports['default'] = {
-    name: "export-application-global",
+    name: 'export-application-global',
 
     initialize: initialize
   };
@@ -1215,7 +1301,7 @@ define('dummy/initializers/md-layout-views', ['exports', 'ember', 'ember-materia
   }
 
   exports['default'] = {
-    name: "md-layout-views",
+    name: 'md-layout-views',
     initialize: initialize
   };
   /* container, application */
@@ -1237,19 +1323,19 @@ define('dummy/initializers/md-link-to', ['exports', 'ember', 'ember-material-des
             didInsertElement: function didInsertElement() {
                 this._super();
 
-                var isMdButton = this.get("classNames").contains("md-button");
-                if (!isMdButton || this.get("mdNoInk")) {
+                var isMdButton = this.get('classNames').contains('md-button');
+                if (!isMdButton || this.get('mdNoInk')) {
                     return;
                 }
 
-                var rs = this.get("rippleService");
+                var rs = this.get('rippleService');
                 rs.attachButtonBehavior(this.$());
             }
         });
     }
 
     exports['default'] = {
-        name: "md-link-to",
+        name: 'md-link-to',
         initialize: initialize
     };
     /* container, application */
@@ -1260,20 +1346,20 @@ define('dummy/mixins/google-page-view', ['exports', 'ember', 'dummy/config/envir
     'use strict';
 
     exports['default'] = Ember['default'].Mixin.create({
-        pageviewToGA: Ember['default'].on("didTransition", function () {
+        pageviewToGA: Ember['default'].on('didTransition', function () {
 
-            if (Ember['default'].get(ENV['default'], "googleAnalytics.webPropertyId") != null) {
-                var trackerType = Ember['default'].getWithDefault(ENV['default'], "googleAnalytics.tracker", "analytics.js");
+            if (Ember['default'].get(ENV['default'], 'googleAnalytics.webPropertyId') != null) {
+                var trackerType = Ember['default'].getWithDefault(ENV['default'], 'googleAnalytics.tracker', 'analytics.js');
 
-                if (trackerType === "analytics.js") {
-                    var globalVariable = Ember['default'].getWithDefault(ENV['default'], "googleAnalytics.globalVariable", "ga");
+                if (trackerType === 'analytics.js') {
+                    var globalVariable = Ember['default'].getWithDefault(ENV['default'], 'googleAnalytics.globalVariable', 'ga');
 
-                    window[globalVariable]("send", "pageview", {
-                        page: this.get("url"),
-                        title: this.get("url")
+                    window[globalVariable]('send', 'pageview', {
+                        page: this.get('url'),
+                        title: this.get('url')
                     });
-                } else if (trackerType === "ga.js") {
-                    window._gaq.push(["_trackPageview"]);
+                } else if (trackerType === 'ga.js') {
+                    window._gaq.push(['_trackPageview']);
                 }
             }
         })
@@ -1286,21 +1372,21 @@ define('dummy/mixins/google-pageview', ['exports', 'ember', 'dummy/config/enviro
 
   exports['default'] = Ember['default'].Mixin.create({
     pageviewToGA: (function () {
-      if (Ember['default'].get(ENV['default'], "googleAnalytics.webPropertyId") != null) {
-        var trackerType = Ember['default'].getWithDefault(ENV['default'], "googleAnalytics.tracker", "analytics.js");
+      if (Ember['default'].get(ENV['default'], 'googleAnalytics.webPropertyId') != null) {
+        var trackerType = Ember['default'].getWithDefault(ENV['default'], 'googleAnalytics.tracker', 'analytics.js');
 
-        if (trackerType === "analytics.js") {
-          var globalVariable = Ember['default'].getWithDefault(ENV['default'], "googleAnalytics.globalVariable", "ga");
+        if (trackerType === 'analytics.js') {
+          var globalVariable = Ember['default'].getWithDefault(ENV['default'], 'googleAnalytics.globalVariable', 'ga');
 
-          window[globalVariable]("send", "pageview", {
-            page: this.get("url"),
-            title: this.get("url")
+          window[globalVariable]('send', 'pageview', {
+            page: this.get('url'),
+            title: this.get('url')
           });
-        } else if (trackerType === "ga.js") {
-          window._gaq.push(["_trackPageview"]);
+        } else if (trackerType === 'ga.js') {
+          window._gaq.push(['_trackPageview']);
         }
       }
-    }).on("didTransition")
+    }).on('didTransition')
   });
 
 });
@@ -1313,23 +1399,23 @@ define('dummy/router', ['exports', 'ember', 'dummy/config/environment', 'dummy/m
   });
 
   exports['default'] = Router.map(function () {
-    this.route("buttons");
-    this.route("content");
-    this.route("divider");
-    this.route("card");
-    this.route("input");
-    this.route("list");
-    this.route("toolbar");
-    this.route("checkbox");
-    this.route("slider");
-    this.route("progress-circular");
-    this.route("progress-linear");
-    this.route("icon");
-    this.route("radio-button");
-    this.route("tabs");
-    this.route("typography");
-    this.route("tooltip");
-    this.route("toast");
+    this.route('buttons');
+    this.route('content');
+    this.route('divider');
+    this.route('card');
+    this.route('input');
+    this.route('list');
+    this.route('toolbar');
+    this.route('checkbox');
+    this.route('slider');
+    this.route('progress-circular');
+    this.route('progress-linear');
+    this.route('icon');
+    this.route('radio-button');
+    this.route('tabs');
+    this.route('typography');
+    this.route('tooltip');
+    this.route('toast');
   });
 
 });
@@ -1341,7 +1427,7 @@ define('dummy/routes/base-route', ['exports', 'ember'], function (exports, Ember
 		setupController: function setupController(controller, model) {
 			this._super(controller, model);
 
-			this.controllerFor("application").set("demoName", this.get("demoName"));
+			this.controllerFor('application').set('demoName', this.get('demoName'));
 		}
 
 	});
@@ -1355,7 +1441,7 @@ define('dummy/routes/buttons', ['exports', 'ember', 'dummy/routes/base-route'], 
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Buttons" });
+		demoName: 'Buttons' });
 
 });
 define('dummy/routes/card', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1364,7 +1450,7 @@ define('dummy/routes/card', ['exports', 'ember', 'dummy/routes/base-route'], fun
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Card" });
+		demoName: 'Card' });
 
 });
 define('dummy/routes/checkbox', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1373,7 +1459,7 @@ define('dummy/routes/checkbox', ['exports', 'ember', 'dummy/routes/base-route'],
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Checkbox" });
+		demoName: 'Checkbox' });
 
 });
 define('dummy/routes/content', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1382,7 +1468,7 @@ define('dummy/routes/content', ['exports', 'ember', 'dummy/routes/base-route'], 
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Content" });
+		demoName: 'Content' });
 
 });
 define('dummy/routes/divider', ['exports', 'dummy/routes/base-route'], function (exports, BaseRoute) {
@@ -1391,7 +1477,7 @@ define('dummy/routes/divider', ['exports', 'dummy/routes/base-route'], function 
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Divider"
+		demoName: 'Divider'
 
 	});
 
@@ -1401,19 +1487,19 @@ define('dummy/routes/icon', ['exports', 'ember'], function (exports, Ember) {
     'use strict';
 
     exports['default'] = Ember['default'].Route.extend({
-        iconService: Ember['default'].inject.service("icon"),
+        iconService: Ember['default'].inject.service('icon'),
 
-        demoName: "Icon",
+        demoName: 'Icon',
 
         setupController: function setupController(controller, model) {
             this._super(controller, model);
 
-            var is = this.get("iconService");
+            var is = this.get('iconService');
 
-            this.controllerFor("application").set("demoName", this.get("demoName"));
+            this.controllerFor('application').set('demoName', this.get('demoName'));
 
-            is.iconSet("social", "images/icons/sets/social-icons.svg", 24);
-            is.defaultIconSet("images/icons/sets/core-icons.svg", 24);
+            is.iconSet('social', 'images/icons/sets/social-icons.svg', 24);
+            is.defaultIconSet('images/icons/sets/core-icons.svg', 24);
         }
     });
 
@@ -1424,7 +1510,7 @@ define('dummy/routes/index', ['exports', 'ember', 'dummy/routes/base-route'], fu
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Index" });
+		demoName: 'Index' });
 
 });
 define('dummy/routes/input', ['exports', 'dummy/routes/base-route'], function (exports, BaseRoute) {
@@ -1433,7 +1519,7 @@ define('dummy/routes/input', ['exports', 'dummy/routes/base-route'], function (e
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Input"
+		demoName: 'Input'
 	});
 
 });
@@ -1443,7 +1529,7 @@ define('dummy/routes/list', ['exports', 'ember', 'dummy/routes/base-route'], fun
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "List" });
+		demoName: 'List' });
 
 });
 define('dummy/routes/progress-circular', ['exports', 'ember'], function (exports, Ember) {
@@ -1452,14 +1538,14 @@ define('dummy/routes/progress-circular', ['exports', 'ember'], function (exports
 
     exports['default'] = Ember['default'].Route.extend({
 
-        demoName: "Progress Circular",
+        demoName: 'Progress Circular',
 
         setupController: function setupController(controller, model) {
             this._super(controller, model);
 
             controller.setupTimer();
 
-            this.controllerFor("application").set("demoName", this.get("demoName"));
+            this.controllerFor('application').set('demoName', this.get('demoName'));
         }
     });
 
@@ -1470,7 +1556,7 @@ define('dummy/routes/progress-linear', ['exports', 'ember'], function (exports, 
 
     exports['default'] = Ember['default'].Route.extend({
 
-        demoName: "Progress Linear",
+        demoName: 'Progress Linear',
 
         setupController: function setupController(controller, model) {
             this._super(controller, model);
@@ -1478,7 +1564,7 @@ define('dummy/routes/progress-linear', ['exports', 'ember'], function (exports, 
             controller.setupTimer();
             controller.setupTimer2();
 
-            this.controllerFor("application").set("demoName", this.get("demoName"));
+            this.controllerFor('application').set('demoName', this.get('demoName'));
         }
     });
 
@@ -1489,18 +1575,18 @@ define('dummy/routes/radio-button', ['exports', 'ember'], function (exports, Emb
 
     exports['default'] = Ember['default'].Route.extend({
 
-        icons: Ember['default'].inject.service("icon"),
+        icons: Ember['default'].inject.service('icon'),
 
-        demoName: "Radio Button",
+        demoName: 'Radio Button',
 
         setupController: function setupController(controller, setup) {
             this._super(controller, setup);
 
-            var iconService = this.get("icons");
+            var iconService = this.get('icons');
 
-            iconService.iconSet("avatars", "icons/avatar-icons.svg", 128);
+            iconService.iconSet('avatars', 'icons/avatar-icons.svg', 128);
 
-            this.controllerFor("application").set("demoName", this.get("demoName"));
+            this.controllerFor('application').set('demoName', this.get('demoName'));
         }
     });
 
@@ -1511,7 +1597,7 @@ define('dummy/routes/slider', ['exports', 'ember', 'dummy/routes/base-route'], f
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Slider" });
+		demoName: 'Slider' });
 
 });
 define('dummy/routes/tabs', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1520,7 +1606,7 @@ define('dummy/routes/tabs', ['exports', 'ember', 'dummy/routes/base-route'], fun
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Tabs" });
+		demoName: 'Tabs' });
 
 });
 define('dummy/routes/toolbar', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1529,7 +1615,7 @@ define('dummy/routes/toolbar', ['exports', 'ember', 'dummy/routes/base-route'], 
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Toolbar" });
+		demoName: 'Toolbar' });
 
 });
 define('dummy/routes/tooltip', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1538,7 +1624,7 @@ define('dummy/routes/tooltip', ['exports', 'ember', 'dummy/routes/base-route'], 
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Tooltip" });
+		demoName: 'Tooltip' });
 
 });
 define('dummy/routes/typography', ['exports', 'ember', 'dummy/routes/base-route'], function (exports, Ember, BaseRoute) {
@@ -1547,7 +1633,7 @@ define('dummy/routes/typography', ['exports', 'ember', 'dummy/routes/base-route'
 
 	exports['default'] = BaseRoute['default'].extend({
 
-		demoName: "Typography" });
+		demoName: 'Typography' });
 
 });
 define('dummy/services/constants', ['exports', 'ember'], function (exports, Ember) {
@@ -1556,42 +1642,42 @@ define('dummy/services/constants', ['exports', 'ember'], function (exports, Embe
 
     var Constants = Ember['default'].Service.extend({
 
-        snifferService: Ember['default'].inject.service("sniffer"),
+        snifferService: Ember['default'].inject.service('sniffer'),
 
-        webkit: Ember['default'].computed("", function () {
-            return /webkit/i.test(this.get("snifferService.vendorPrefix"));
+        webkit: Ember['default'].computed('', function () {
+            return /webkit/i.test(this.get('snifferService.vendorPrefix'));
         }),
 
         vendorProperty: function vendorProperty(name) {
-            var prefix = this.get("snifferService.vendorPrefix").toLowerCase();
-            return this.get("webkit") ? "-webkit-" + name.charAt(0) + name.substring(1) : name;
+            var prefix = this.get('snifferService.vendorPrefix').toLowerCase();
+            return this.get('webkit') ? '-webkit-' + name.charAt(0) + '' + name.substring(1) : name;
         },
 
         MEDIA: {
-            sm: "(max-width: 600px)",
-            "gt-sm": "(min-width: 600px)",
-            md: "(min-width: 600px) and (max-width: 960px)",
-            "gt-md": "(min-width: 960px)",
-            lg: "(min-width: 960px) and (max-width: 1200px)",
-            "gt-lg": "(min-width: 1200px)"
+            'sm': '(max-width: 600px)',
+            'gt-sm': '(min-width: 600px)',
+            'md': '(min-width: 600px) and (max-width: 960px)',
+            'gt-md': '(min-width: 960px)',
+            'lg': '(min-width: 960px) and (max-width: 1200px)',
+            'gt-lg': '(min-width: 1200px)'
         },
 
-        CSS: Ember['default'].computed("webkit", function () {
-            var webkit = this.get("webkit");
+        CSS: Ember['default'].computed('webkit', function () {
+            var webkit = this.get('webkit');
             return {
                 /* Constants */
-                TRANSITIONEND: "transitionend" + (webkit ? " webkitTransitionEnd" : ""),
-                ANIMATIONEND: "animationend" + (webkit ? " webkitAnimationEnd" : ""),
+                TRANSITIONEND: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
+                ANIMATIONEND: 'animationend' + (webkit ? ' webkitAnimationEnd' : ''),
 
-                TRANSFORM: this.vendorProperty("transform"),
-                TRANSFORM_ORIGIN: this.vendorProperty("transformOrigin"),
-                TRANSITION: this.vendorProperty("transition"),
-                TRANSITION_DURATION: this.vendorProperty("transitionDuration"),
-                ANIMATION_PLAY_STATE: this.vendorProperty("animationPlayState"),
-                ANIMATION_DURATION: this.vendorProperty("animationDuration"),
-                ANIMATION_NAME: this.vendorProperty("animationName"),
-                ANIMATION_TIMING: this.vendorProperty("animationTimingFunction"),
-                ANIMATION_DIRECTION: this.vendorProperty("animationDirection")
+                TRANSFORM: this.vendorProperty('transform'),
+                TRANSFORM_ORIGIN: this.vendorProperty('transformOrigin'),
+                TRANSITION: this.vendorProperty('transition'),
+                TRANSITION_DURATION: this.vendorProperty('transitionDuration'),
+                ANIMATION_PLAY_STATE: this.vendorProperty('animationPlayState'),
+                ANIMATION_DURATION: this.vendorProperty('animationDuration'),
+                ANIMATION_NAME: this.vendorProperty('animationName'),
+                ANIMATION_TIMING: this.vendorProperty('animationTimingFunction'),
+                ANIMATION_DIRECTION: this.vendorProperty('animationDirection')
             };
         }),
 
@@ -1606,9 +1692,9 @@ define('dummy/services/constants', ['exports', 'ember'], function (exports, Embe
             TAB: 9
         },
 
-        START_EVENTS: "mousedown touchstart pointerdown",
-        MOVE_EVENTS: "mousemove touchmove pointermove",
-        END_EVENTS: "mouseup mouseleave touchend touchcancel pointerup pointercancel"
+        START_EVENTS: 'mousedown touchstart pointerdown',
+        MOVE_EVENTS: 'mousemove touchmove pointermove',
+        END_EVENTS: 'mouseup mouseleave touchend touchcancel pointerup pointercancel'
 
     });
 
@@ -1626,15 +1712,15 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
   var urlRegex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
 
   function Icon(el, config) {
-    if (el.tagName != "svg") {
-      el = Ember['default'].$("<svg xmlns=\"http://www.w3.org/2000/svg\">").append(el)[0];
+    if (el.tagName != 'svg') {
+      el = Ember['default'].$('<svg xmlns="http://www.w3.org/2000/svg">').append(el)[0];
     }
 
     el = $(el);
 
     // inject the namespace if not available...
-    if (!el.attr("xmlns")) {
-      el.attr("xmlns", "http://www.w3.org/2000/svg");
+    if (!el.attr('xmlns')) {
+      el.attr('xmlns', 'http://www.w3.org/2000/svg');
     }
 
     this.element = el;
@@ -1662,16 +1748,16 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
     var iconSize = this.config ? this.config.iconSize : config.defaultIconSize;
     var svg = this.element;
 
-    svg[0].setAttribute("fit", "");
-    svg[0].setAttribute("height", "100%");
-    svg[0].setAttribute("width", "100%");
-    svg[0].setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svg[0].setAttribute('fit', '');
+    svg[0].setAttribute('height', '100%');
+    svg[0].setAttribute('width', '100%');
+    svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
-    svg[0].setAttribute("viewBox", svg[0].getAttribute("viewBox") || "0 0 " + iconSize + " " + iconSize);
+    svg[0].setAttribute('viewBox', svg[0].getAttribute('viewBox') || '0 0 ' + iconSize + ' ' + iconSize);
 
     svg.css({
-      "pointer-events": "none",
-      display: "block"
+      'pointer-events': 'none',
+      'display': 'block'
     });
 
     this.element = svg;
@@ -1686,24 +1772,24 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
       var _this = this;
 
       var svgRegistry = [{
-        id: "tabs-arrow",
-        url: "tabs-arrow.svg",
-        svg: "<svg version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 24 24\"><g><polygon points=\"15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 \"/></g></svg>"
+        id: 'tabs-arrow',
+        url: 'tabs-arrow.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
 
       }, {
-        id: "close",
-        url: "close.svg",
-        svg: "<svg version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 24 24\"><g><path d=\"M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z\"/></g></svg>"
+        id: 'close',
+        url: 'close.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
 
       }, {
-        id: "cancel",
-        url: "cancel.svg",
-        svg: "<svg version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 24 24\"><g><path d=\"M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z\"/></g></svg>"
+        id: 'cancel',
+        url: 'cancel.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
 
       }, {
-        id: "toggle-arrow",
-        url: "toggle-arrow-svg",
-        svg: "<svg version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 48 48\"><path d=\"M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z\"/><path d=\"M0 0h48v48h-48z\" fill=\"none\"/></svg>"
+        id: 'toggle-arrow',
+        url: 'toggle-arrow-svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 48 48"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
 
       }];
 
@@ -1714,12 +1800,12 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
     },
 
     init: function init() {
-      this._super();
+      this._super.apply(this, arguments);
       this.preloadIcons();
     },
 
     getIcon: function getIcon(id) {
-      id = id || "";
+      id = id || '';
 
       // if already loaded and cached, use a clone of the cached icon.
       if (config[id]) {
@@ -1730,16 +1816,16 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
         return this.loadByURL(id).then(this.cacheIcon(id));
       }
 
-      if (id.indexOf(":") == -1) {
-        id = "$default:" + id;
+      if (id.indexOf(':') == -1) {
+        id = '$default:' + id;
       }
 
-      return this.loadByID(id)["catch"](Ember['default'].run.bind(this, this.loadFromIconSet))["catch"](this.announceIdNotFound)["catch"](this.announceNotFound).then(this.cacheIcon(id));
+      return this.loadByID(id)['catch'](Ember['default'].run.bind(this, this.loadFromIconSet))['catch'](this.announceIdNotFound)['catch'](this.announceNotFound).then(this.cacheIcon(id));
     },
 
     icon: function icon(id, url, iconSize) {
-      if (id.indexOf(":") == -1) {
-        id = "$default:" + id;
+      if (id.indexOf(':') == -1) {
+        id = '$default:' + id;
       }
 
       config[id] = {
@@ -1756,7 +1842,7 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
     },
 
     defaultIconSet: function defaultIconSet(url, iconSize) {
-      var setName = "$default";
+      var setName = '$default';
 
       if (!config[setName]) {
         config[setName] = {
@@ -1775,14 +1861,14 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
     },
 
     loadFromIconSet: function loadFromIconSet(id) {
-      var setName = id.substring(0, id.lastIndexOf(":")) || "$default";
+      var setName = id.substring(0, id.lastIndexOf(':')) || '$default';
       var iconSetConfig = config[setName];
 
       return !iconSetConfig ? Ember['default'].RSVP.Promise.reject(id) : this.loadByURL(iconSetConfig.url).then(extractFromSet);
 
       function extractFromSet(set) {
-        var iconName = id.slice(id.lastIndexOf(":") + 1);
-        var icon = set.querySelector("#" + iconName);
+        var iconName = id.slice(id.lastIndexOf(':') + 1);
+        var icon = set.querySelector('#' + iconName);
         return !icon ? Ember['default'].RSVP.Promise.reject(id) : new Icon(icon, iconSetConfig);
       }
     },
@@ -1797,7 +1883,7 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
         req = Ember['default'].RSVP.Promise.resolve(this.templateCache[url]);
       } else {
         req = ic_ajax.raw(url, {
-          dataType: "text"
+          dataType: 'text'
         });
       }
 
@@ -1809,7 +1895,7 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
         var els = Ember['default'].$(response);
 
         for (var i = 0; i < els.length; ++i) {
-          if (els[i].nodeName === "svg") {
+          if (els[i].nodeName === 'svg') {
             return els[i];
           }
         }
@@ -1819,22 +1905,22 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
     announceIdNotFound: function announceIdNotFound(id) {
       var msg;
 
-      if (typeof id === "string") {
-        msg = "icon " + id + " not found";
-        console.log(msg);
+      if (typeof id === 'string') {
+        msg = 'icon ' + id + ' not found';
+        Ember['default'].Logger.log(msg);
       }
 
       return Ember['default'].RSVP.Promise.reject(msg || id);
     },
 
     announceNotFound: function announceNotFound(err) {
-      var msg = typeof err === "string" ? err : err.message || err.data || err.statusText;
+      var msg = typeof err === 'string' ? err : err.message || err.data || err.statusText;
 
       return Ember['default'].RSVP.Promise.reject(msg);
     },
 
     isIcon: function isIcon(target) {
-      return typeof target.element !== "undefined" && typeof target.config !== "undefined";
+      return typeof target.element !== 'undefined' && typeof target.config !== 'undefined';
     },
 
     cacheIcon: function cacheIcon(id) {
@@ -1857,7 +1943,7 @@ define('dummy/services/media-queries', ['exports', 'ember'], function (exports, 
 
   var MediaQueriesService = Ember['default'].Service.extend({
 
-    matches: Ember['default'].computed("", function () {
+    matches: Ember['default'].computed(function () {
       return Ember['default'].A();
     }),
 
@@ -1875,21 +1961,21 @@ define('dummy/services/media-queries', ['exports', 'ember'], function (exports, 
       var _this = this;
 
       var classify = Ember['default'].String.classify,
-          matcher = (this.get("mql") || window.matchMedia)(query),
-          isser = "is" + classify(name);
+          matcher = (this.get('mql') || window.matchMedia)(query),
+          isser = 'is' + classify(name);
 
-      var listener = function (matcher) {
+      var listener = function listener(matcher) {
         _this.set(name, matcher);
         _this.set(isser, matcher.matches);
 
         if (matcher.matches) {
-          _this.get("matches").addObject(name);
+          _this.get('matches').addObject(name);
         } else {
-          _this.get("matches").removeObject(name);
+          _this.get('matches').removeObject(name);
         }
       };
 
-      this.get("listeners")[name] = listener;
+      this.get('listeners')[name] = listener;
 
       if (matcher.addListener) {
         matcher.addListener(function (matcher) {
@@ -1910,7 +1996,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
     'use strict';
 
     function rgbToRGBA(color) {
-        return color.replace(")", ", 0.1)").replace("(", "a(");
+        return color.replace(')', ', 0.1)').replace('(', 'a(');
     }
 
     /**
@@ -1921,7 +2007,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
      * @returns {string} rgb color
      */
     function rgbaToRGB(color) {
-        return color.replace("rgba", "rgb").replace(/,[^\)\,]+\)/, ")");
+        return color.replace('rgba', 'rgb').replace(/,[^\)\,]+\)/, ')');
     }
 
     /**
@@ -1932,7 +2018,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
      * @returns {string} rgba color with 0.1 alpha
      */
     function hexToRGBA(color) {
-        var hex = color.chartAt(0) === "#" ? color.substr(1) : color,
+        var hex = color.chartAt(0) === '#' ? color.substr(1) : color,
             dig = hex.length / 3,
             red = hex.substr(0, dig),
             grn = hex.substr(dig, dig),
@@ -1944,7 +2030,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
             blu += blu;
         }
 
-        return "rgba(" + parseInt(red, 16) + "," + parseInt(grn, 16) + "," + parseInt(blu, 16) + ",0.1)";
+        return 'rgba(' + parseInt(red, 16) + ',' + parseInt(grn, 16) + ',' + parseInt(blu, 16) + ',0.1)';
     }
 
     /**
@@ -1958,25 +2044,46 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
         if (!color) {
             return;
         }
-        if (color.indexOf("rgba") === 0) {
-            return color.replace(/\d?\.?\d*\s*\)\s*$/, "0.1)");
+        if (color.indexOf('rgba') === 0) {
+            return color.replace(/\d?\.?\d*\s*\)\s*$/, '0.1)');
         }
-        if (color.indexOf("rgb") === 0) {
+        if (color.indexOf('rgb') === 0) {
             return rgbToRGBA(color);
         }
-        if (color.indexOf("#") === 0) {
+        if (color.indexOf('#') === 0) {
             return hexToRGBA(color);
         }
     }
 
     var RippleService = Ember['default'].Service.extend({
 
-        constants: Ember['default'].inject.service("constants"),
+        constants: Ember['default'].inject.service('constants'),
+
+        setupCheckbox: function setupCheckbox(component, element) {
+            if (component.get('mdNoInk')) {
+                return;
+            }
+            this.attachCheckboxBehavior(element);
+        },
+
+        setupButton: function setupButton(component, element) {
+            if (component.get('mdNoInk')) {
+                return;
+            }
+            this.attachButtonBehavior(element);
+        },
+
+        setupTab: function setupTab(component, element) {
+            if (component.get('mdNoInk')) {
+                return;
+            }
+            this.attachTabBehavior(element);
+        },
 
         attachButtonBehavior: function attachButtonBehavior(element, options) {
             return this.attach(element, $.extend({
                 fullRipple: true,
-                isMenuItem: element.hasClass("md-menu-item"),
+                isMenuItem: element.hasClass('md-menu-item'),
                 center: false,
                 dimBackground: true
             }, options));
@@ -1995,14 +2102,14 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                 center: false,
                 dimBackground: true,
                 outline: false,
-                rippleSize: "full"
+                rippleSize: 'full'
             }, options));
         },
 
         attach: function attach(element, options) {
 
             // check if element has md-no-ink attribute
-            if (element[0].hasAttribute("mdNoInk")) {
+            if (element[0].hasAttribute('mdNoInk')) {
                 return Ember['default'].K;
             }
 
@@ -2025,43 +2132,43 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                 counter = 0,
                 ripples = [],
                 states = [],
-                isActiveExpr = element.attr("md-highlight"),
+                isActiveExpr = element.attr('md-highlight'),
                 isActive = false,
                 isHeld = false,
                 node = element[0],
-                rippleSizeSetting = element.attr("md-ripple-size"),
-                color = parseColor(element.attr("md-ink-ripple")) || parseColor(options.colorElement.length && window.getComputedStyle(options.colorElement[0]).color || "rgb(0, 0, 0)");
+                rippleSizeSetting = element.attr('md-ripple-size'),
+                color = parseColor(element.attr('md-ink-ripple')) || parseColor(options.colorElement.length && window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
             switch (rippleSizeSetting) {
-                case "full":
+                case 'full':
                     options.fullRipple = true;
                     break;
-                case "partial":
+                case 'partial':
                     options.fullRipple = false;
                     break;
             }
 
             if (options.mousedown) {
-                element.on(this.get("constants.START_EVENTS"), onPressDown).on(this.get("constants.END_EVENTS"), onPressUp);
+                element.on(this.get('constants.START_EVENTS'), onPressDown).on(this.get('constants.END_EVENTS'), onPressUp);
             }
 
             function getRippleContainer() {
-                var container = element.data("$mdRippleContainer");
+                var container = element.data('$mdRippleContainer');
 
                 if (container) {
                     return container;
                 }
 
-                container = $("<div class=\"md-ripple-container\">");
+                container = Ember['default'].$('<div class="md-ripple-container">');
                 element.append(container);
-                element.data("$mdRippleContainer", container);
+                element.data('$mdRippleContainer', container);
                 return container;
             }
 
             function removeElement(elem, wait) {
                 ripples.splice(ripples.indexOf(elem), 1);
                 if (ripples.length === 0) {
-                    getRippleContainer().css({ backgroundColor: "" });
+                    getRippleContainer().css({ backgroundColor: '' });
                 }
 
                 Ember['default'].run.later(this, function () {
@@ -2076,16 +2183,16 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                     elemIsHeld = ripples.length > 1 ? false : isHeld;
 
                 if (elemIsActive || state.animating || elemIsHeld) {
-                    elem.addClass("md-ripple-visible");
+                    elem.addClass('md-ripple-visible');
                 } else if (elem) {
-                    elem.removeClass("md-ripple-visible");
+                    elem.removeClass('md-ripple-visible');
 
                     if (options.outline) {
                         elem.css({
-                            width: rippleSize + "px",
-                            height: rippleSize + "px",
-                            marginLeft: rippleSize * -1 + "px",
-                            marginTop: rippleSize * -1 + "px"
+                            width: rippleSize + 'px',
+                            height: rippleSize + 'px',
+                            marginLeft: rippleSize * -1 + 'px',
+                            marginTop: rippleSize * -1 + 'px'
                         });
                     }
 
@@ -2104,7 +2211,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
             function createRipple(left, top) {
                 var _this = this;
 
-                color = parseColor(element.attr("md-ink-ripple")) || parseColor(window.getComputedStyle(options.colorElement[0]).color || "rgb(0, 0, 0)");
+                color = parseColor(element.attr('md-ink-ripple')) || parseColor(window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
                 var container = getRippleContainer(),
                     size = getRippleSize(left, top),
@@ -2117,20 +2224,20 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
 
                 state.animating = true;
 
-                Ember['default'].run.schedule("render", this, function () {
+                Ember['default'].run.schedule('render', this, function () {
                     if (options.dimBackground) {
                         container.css({ backgroundColor: color });
                     }
 
-                    elem.addClass("md-ripple-placed md-ripple-scaled");
+                    elem.addClass('md-ripple-placed md-ripple-scaled');
                     if (options.outline) {
                         elem.css({
-                            borderWidth: size * 0.5 + "px",
-                            marginLeft: size * -0.5 + "px",
-                            marginTop: size * -0.5 + "px"
+                            borderWidth: size * 0.5 + 'px',
+                            marginLeft: size * -0.5 + 'px',
+                            marginTop: size * -0.5 + 'px'
                         });
                     } else {
-                        elem.css({ left: "50%", top: "50% " });
+                        elem.css({ left: '50%', top: '50% ' });
                     }
 
                     updateElement(elem);
@@ -2151,7 +2258,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                  * @returns {*|jQuery|HTMLElement} the generated ripple element
                  */
                 function getRippleElement(css) {
-                    var elem = $("<div class=\"md-ripple\" data-counter=\"" + counter++ + "\">");
+                    var elem = Ember['default'].$('<div class="md-ripple" data-counter="' + counter++ + '">');
                     ripples.unshift(elem);
                     states.unshift({ animating: true });
                     container.append(elem);
@@ -2166,8 +2273,8 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                  * @returns {number} calculated ripple diameter
                  */
                 function getRippleSize(left, top) {
-                    var width = container.prop("offsetWidth"),
-                        height = container.prop("offsetHeight"),
+                    var width = container.prop('offsetWidth'),
+                        height = container.prop('offsetHeight'),
                         multiplier,
                         size,
                         rect;
@@ -2206,22 +2313,22 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                         css = {
                         backgroundColor: rgbaToRGB(color),
                         borderColor: rgbaToRGB(color),
-                        width: size + "px",
-                        height: size + "px"
+                        width: size + 'px',
+                        height: size + 'px'
                     };
 
                     if (options.outline) {
                         css.width = 0;
                         css.height = 0;
                     } else {
-                        css.marginLeft = css.marginTop = size * -0.5 + "px";
+                        css.marginLeft = css.marginTop = size * -0.5 + 'px';
                     }
 
                     if (options.center) {
-                        css.left = css.top = "50%";
+                        css.left = css.top = '50%';
                     } else {
-                        css.left = Math.round((left - rect.left) / container.prop("offsetWidth") * 100) + "%";
-                        css.top = Math.round((top - rect.top) / container.prop("offsetHeight") * 100) + "%";
+                        css.left = Math.round((left - rect.left) / container.prop('offsetWidth') * 100) + '%';
+                        css.top = Math.round((top - rect.top) / container.prop('offsetHeight') * 100) + '%';
                     }
 
                     return css;
@@ -2248,7 +2355,7 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
                 return !isDisabled(node) && !isDisabled(parent) && !isDisabled(grandparent) && !isDisabled(ancestor);
 
                 function isDisabled(elem) {
-                    return elem && elem.hasAttribute && elem.hasAttribute("disabled");
+                    return elem && elem.hasAttribute && elem.hasAttribute('disabled');
                 }
             }
 
@@ -2269,11 +2376,11 @@ define('dummy/services/sniffer', ['exports', 'ember'], function (exports, Ember)
 
     'use strict';
 
-    var isString = function (value) {
-        return typeof value === "string";
+    var isString = function isString(value) {
+        return typeof value === 'string';
     };
 
-    var lowercase = function (string) {
+    var lowercase = function lowercase(string) {
         return isString(string) ? string.toLowerCase() : string;
     };
 
@@ -2282,20 +2389,20 @@ define('dummy/services/sniffer', ['exports', 'ember'], function (exports, Ember)
     }
 
     var SnifferService = Ember['default'].Service.extend({
-        vendorPrefix: "",
+        vendorPrefix: '',
         transitions: false,
         animations: false,
         document: document,
         window: window,
 
-        android: Ember['default'].computed("", function () {
-            return toInt((/android (\d+)/.exec(lowercase((this.get("window").navigator || {}).userAgent)) || [])[1]);
+        android: Ember['default'].computed('', function () {
+            return toInt((/android (\d+)/.exec(lowercase((this.get('window').navigator || {}).userAgent)) || [])[1]);
         }),
 
         init: function init() {
-            this._super();
+            this._super.apply(this, arguments);
 
-            var bodyStyle = this.get("document").body && this.get("document").body.style;
+            var bodyStyle = this.get('document').body && this.get('document').body.style;
             var vendorPrefix;
             var vendorRegex = /^(Moz|webkit|ms)(?=[A-Z])/;
 
@@ -2313,22 +2420,22 @@ define('dummy/services/sniffer', ['exports', 'ember'], function (exports, Ember)
                 }
 
                 if (!vendorPrefix) {
-                    vendorPrefix = "WebkitOpacity" in bodyStyle && "webkit";
+                    vendorPrefix = 'WebkitOpacity' in bodyStyle && 'webkit';
                 }
 
-                transitions = !!("transition" in bodyStyle || vendorPrefix + "Transition" in bodyStyle);
-                animations = !!("animation" in bodyStyle || vendorPrefix + "Animation" in bodyStyle);
+                transitions = !!('transition' in bodyStyle || vendorPrefix + 'Transition' in bodyStyle);
+                animations = !!('animation' in bodyStyle || vendorPrefix + 'Animation' in bodyStyle);
 
-                if (this.get("android") && (!transitions || !animations)) {
+                if (this.get('android') && (!transitions || !animations)) {
                     transitions = isString(bodyStyle.webkitTransition);
                     animations = isString(bodyStyle.webkitAnimation);
                 }
             }
 
-            this.set("transitions", transitions);
-            this.set("animations", animations);
+            this.set('transitions', transitions);
+            this.set('animations', animations);
 
-            this.set("vendorPrefix", vendorPrefix);
+            this.set('vendorPrefix', vendorPrefix);
         }
 
     });
@@ -2376,14 +2483,14 @@ define('dummy/snippets', ['exports'], function (exports) {
 
   exports['default'] = {
     "buttons-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    // No content\n});\n",
-    "buttons.hbs": "<md-content>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button}}Button{{/md-button}}\n        {{#md-button mdNoInk=\"true\" classNames=\"md-primary\"}}Primary (md-noink){{/md-button}}\n        {{#md-button disabled=\"true\" classNames=\"md-primary\"}}Disabled{{/md-button}}\n        {{#md-button class=\"md-warn\"}}Warn{{/md-button}}\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-raised\"}}Button{{/md-button}}\n        {{#md-button class=\"md-raised md-primary\"}}Primary{{/md-button}}\n        {{#md-button disabled=\"true\" class=\"md-raised md-primary\"}}Disabled{{/md-button}}\n        {{#md-button class=\"md-raised md-warn\"}}Warn{{/md-button}}\n        <div class=\"label\">raised</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-fab\" aria-label=\"Eat cake\"}}\n            {{md-icon md-svg-src=\"images/icons/cake.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-primary\" aria-label=\"Use Android\"}}\n            {{md-icon md-svg-src=\"images/icons/android.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab\" disabled=\"true\" aria-label=\"Comment\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_comment_24px.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-primary md-hue-2\" aria-label=\"Profile\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_people_24px.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-mini\" aria-label=\"Eat cake\"}}\n            {{md-icon md-svg-src=\"images/icons/cake.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-mini md-primary\" aria-label=\"Use Android\"}}\n            {{md-icon md-svg-src=\"images/icons/android.svg\" style=\"color: greenyellow;\"}}\n        {{/md-button}}\n\n        <div class=\"label\">FAB</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button tagName=\"a\" href=\"http://www.emberjs.com\" target=\"_blank\"}}Default\n                                                                                Link{{/md-button}}\n        {{#md-button tagName=\"a\" class=\"md-primary\" href=\"http://www.emberjs.com\" target=\"_blank\"}}\n                                                                                Primary\n                                                                                Link{{/md-button}}\n\n        {{#md-button}}Default Button{{/md-button}}\n        <div class=\"label\">Link vs. Button</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-primary md-hue-1\"}}Primary Hue 1{{/md-button}}\n        {{#md-button class=\"md-warn md-raised md-hue-2\"}}Warn Hue 2{{/md-button}}\n        {{#md-button class=\"md-accent\"}}Accent{{/md-button}}\n        {{#md-button class=\"md-accent md-raised md-hue-1\"}}Accent Hue 1{{/md-button}}\n        <div class=\"label\">Themed</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-icon-button md-primary\"}}\n            {{md-icon md-svg-icon=\"images/icons/menu.svg\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button md-accent\"}}\n            {{md-icon md-svg-icon=\"images/icons/favorite.svg\" style=\"color: greenyellow;\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button\"}}\n            {{md-icon md-svg-icon=\"images/icons/more_vert.svg\"}}\n        {{/md-button}}\n\n\n        <div class=\"label\">Icon Button</div>\n    </section>\n\n</md-content>",
+    "buttons.hbs": "<md-content>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button}}Button{{/md-button}}\n        {{#md-button mdNoInk=\"true\" classNames=\"md-primary\"}}Primary (md-noink){{/md-button}}\n        {{#md-button disabled=\"true\" classNames=\"md-primary\"}}Disabled{{/md-button}}\n        {{#md-button class=\"md-warn\"}}Warn{{/md-button}}\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-raised\"}}Button{{/md-button}}\n        {{#md-button class=\"md-raised md-primary\"}}Primary{{/md-button}}\n        {{#md-button disabled=\"true\" class=\"md-raised md-primary\"}}Disabled{{/md-button}}\n        {{#md-button class=\"md-raised md-warn\"}}Warn{{/md-button}}\n        <div class=\"label\">raised</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-fab\" aria-label=\"Eat cake\"}}\n            {{md-icon md-svg-src=\"images/icons/cake.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-primary\" aria-label=\"Use Android\"}}\n            {{md-icon md-svg-src=\"images/icons/android.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab\" disabled=\"true\" aria-label=\"Comment\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_comment_24px.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-primary md-hue-2\" aria-label=\"Profile\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_people_24px.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-mini\" aria-label=\"Eat cake\"}}\n            {{md-icon md-svg-src=\"images/icons/cake.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-mini md-primary\" aria-label=\"Use Android\"}}\n            {{md-icon md-svg-src=\"images/icons/android.svg\" style=\"color: greenyellow;\"}}\n        {{/md-button}}\n\n        <div class=\"label\">FAB</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button tagName=\"a\" href=\"http://www.emberjs.com\" target=\"_blank\"}}Default\n                                                                                Link{{/md-button}}\n        {{#md-button tagName=\"a\" class=\"md-primary\" href=\"http://www.emberjs.com\" target=\"_blank\"}}\n                                                                                Primary\n                                                                                Link{{/md-button}}\n\n        {{#md-button}}Default Button{{/md-button}}\n        <div class=\"label\">Link vs. Button</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-primary md-hue-1\"}}Primary Hue 1{{/md-button}}\n        {{#md-button class=\"md-warn md-raised md-hue-2\"}}Warn Hue 2{{/md-button}}\n        {{#md-button class=\"md-accent\"}}Accent{{/md-button}}\n        {{#md-button class=\"md-accent md-raised md-hue-1\"}}Accent Hue 1{{/md-button}}\n        <div class=\"label\">Themed</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-icon-button md-primary\"}}\n            {{md-icon md-svg-icon=\"images/icons/menu.svg\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button md-accent\"}}\n            {{md-icon md-svg-icon=\"images/icons/favorite.svg\" style=\"color: greenyellow;\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button\"}}\n            {{md-icon md-svg-icon=\"images/icons/more_vert.svg\"}}\n        {{/md-button}}\n\n        {{#md-button tagName=\"a\"\n                    class=\"md-icon-button launch\"\n                    href=\"http://www.emberjs.com\"\n                    target=\"_blank\"\n                    title=\"Launch EmberJS.com in new window\"}}\n            {{md-icon md-svg-icon=\"images/icons/launch.svg\"}}\n        {{/md-button}}\n\n        <div class=\"label\">Icon Button</div>\n    </section>\n\n</md-content>",
     "card.hbs": "<md-content>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n\n</md-content>",
     "checkbox-controller.js": "import Ember from 'ember';\nimport BaseDemoController from '../controllers/base-demo-controller';\n\nexport default BaseDemoController.extend({\n\n    demoName: 'checkbox',\n\n    data: {\n        cb1: true,\n        cb2: false,\n        cb3: false,\n        cb4: true,\n        cb5: false\n    }\n});\n",
     "content.hbs": "<div class=\"display-content\" layout=\"column\" style=\"padding-bottom: 15px;\">\n    {{#md-toolbar class=\"md-warn\"}}\n        <div class=\"md-toolbar-tools\">\n            <h2 class=\"md-flex\">Toolbar: md-warn</h2>\n        </div>\n    {{/md-toolbar}}\n\n    <md-content class=\"md-padding\" style=\"height: 600px;padding: 24px;\">\n        <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in\n           lobortis conclusionemque nam. Ne deleniti appetere reprimique pro, inani labitur\n           disputationi te sed. At vix sale omnesque, id pro labitur reformidans accommodare, cum\n           labores honestatis eu. Nec quem lucilius in, eam praesent reformidans no. Sed laudem\n           aliquam ne.</p>\n\n\n        <p>\n            Facete delenit argumentum cum at. Pro rebum nostrum contentiones ad. Mel exerci tritani\n            maiorum at, mea te audire phaedrum, mel et nibh aliquam. Malis causae equidem vel eu.\n            Noster melius vis ea, duis alterum oporteat ea sea. Per cu vide munere fierent.\n        </p>\n\n        <p>\n            Ad sea dolor accusata consequuntur. Sit facete convenire reprehendunt et. Usu cu nonumy\n            dissentiet, mei choro omnes fuisset ad. Te qui docendi accusam efficiantur, doming\n            noster prodesset eam ei. In vel posse movet, ut convenire referrentur eum, ceteros\n            singulis intellegam eu sit.\n        </p>\n\n        <p>\n            Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est\n            laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum\n            virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit.\n            Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu\n            zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam\n            principes qui, reque justo omnes et quo.\n        </p>\n\n        <p>\n            Sint unum eam id. At sit fastidii theophrastus, mutat senserit repudiare et has. Atqui\n            appareat repudiare ad nam, et ius alii incorrupte. Alii nullam libris his ei, meis\n            aeterno at eum. Ne aeque tincidunt duo. In audire malorum mel, tamquam efficiantur has\n            te.\n        </p>\n\n        <p>\n            Qui utamur tacimates quaestio ad, quod graece omnium ius ut. Pri ut vero debitis\n            interpretaris, qui cu mentitum adipiscing disputationi. Voluptatum mediocritatem quo ut.\n            Fabulas dolorem ei has, quem molestie persequeris et sit.\n        </p>\n\n        <p>\n            Est in vivendum comprehensam conclusionemque, alia cetero iriure no usu, te cibo\n            deterruisset pro. Ludus epicurei quo id, ex cum iudicabit intellegebat. Ex modo\n            deseruisse quo, mel noster menandri sententiae ea, duo et tritani malorum recteque.\n            Nullam suscipit partiendo nec id, indoctum vulputate per ex. Et has enim habemus\n            tibique. Cu latine electram cum, ridens propriae intellegat eu mea.\n        </p>\n\n        <p>\n            Duo at aliquid mnesarchum, nec ne impetus hendrerit. Ius id aeterno debitis atomorum, et\n            sed feugait voluptua, brute tibique no vix. Eos modo esse ex, ei omittam imperdiet pro.\n            Vel assum albucius incorrupte no. Vim viris prompta repudiare ne, vel ut viderer\n            scripserit, dicant appetere argumentum mel ea. Eripuit feugait tincidunt pri ne, cu\n            facilisi molestiae usu.\n        </p>\n\n        <p>\n            Qui utamur tacimates quaestio ad, quod graece omnium ius ut. Pri ut vero debitis\n            interpretaris, qui cu mentitum adipiscing disputationi. Voluptatum mediocritatem quo ut.\n            Fabulas dolorem ei has, quem molestie persequeris et sit.\n        </p>\n\n        <p>\n            Est in vivendum comprehensam conclusionemque, alia cetero iriure no usu, te cibo\n            deterruisset pro. Ludus epicurei quo id, ex cum iudicabit intellegebat. Ex modo\n            deseruisse quo, mel noster menandri sententiae ea, duo et tritani malorum recteque.\n            Nullam suscipit partiendo nec id, indoctum vulputate per ex. Et has enim habemus\n            tibique. Cu latine electram cum, ridens propriae intellegat eu mea.\n        </p>\n\n        <p>\n            Duo at aliquid mnesarchum, nec ne impetus hendrerit. Ius id aeterno debitis atomorum, et\n            sed feugait voluptua, brute tibique no vix. Eos modo esse ex, ei omittam imperdiet pro.\n            Vel assum albucius incorrupte no. Vim viris prompta repudiare ne, vel ut viderer\n            scripserit, dicant appetere argumentum mel ea. Eripuit feugait tincidunt pri ne, cu\n            facilisi molestiae usu.\n        </p>\n\n    </md-content>\n</div>",
     "divider-controller.js": "import Ember from 'ember';\nimport BaseDemoController from '../controllers/base-demo-controller';\n\nexport default BaseDemoController.extend({\n  demoName: 'divider',\n  messages: Ember.A([{\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }])\n});\n",
     "divider.hbs": "<div class=\"display-content\">\n  {{#md-toolbar class=\"md-theme-light\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Full Bleed</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <md-content>\n      {{#md-list}}\n        {{#each item in messages}}\n          {{#md-list-item class=\"md-3-line\"}}\n              <div class=\"md-list-item-text\">\n                  <h3>{{item.what}}</h3>\n                  <h4>{{item.who}}</h4>\n\n                  <p>\n                    {{item.notes}}\n                  </p>\n              </div>\n              <md-divider></md-divider>\n          {{/md-list-item}}\n        {{/each}}\n      {{/md-list}}\n    </md-content>\n\n  {{#md-toolbar class=\"md-theme-light\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Inset</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <md-content>\n      {{#md-list}}\n        {{#each item in messages}}\n          {{#md-list-item class=\"md-3-line\"}}\n              <img src=\"{{item.face}}\" alt=\"{{item.who}}\" class=\"face\">\n              <div class=\"md-list-item-text\">\n                  <h3>{{item.what}}</h3>\n                  <h4>{{item.who}}</h4>\n\n                  <p>\n                    {{item.notes}}\n                  </p>\n              </div>\n              <md-divider md-inset></md-divider>\n          {{/md-list-item}}\n        {{/each}}\n      {{/md-list}}\n    </md-content>\n</div>",
     "icon-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n\n  iconData: [\n    {name: 'icon-home'        , color: \"#777\" },\n    {name: 'icon-user-plus'   , color: \"rgb(89, 226, 168)\" },\n    {name: 'icon-google-plus2', color: \"#A00\" },\n    {name: 'icon-youtube4'    , color:\"#00A\" },\n    // Use theming to color the font-icon\n    {name: 'icon-settings'    , color:\"#A00\", theme:\"md-warn md-hue-5\"}\n  ],\n\n  sizes: [\n    {size:12,padding:0, previewScaleStyle: 'padding-left: 0px', sizeStyle: 'font-size: 12px; height: 12px;'},\n    {size:21,padding:2, previewScaleStyle: 'padding-left: 2px', sizeStyle: 'font-size: 21px; height: 21px;'},\n    {size:36,padding:6, previewScaleStyle: 'padding-left: 6px', sizeStyle: 'font-size: 36px; height: 36px;'},\n    {size:48,padding:10, previewScaleStyle: 'padding-left: 10px', sizeStyle: 'font-size: 48px; height: 48px;'}\n  ],\n\n  icons: Ember.computed('iconData', function() {\n    var self = this;\n\n    var iconData = this.get('iconData');\n\n    iconData.forEach(function(i) {\n      i.sizes = Ember.A(Ember.copy(self.sizes, true));\n\n      i.sizes.forEach(function(size) {\n        var color = !i.theme && i.color;\n        size.sizeStyle = size.sizeStyle + ' color: ' + color + '; ';\n      });\n    });\n\n    return Ember.A(this.get('iconData'));\n\n  }),\n\n  insertDriveIconURL: 'images/icons/ic_insert_drive_file_24px.svg',\n\n  getAndroid: Ember.computed('', function() {\n    return 'images/icons/android.svg';\n  })\n\n});\n",
-    "icon-fontIcons.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    <p>\n        Display 5 font-icons, each with different sizes and colors:\n    </p>\n\n    <!-- Display font icons from Icomoon.io: -->\n\n    {{#each font in icons}}\n        <div layout=\"row\" layout-padding layout-margin class=\"glyph\">\n\n            {{#each it in font.sizes}}\n                <div flex layout-align=\"center center\">\n                    <div class=\"preview-glyphs\">\n                        {{md-icon\n                        mdFontIcon=font.name\n                        class=font.theme\n                        style=it.sizeStyle\n                        classNames=\"step \"}}\n                    </div>\n\n                    <div class=\"preview-scale\">\n                        <span class=\"step\" {{bind-attr style=it.paddingScaleStyle}}>{{it.size}}</span>\n                    </div>\n                </div>\n            {{/each}}\n\n\n        </div>\n    {{/each}}\n\n</div>",
+    "icon-fontIcons.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    <p>\n        Display 5 font-icons, each with different sizes and colors:\n    </p>\n\n    <!-- Display font icons from Icomoon.io: -->\n\n    {{#each font in icons}}\n        <div layout=\"row\" layout-padding layout-margin class=\"glyph\">\n\n            {{#each it in font.sizes}}\n                <div flex layout-align=\"center center\">\n                    <div class=\"preview-glyphs\">\n                        {{md-icon\n                        mdFontIcon=font.name\n                        class=font.theme\n                        style=it.sizeStyle\n                        classNames=\"step \"}}\n                    </div>\n\n                    <div class=\"preview-scale\">\n                        <span class=\"step\" style={{it.paddingScaleStyle}}>{{it.size}}</span>\n                    </div>\n                </div>\n            {{/each}}\n\n\n        </div>\n    {{/each}}\n\n</div>",
     "icon-fromSet.hbs": "<div layout=\"column\" layout-margin>\n\n    <p>Display an icon from a pre-registered set of icons:</p>\n\n    <p>\n        {{md-icon md-svg-icon=\"alarm\" style=\"color: #0F0;\" alt=\"Alarm Icon\"}}\n        {{md-icon md-svg-icon=\"social:cake\" style=\"color: #f00;width:60px;height:60px;\" alt=\"Cake Icon\"}}\n        {{md-icon md-svg-icon=\"social:people\" style=\"color: #00F;\" class=\"s48\" alt=\"People Icon\"}}\n    </p>\n\n</div>",
     "icon-fromUrl.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    <p>The simplest way to display a single SVG icon is by referencing it by URL:</p>\n\n    <p>\n        {{md-icon md-svg-src=insertDriveIconURL\n        alt=\"Insert Drive Icon\"}}\n    </p>\n\n    <p>Style the icon size and color with CSS:</p>\n\n    <p>\n        {{md-icon md-svg-src=\"images/icons/cake.svg\" class=\"s24\" alt=\"Cake\"}}\n        {{md-icon md-svg-src=getAndroid class=\"s36\" alt=\"Android \"}}\n        {{md-icon md-svg-src=\"images/icons/addShoppingCart.svg\" class=\"s48\" alt=\"Cart\"}}\n    </p>\n\n</div>",
     "input-Icons.hbs": "<md-content class=\"md-padding\">\n    {{#md-input-container md-no-float='' value=user2.name}}\n        {{md-icon md-svg-src=\"icons/ic_person_24px.svg\" class=\"name\"}}\n        {{md-input type=\"text\" placeholder=\"Name\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float='' value=user2.phon}}\n        {{md-icon md-svg-src=\"icons/ic_phone_24px.svg\"}}\n        {{md-input type=\"text\" placeholder=\"Phone Number\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float=''}}\n        {{md-icon md-svg-src=\"icons/ic_email_24px.svg\" class=\"email\"}}\n        {{md-input type=\"email\" placeholder=\"Email (required)\" required=\"required\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float=''}}\n        {{md-icon md-svg-src=\"icons/ic_place_24px.svg\"}}\n        {{md-input type=\"text\" placeholder=\"Address\"}}\n    {{/md-input-container}}\n</md-content>",
@@ -2398,12 +2505,16 @@ define('dummy/snippets', ['exports'], function (exports) {
     "radio-button-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    data: {\n        group1: 'Banana',\n        group2: 2,\n        group3: 'avatar-1'\n    },\n\n    avatarData: Ember.A([{\n        id: 'avatars:svg-1',\n        title: 'avatar 1',\n        value: 'avatar-1'\n    }, {\n        id: 'avatars:svg-2',\n        title: 'avatar 2',\n        value: 'avatar-2'\n    }, {\n        id: 'avatars:svg-3',\n        title: 'avatar 3',\n        value: 'avatar-3'\n    }]),\n\n    radioData: Ember.ArrayProxy.create({\n        content: Ember.A([\n            {label: '1', value: 1},\n            {label: '2', value: 2},\n            {label: '3', value: '3', isDisabled: true},\n            {label: '4', value: '4'}\n        ])\n    }),\n\n    //radioData: [\n    //    {label: '1', value: 1},\n    //    {label: '2', value: 2},\n    //    {label: '3', value: '3', isDisabled: true},\n    //    {label: '4', value: '4'}\n    //],\n    //\n\n    actions: {\n        submit: function() {\n            alert('submit');\n        },\n\n        addItem: function() {\n            var r = Math.ceil(Math.random() * 1000);\n            this.get('radioData').addObject({label: r, value: r});\n            return false;\n        },\n\n        removeItem: function() {\n            this.get('radioData').popObject();\n            return false;\n        }\n    }\n});\n",
     "radio-button.hbs": "<form>\n    <p>Selected Value: <span class=\"radioValue\">{{ data.group1 }}</span></p>\n\n\n    {{#md-radio-button value=\"Apple\" selected=data.group1 class=\"md-primary\"}}Apple{{/md-radio-button}}\n    {{#md-radio-button value=\"Banana\" selected=data.group1}}Banana{{/md-radio-button}}\n    {{#md-radio-button value=\"Mango\" selected=data.group1}}Mango{{/md-radio-button}}\n\n\n    <hr/>\n\n    <p>Selected Value: <span class=\"radioValue\">{{ data.group2 }}</span></p>\n\n\n    {{#each d in radioData}}\n        {{#md-radio-button value=d.value\n        class=\"md-primary\"\n        selected=data.group2\n        disabled=d.isDisabled}}\n            {{ d.label }}\n        {{/md-radio-button}}\n    {{/each}}\n\n\n\n\n    <p>\n        {{#md-button class=\"md-raised\" action='addItem' type=\"button\"}}Add{{/md-button}}\n        {{#md-button class=\"md-raised\" action='removeItem' type=\"button\"}}Remove{{/md-button}}\n    </p>\n\n    <hr/>\n\n    <p style=\"margin-bottom: 0;\">Graphic radio buttons need to be labeled with the\n        <code>aria-label</code> attribute.</p>\n\n    <p style=\"margin-top: 0;\">Selected Avatar: <span class=\"radioValue\">{{ data.group3 }}</span></p>\n\n    {{#each it in avatarData}}\n        {{#md-radio-button value=it.value\n        selected=data.group3\n        aria-label=it.title}}\n            {{md-icon md-svg-icon=it.id}}\n        {{/md-radio-button}}\n    {{/each}}\n\n</form>",
     "slider-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    color: {\n        red: Math.floor(Math.random() * 255),\n        green: Math.floor(Math.random() * 255),\n        blue: Math.floor(Math.random() * 255)\n    },\n\n    colorStyle: Ember.computed('color.red', 'color.green', 'color.blue', function() {\n        return Ember.String.htmlSafe(\"border: 1px solid #333; background: rgb(\" + this.get('color.red') + \",\" + this.get('color.green') + \",\" + this.get('color.blue') + \")\");\n    }),\n\n    rating1: 3,\n    rating2: 2,\n    rating3: 4,\n\n    disabled1: 0,\n    disabled2: 70\n});\n",
-    "slider.hbs": "<md-content class=\"md-padding\">\n\n    <h3>\n        RGB <span {{bind-attr style=colorStyle}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>\n    </h3>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>R</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.red}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.red}}\n        </div>\n    </div>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>G</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.green classNames='md-accent'}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.green}}\n        </div>\n    </div>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>B</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.blue classNames='md-primary'}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.blue}}\n        </div>\n    </div>\n\n    <h3>Rating: {{rating}}/5 - demo of theming classes</h3>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>default</span>\n        </div>\n        {{md-slider flex='' md-discrete='' value=rating1 step='1' min='1' max='5'}}\n    </div>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>md-warn</span>\n        </div>\n        {{md-slider flex='' classNames=\"md-warn\" md-discrete='' value=rating2 step=\"1\" min=\"1\" max=\"5\"}}\n    </div>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>md-primary</span>\n        </div>\n        {{md-slider flex='' classNames=\"md-primary\" md-discrete='' value=rating3 step=\"1\" min=\"1\" max=\"5\"}}\n    </div>\n\n    <h3>Disabled</h3>\n    {{md-slider value=disabled1 disabled=true}}\n    {{md-slider value=disabled2 disabled=true}}\n\n    <h3>Disabled, Discrete</h3>\n    {{md-slider value=disabled1 disabled=true step=\"3\" md-discrete='' min=\"0\" max=\"10\"}}\n    {{md-slider value=disabled2 disabled=true step=\"10\" md-discrete=''}}\n\n\n</md-content>",
+    "slider.hbs": "<md-content class=\"md-padding\">\n\n    <h3>\n        RGB <span style={{colorStyle}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>\n    </h3>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>R</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.red}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.red}}\n        </div>\n    </div>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>G</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.green classNames='md-accent'}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.green}}\n        </div>\n    </div>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>B</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.blue classNames='md-primary'}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.blue}}\n        </div>\n    </div>\n\n    <h3>Rating: {{rating}}/5 - demo of theming classes</h3>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>default</span>\n        </div>\n        {{md-slider flex='' md-discrete='' value=rating1 step='1' min='1' max='5'}}\n    </div>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>md-warn</span>\n        </div>\n        {{md-slider flex='' classNames=\"md-warn\" md-discrete='' value=rating2 step=\"1\" min=\"1\" max=\"5\"}}\n    </div>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>md-primary</span>\n        </div>\n        {{md-slider flex='' classNames=\"md-primary\" md-discrete='' value=rating3 step=\"1\" min=\"1\" max=\"5\"}}\n    </div>\n\n    <h3>Disabled</h3>\n    {{md-slider value=disabled1 disabled=true}}\n    {{md-slider value=disabled2 disabled=true}}\n\n    <h3>Disabled, Discrete</h3>\n    {{md-slider value=disabled1 disabled=true step=\"3\" md-discrete='' min=\"0\" max=\"10\"}}\n    {{md-slider value=disabled2 disabled=true step=\"10\" md-discrete=''}}\n\n\n</md-content>",
+    "tabs-StaticTabs.hbs": "<div class=\"display-content sample\">\n\n\n    {{#md-tabs selectedIndex=data.selectedIndex class=\"md-accent\" md-align-tabs=alignTabs}}\n        {{#md-tabs-wrapper}}\n            {{#md-tab id=\"tab1\"}}\n                <md-tab-label>Item One</md-tab-label>\n            {{/md-tab}}\n            {{#md-tab id=\"tab2\" disabled=data.secondLocked}}\n                <md-tab-label>{{data.secondLabel}}</md-tab-label>\n            {{/md-tab}}\n            {{#md-tab id=\"tab3\"}}\n                <md-tab-label>Item Three</md-tab-label>\n            {{/md-tab}}\n        {{/md-tabs-wrapper}}\n        {{#md-tabs-content-wrapper}}\n            {{#md-tab-content}}\n                View for Item #1 <br/>\n                data.selectedIndex = 0;\n            {{/md-tab-content}}\n            {{#md-tab-content}}\n                View for Item #2 <br/>\n                data.selectedIndex = 1;\n            {{/md-tab-content}}\n            {{#md-tab-content}}\n                View for Item #3 <br/>\n                data.selectedIndex = 2;\n            {{/md-tab-content}}\n        {{/md-tabs-content-wrapper}}\n    {{/md-tabs}}\n\n    <div class=\"after-tabs-area\" layout=\"row\" layout-sm=\"column\" layout-margin layout-align=\"left center\">\n        {{#md-checkbox checked=data.secondLocked aria-label=\"Disabled\"}}\n            Disable item two?\n        {{/md-checkbox}}\n\n        {{#md-checkbox checked=data.bottom}}\n            Align tabs to bottom?\n        {{/md-checkbox}}\n\n\n    </div>\n\n\n\n</div>",
     "tabs-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n\n    tabs: Ember.ArrayProxy.create({\n        content: Ember.A([\n            { title: 'One', content: \"Tabs will become paginated if there isn't enough room for them.\"},\n            { title: 'Two', content: \"You can swipe left and right on a mobile device to change tabs.\"},\n            { title: 'Three', content: \"You can bind the selected tab via the selected attribute on the md-tabs element.\"},\n            { title: 'Four', content: \"If you set the selected tab binding to -1, it will leave no tab selected.\"},\n            { title: 'Five', content: \"If you remove a tab, it will try to select a new one.\"},\n            { title: 'Six', content: \"There's an ink bar that follows the selected tab, you can turn it off if you want.\"},\n            { title: 'Seven', content: \"If you set ng-disabled on a tab, it becomes unselectable. If the currently selected tab becomes disabled, it will try to select the next tab.\"},\n            { title: 'Eight', content: \"If you look at the source, you're using tabs to look at a demo for tabs. Recursion!\"},\n            { title: 'Nine', content: \"If you set md-theme=\\\"green\\\" on the md-tabs element, you'll get green tabs.\"},\n            { title: 'Ten', content: \"If you're still reading this, you should just go check out the API docs for tabs!\"}\n        ])\n    }),\n\n    cantRemoveTabs: Ember.computed('tabs.length', function() {\n\n        return this.get('tabs.length') <= 1;\n    }),\n\n    selectedIndex: 2,\n\n    selectedTab: Ember.computed('selectedIndex', 'tabs.[]', function() {\n        return this.get('tabs').objectAt(this.get('selectedIndex'));\n    }),\n\n    actions: {\n        showSource: function() {\n            this.toggleProperty('showSource');\n        },\n\n        addTab: function() {\n            var title = this.get('tTitle'),\n                content = this.get('tContent');\n\n            this.get('tabs').pushObject({\n                title: title,\n                content: content || title + \" Content View\"\n            });\n        },\n\n        removeTab: function() {\n            this.get('tabs').removeAt(this.get('selectedIndex'));\n        }\n    }\n});\n",
+    "tabs-staticTabs-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    data: {\n        selectedIndex: 0,\n        secondLocked: true,\n        secondLabel: \"Item Two\",\n        bottom: false\n    },\n\n    alignTabs: Ember.computed('data.bottom', function() {\n        return this.get('data.bottom') ? 'bottom' : 'top';\n    })\n});\n",
     "tabs.hbs": "<div class=\"sample\" layout=\"column\">\n\n    {{#md-tabs selectedIndex=selectedIndex md-border-bottom=''}}\n\n        {{#md-tabs-wrapper}}\n            {{#each tab in tabs}}\n                {{#md-tab disabled=tab.disabled label=tab.title}}\n                    <md-tab-label>{{tab.title}}</md-tab-label>\n                {{/md-tab}}\n            {{/each}}\n        {{/md-tabs-wrapper}}\n\n        {{#md-tabs-content-wrapper}}\n            {{#each tab in tabs}}\n                {{#md-tab-content}}\n                    <div class=\"demo-tab\" style=\"padding: 25px; text-align: center;\">\n                        {{tab.title}}\n                        <br/>\n                        {{#md-button class=\"md-primary md-raised\" disabled=cantRemoveTabs action='removeTab'}}\n                            Remove Tab{{/md-button}}\n                    </div>\n                {{/md-tab-content}}\n            {{/each}}\n        {{/md-tabs-content-wrapper}}\n    {{/md-tabs}}\n\n    <form layout=\"column\"\n          style=\"padding-top:20px;padding-left:20px;\" {{action 'addTab' on='submit'}}>\n        <div layout=\"row\" layout-sm=\"column\" layout-margin>\n            {{#md-input-container value=selectedIndex}}\n                <label for=\"activeIndex\">Active Index</label>\n                {{md-input type=\"text\" id=\"activeIndex\" disabled=true}}\n            {{/md-input-container}}\n\n            {{#md-input-container value=selectedTab.title}}\n                <label for=\"activeTitle\">Active Title</label>\n                {{md-input type=\"text\" id=\"activeTitle\"}}\n            {{/md-input-container}}\n        </div>\n\n        <div layout=\"row\" layout-sm=\"column\" layout-margin>\n            <span class=\"title\">Add a new Tab:</span>\n            {{#md-input-container value=tTitle}}\n                <label for=\"label\">Label</label>\n                {{md-input type=\"text\" id=\"label\"}}\n            {{/md-input-container}}\n            {{#md-input-container value=tContent}}\n                <label for=\"content\">Content</label>\n                {{md-input type=\"text\" id=\"content\"}}\n            {{/md-input-container}}\n            {{#md-button class=\"add-tab md-primary\" style=\"max-height: 40px\" }}\n                Add Tab\n            {{/md-button}}\n        </div>\n    </form>\n\n\n</div>\n",
     "toolbar.hbs": "<md-content>\n\n  {{#md-toolbar}}\n      <div class=\"md-toolbar-tools\">\n        {{#md-button class=\"md-icon-button\"}}\n          {{md-icon md-svg-icon=\"images/icons/menu.svg\"}}\n        {{/md-button}}\n          <h2>\n              <span>Toolbar with icon buttons</span>\n          </h2>\n          <span flex></span>\n        {{#md-button class=\"md-icon-button\"}}\n          {{md-icon md-svg-icon=\"images/icons/favorite.svg\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button\"}}\n          {{md-icon md-svg-icon=\"images/icons/more_vert.svg\"}}\n        {{/md-button}}\n      </div>\n  {{/md-toolbar}}\n\n    <br>\n\n    <br>\n\n  {{#md-toolbar class=\"md-tall md-accent\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Toolbar: tall (md-accent)</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <br>\n\n  {{#md-toolbar class=\"md-tall md-warn md-hue-3\"}}\n      <span flex></span>\n\n      <h2 class=\"md-toolbar-tools md-toolbar-tools-bottom\">\n          <span class=\"md-flex\">Toolbar: tall with actions pin to the bottom (md-warn md-hue-3)</span>\n      </h2>\n  {{/md-toolbar}}\n\n</md-content>",
     "tooltip-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    demo: {}\n});\n",
-    "tooltip.hbs": "<div>\n\n    {{#md-toolbar class=\"md-accent\"}}\n        <h2 class=\"md-toolbar-tools\">\n            <span flex>Awesome Md App</span>\n            {{#md-button class=\"md-fab md-accent\" aria-label=\"refresh\"}}\n                {{#md-tooltip}}\n                    Refresh\n                {{/md-tooltip}}\n                {{md-icon icon=\"/images/icons/ic_refresh_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{/md-button}}\n        </h2>\n    {{/md-toolbar}}\n    <md-content class=\"md-padding\">\n\n        <p>\n            The tooltip is visible when the button is hovered, focused, or touched.\n        </p>\n\n        {{#md-button class=\"md-fab md-fab-top-left left\" aria-label=\"Insert Drive\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_insert_drive_file_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{#md-tooltip visible=demo.showTooltip}}\n                Insert Drive\n            {{/md-tooltip}}\n        {{/md-button}}\n        {{#md-button class=\"md-fab md-fab-top-right right\" aria-label=\"Photos\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_photo_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{#md-tooltip}}\n                Photos\n            {{/md-tooltip}}\n        {{/md-button}}\n\n\n        <div style=\"margin-top: 15rem;\">\n            <p>Additionally, the Tooltip's `md-visible` attribute can use data-binding to programmatically show/hide itself. Toggle the checkbox below...</p>\n        </div>\n\n\n        {{#md-checkbox checked=demo.showTooltip}}\n            Insert Drive\n        {{/md-checkbox}}\n\n    </md-content>\n</div>"
+    "tooltip.hbs": "<div>\n\n    {{#md-toolbar class=\"md-accent\"}}\n        <h2 class=\"md-toolbar-tools\">\n            <span flex>Awesome Md App</span>\n            {{#md-button class=\"md-fab md-accent\" aria-label=\"refresh\"}}\n                {{#md-tooltip}}\n                    Refresh\n                {{/md-tooltip}}\n                {{md-icon icon=\"/images/icons/ic_refresh_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{/md-button}}\n        </h2>\n    {{/md-toolbar}}\n    <md-content class=\"md-padding\">\n\n        <p>\n            The tooltip is visible when the button is hovered, focused, or touched.\n        </p>\n\n        {{#md-button class=\"md-fab md-fab-top-left left\" aria-label=\"Insert Drive\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_insert_drive_file_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{#md-tooltip visible=demo.showTooltip}}\n                Insert Drive\n            {{/md-tooltip}}\n        {{/md-button}}\n        {{#md-button class=\"md-fab md-fab-top-right right\" aria-label=\"Photos\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_photo_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{#md-tooltip}}\n                Photos\n            {{/md-tooltip}}\n        {{/md-button}}\n\n\n        <div style=\"margin-top: 15rem;\">\n            <p>Additionally, the Tooltip's `md-visible` attribute can use data-binding to programmatically show/hide itself. Toggle the checkbox below...</p>\n        </div>\n\n\n        {{#md-checkbox checked=demo.showTooltip}}\n            Insert Drive\n        {{/md-checkbox}}\n\n    </md-content>\n</div>",
+    "typography-snippet1.hbs": "<h1 class=\"md-display-3\">Headline</h1>\n<h2 class=\"md-display-1\">Headline</h2>\n<h3 class=\"md-headline\">Headline</h3>\n",
+    "typography-snippet2.hbs": "<p class=\"md-body-2\">Body copy with medium weight.</p>\n{{#md-button}}Button{{/md-button}}\n<p class=\"md-body-1\">Regular body copy <small class=\"md-caption\">with small text</small>.</p>\n<span class=\"md-caption\">Caption</span>"
   };
 
 });
@@ -2422,7 +2533,7 @@ define('dummy/snippets/checkbox-controller', ['exports', 'ember', 'dummy/control
 
     exports['default'] = BaseDemoController['default'].extend({
 
-        demoName: "checkbox",
+        demoName: 'checkbox',
 
         data: {
             cb1: true,
@@ -2439,37 +2550,37 @@ define('dummy/snippets/divider-controller', ['exports', 'ember', 'dummy/controll
   'use strict';
 
   exports['default'] = BaseDemoController['default'].extend({
-    demoName: "divider",
+    demoName: 'divider',
     messages: Ember['default'].A([{
-      face: "http://lorempixel.com/50/50/people",
-      what: "Brunch this weekend?",
-      who: "Min Li Chan",
-      when: "3:08PM",
-      notes: " I'll be in your neighborhood doing errands"
+      face: 'http://lorempixel.com/50/50/people',
+      what: 'Brunch this weekend?',
+      who: 'Min Li Chan',
+      when: '3:08PM',
+      notes: ' I\'ll be in your neighborhood doing errands'
     }, {
-      face: "http://lorempixel.com/50/50/people",
-      what: "Brunch this weekend?",
-      who: "Min Li Chan",
-      when: "3:08PM",
-      notes: " I'll be in your neighborhood doing errands"
+      face: 'http://lorempixel.com/50/50/people',
+      what: 'Brunch this weekend?',
+      who: 'Min Li Chan',
+      when: '3:08PM',
+      notes: ' I\'ll be in your neighborhood doing errands'
     }, {
-      face: "http://lorempixel.com/50/50/people",
-      what: "Brunch this weekend?",
-      who: "Min Li Chan",
-      when: "3:08PM",
-      notes: " I'll be in your neighborhood doing errands"
+      face: 'http://lorempixel.com/50/50/people',
+      what: 'Brunch this weekend?',
+      who: 'Min Li Chan',
+      when: '3:08PM',
+      notes: ' I\'ll be in your neighborhood doing errands'
     }, {
-      face: "http://lorempixel.com/50/50/people",
-      what: "Brunch this weekend?",
-      who: "Min Li Chan",
-      when: "3:08PM",
-      notes: " I'll be in your neighborhood doing errands"
+      face: 'http://lorempixel.com/50/50/people',
+      what: 'Brunch this weekend?',
+      who: 'Min Li Chan',
+      when: '3:08PM',
+      notes: ' I\'ll be in your neighborhood doing errands'
     }, {
-      face: "http://lorempixel.com/50/50/people",
-      what: "Brunch this weekend?",
-      who: "Min Li Chan",
-      when: "3:08PM",
-      notes: " I'll be in your neighborhood doing errands"
+      face: 'http://lorempixel.com/50/50/people',
+      what: 'Brunch this weekend?',
+      who: 'Min Li Chan',
+      when: '3:08PM',
+      notes: ' I\'ll be in your neighborhood doing errands'
     }])
   });
 
@@ -2480,33 +2591,33 @@ define('dummy/snippets/icon-controller', ['exports', 'ember'], function (exports
 
   exports['default'] = Ember['default'].Controller.extend({
 
-    iconData: [{ name: "icon-home", color: "#777" }, { name: "icon-user-plus", color: "rgb(89, 226, 168)" }, { name: "icon-google-plus2", color: "#A00" }, { name: "icon-youtube4", color: "#00A" },
+    iconData: [{ name: 'icon-home', color: '#777' }, { name: 'icon-user-plus', color: 'rgb(89, 226, 168)' }, { name: 'icon-google-plus2', color: '#A00' }, { name: 'icon-youtube4', color: '#00A' },
     // Use theming to color the font-icon
-    { name: "icon-settings", color: "#A00", theme: "md-warn md-hue-5" }],
+    { name: 'icon-settings', color: '#A00', theme: 'md-warn md-hue-5' }],
 
-    sizes: [{ size: 12, padding: 0, previewScaleStyle: "padding-left: 0px", sizeStyle: "font-size: 12px; height: 12px;" }, { size: 21, padding: 2, previewScaleStyle: "padding-left: 2px", sizeStyle: "font-size: 21px; height: 21px;" }, { size: 36, padding: 6, previewScaleStyle: "padding-left: 6px", sizeStyle: "font-size: 36px; height: 36px;" }, { size: 48, padding: 10, previewScaleStyle: "padding-left: 10px", sizeStyle: "font-size: 48px; height: 48px;" }],
+    sizes: [{ size: 12, padding: 0, previewScaleStyle: 'padding-left: 0px', sizeStyle: 'font-size: 12px; height: 12px;' }, { size: 21, padding: 2, previewScaleStyle: 'padding-left: 2px', sizeStyle: 'font-size: 21px; height: 21px;' }, { size: 36, padding: 6, previewScaleStyle: 'padding-left: 6px', sizeStyle: 'font-size: 36px; height: 36px;' }, { size: 48, padding: 10, previewScaleStyle: 'padding-left: 10px', sizeStyle: 'font-size: 48px; height: 48px;' }],
 
-    icons: Ember['default'].computed("iconData", function () {
+    icons: Ember['default'].computed('iconData', function () {
       var self = this;
 
-      var iconData = this.get("iconData");
+      var iconData = this.get('iconData');
 
       iconData.forEach(function (i) {
         i.sizes = Ember['default'].A(Ember['default'].copy(self.sizes, true));
 
         i.sizes.forEach(function (size) {
           var color = !i.theme && i.color;
-          size.sizeStyle = size.sizeStyle + " color: " + color + "; ";
+          size.sizeStyle = size.sizeStyle + ' color: ' + color + '; ';
         });
       });
 
-      return Ember['default'].A(this.get("iconData"));
+      return Ember['default'].A(this.get('iconData'));
     }),
 
-    insertDriveIconURL: "images/icons/ic_insert_drive_file_24px.svg",
+    insertDriveIconURL: 'images/icons/ic_insert_drive_file_24px.svg',
 
-    getAndroid: Ember['default'].computed("", function () {
-      return "images/icons/android.svg";
+    getAndroid: Ember['default'].computed('', function () {
+      return 'images/icons/android.svg';
     })
 
   });
@@ -2518,24 +2629,24 @@ define('dummy/snippets/input-controller', ['exports', 'ember'], function (export
 
     exports['default'] = Ember['default'].Controller.extend({
         user: {
-            title: "Developer",
-            email: "ipsum@lorem.com",
-            firstName: "",
-            lastName: "",
-            company: "Google",
-            address: "1600 Amphitheatre Pkwy",
-            city: "Mountain View",
-            state: "CA",
-            biography: "Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!",
-            postalCode: "94043",
+            title: 'Developer',
+            email: 'ipsum@lorem.com',
+            firstName: '',
+            lastName: '',
+            company: 'Google',
+            address: '1600 Amphitheatre Pkwy',
+            city: 'Mountain View',
+            state: 'CA',
+            biography: 'Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!',
+            postalCode: '94043',
             submissionDate: null
         },
 
         user2: {
-            name: "John Doe",
-            email: "",
-            phone: "",
-            address: "Mountain View, CA"
+            name: 'John Doe',
+            email: '',
+            phone: '',
+            address: 'Mountain View, CA'
         }
     });
 
@@ -2546,39 +2657,39 @@ define('dummy/snippets/list-controller', ['exports', 'ember'], function (exports
 
     exports['default'] = Ember['default'].Controller.extend({
         todos: Ember['default'].A([{
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }, {
-            face: "http://lorempixel.com/50/50/people",
-            what: "Brunch this weekend?",
-            who: "Min Li Chan",
-            when: "3:08PM",
-            notes: " I'll be in your neighborhood doing errands"
+            face: 'http://lorempixel.com/50/50/people',
+            what: 'Brunch this weekend?',
+            who: 'Min Li Chan',
+            when: '3:08PM',
+            notes: ' I\'ll be in your neighborhood doing errands'
         }]),
 
-        firstTodo: Ember['default'].computed("", function () {
-            return this.get("todos")[0];
+        firstTodo: Ember['default'].computed('', function () {
+            return this.get('todos')[0];
         })
     });
 
@@ -2588,14 +2699,14 @@ define('dummy/snippets/progress-circular-controller', ['exports', 'ember'], func
     'use strict';
 
     exports['default'] = Ember['default'].Controller.extend({
-        mode: "query",
+        mode: 'query',
         determinateValue: 30,
 
         setupTimer: function setupTimer() {
             Ember['default'].run.later(this, function () {
-                this.incrementProperty("determinateValue", 1);
-                if (this.get("determinateValue") > 100) {
-                    this.set("determinateValue", 30);
+                this.incrementProperty('determinateValue', 1);
+                if (this.get('determinateValue') > 100) {
+                    this.set('determinateValue', 30);
                 }
 
                 Ember['default'].run.later(this, this.setupTimer);
@@ -2609,17 +2720,17 @@ define('dummy/snippets/progress-linear-controller', ['exports', 'ember'], functi
     'use strict';
 
     exports['default'] = Ember['default'].Controller.extend({
-        mode: "query",
+        mode: 'query',
         determinateValue: 30,
         determinateValue2: 30,
 
         setupTimer: function setupTimer() {
             Ember['default'].run.later(this, function () {
-                this.incrementProperty("determinateValue", 1);
-                this.incrementProperty("determinateValue2", 1.5);
-                if (this.get("determinateValue") > 100) {
-                    this.set("determinateValue", 30);
-                    this.set("determinateValue2", 30);
+                this.incrementProperty('determinateValue', 1);
+                this.incrementProperty('determinateValue2', 1.5);
+                if (this.get('determinateValue') > 100) {
+                    this.set('determinateValue', 30);
+                    this.set('determinateValue2', 30);
                 }
 
                 Ember['default'].run.later(this, this.setupTimer);
@@ -2628,7 +2739,7 @@ define('dummy/snippets/progress-linear-controller', ['exports', 'ember'], functi
 
         setupTimer2: function setupTimer2() {
             Ember['default'].run.later(this, function () {
-                this.set("mode", this.get("mode") == "query" ? "determinate" : "query");
+                this.set('mode', this.get('mode') == 'query' ? 'determinate' : 'query');
                 Ember['default'].run.later(this, this.setupTimer2);
             }, 7200);
         }
@@ -2641,27 +2752,27 @@ define('dummy/snippets/radio-button-controller', ['exports', 'ember'], function 
 
     exports['default'] = Ember['default'].Controller.extend({
         data: {
-            group1: "Banana",
+            group1: 'Banana',
             group2: 2,
-            group3: "avatar-1"
+            group3: 'avatar-1'
         },
 
         avatarData: Ember['default'].A([{
-            id: "avatars:svg-1",
-            title: "avatar 1",
-            value: "avatar-1"
+            id: 'avatars:svg-1',
+            title: 'avatar 1',
+            value: 'avatar-1'
         }, {
-            id: "avatars:svg-2",
-            title: "avatar 2",
-            value: "avatar-2"
+            id: 'avatars:svg-2',
+            title: 'avatar 2',
+            value: 'avatar-2'
         }, {
-            id: "avatars:svg-3",
-            title: "avatar 3",
-            value: "avatar-3"
+            id: 'avatars:svg-3',
+            title: 'avatar 3',
+            value: 'avatar-3'
         }]),
 
         radioData: Ember['default'].ArrayProxy.create({
-            content: Ember['default'].A([{ label: "1", value: 1 }, { label: "2", value: 2 }, { label: "3", value: "3", isDisabled: true }, { label: "4", value: "4" }])
+            content: Ember['default'].A([{ label: '1', value: 1 }, { label: '2', value: 2 }, { label: '3', value: '3', isDisabled: true }, { label: '4', value: '4' }])
         }),
 
         //radioData: [
@@ -2674,17 +2785,17 @@ define('dummy/snippets/radio-button-controller', ['exports', 'ember'], function 
 
         actions: {
             submit: function submit() {
-                alert("submit");
+                alert('submit');
             },
 
             addItem: function addItem() {
                 var r = Math.ceil(Math.random() * 1000);
-                this.get("radioData").addObject({ label: r, value: r });
+                this.get('radioData').addObject({ label: r, value: r });
                 return false;
             },
 
             removeItem: function removeItem() {
-                this.get("radioData").popObject();
+                this.get('radioData').popObject();
                 return false;
             }
         }
@@ -2702,8 +2813,8 @@ define('dummy/snippets/slider-controller', ['exports', 'ember'], function (expor
             blue: Math.floor(Math.random() * 255)
         },
 
-        colorStyle: Ember['default'].computed("color.red", "color.green", "color.blue", function () {
-            return Ember['default'].String.htmlSafe("border: 1px solid #333; background: rgb(" + this.get("color.red") + "," + this.get("color.green") + "," + this.get("color.blue") + ")");
+        colorStyle: Ember['default'].computed('color.red', 'color.green', 'color.blue', function () {
+            return Ember['default'].String.htmlSafe('border: 1px solid #333; background: rgb(' + this.get('color.red') + ',' + this.get('color.green') + ',' + this.get('color.blue') + ')');
         }),
 
         rating1: 3,
@@ -2722,39 +2833,57 @@ define('dummy/snippets/tabs-controller', ['exports', 'ember'], function (exports
     exports['default'] = Ember['default'].Controller.extend({
 
         tabs: Ember['default'].ArrayProxy.create({
-            content: Ember['default'].A([{ title: "One", content: "Tabs will become paginated if there isn't enough room for them." }, { title: "Two", content: "You can swipe left and right on a mobile device to change tabs." }, { title: "Three", content: "You can bind the selected tab via the selected attribute on the md-tabs element." }, { title: "Four", content: "If you set the selected tab binding to -1, it will leave no tab selected." }, { title: "Five", content: "If you remove a tab, it will try to select a new one." }, { title: "Six", content: "There's an ink bar that follows the selected tab, you can turn it off if you want." }, { title: "Seven", content: "If you set ng-disabled on a tab, it becomes unselectable. If the currently selected tab becomes disabled, it will try to select the next tab." }, { title: "Eight", content: "If you look at the source, you're using tabs to look at a demo for tabs. Recursion!" }, { title: "Nine", content: "If you set md-theme=\"green\" on the md-tabs element, you'll get green tabs." }, { title: "Ten", content: "If you're still reading this, you should just go check out the API docs for tabs!" }])
+            content: Ember['default'].A([{ title: 'One', content: 'Tabs will become paginated if there isn\'t enough room for them.' }, { title: 'Two', content: 'You can swipe left and right on a mobile device to change tabs.' }, { title: 'Three', content: 'You can bind the selected tab via the selected attribute on the md-tabs element.' }, { title: 'Four', content: 'If you set the selected tab binding to -1, it will leave no tab selected.' }, { title: 'Five', content: 'If you remove a tab, it will try to select a new one.' }, { title: 'Six', content: 'There\'s an ink bar that follows the selected tab, you can turn it off if you want.' }, { title: 'Seven', content: 'If you set ng-disabled on a tab, it becomes unselectable. If the currently selected tab becomes disabled, it will try to select the next tab.' }, { title: 'Eight', content: 'If you look at the source, you\'re using tabs to look at a demo for tabs. Recursion!' }, { title: 'Nine', content: 'If you set md-theme="green" on the md-tabs element, you\'ll get green tabs.' }, { title: 'Ten', content: 'If you\'re still reading this, you should just go check out the API docs for tabs!' }])
         }),
 
-        cantRemoveTabs: Ember['default'].computed("tabs.length", function () {
+        cantRemoveTabs: Ember['default'].computed('tabs.length', function () {
 
-            return this.get("tabs.length") <= 1;
+            return this.get('tabs.length') <= 1;
         }),
 
         selectedIndex: 2,
 
-        selectedTab: Ember['default'].computed("selectedIndex", "tabs.[]", function () {
-            return this.get("tabs").objectAt(this.get("selectedIndex"));
+        selectedTab: Ember['default'].computed('selectedIndex', 'tabs.[]', function () {
+            return this.get('tabs').objectAt(this.get('selectedIndex'));
         }),
 
         actions: {
             showSource: function showSource() {
-                this.toggleProperty("showSource");
+                this.toggleProperty('showSource');
             },
 
             addTab: function addTab() {
-                var title = this.get("tTitle"),
-                    content = this.get("tContent");
+                var title = this.get('tTitle'),
+                    content = this.get('tContent');
 
-                this.get("tabs").pushObject({
+                this.get('tabs').pushObject({
                     title: title,
-                    content: content || title + " Content View"
+                    content: content || title + ' Content View'
                 });
             },
 
             removeTab: function removeTab() {
-                this.get("tabs").removeAt(this.get("selectedIndex"));
+                this.get('tabs').removeAt(this.get('selectedIndex'));
             }
         }
+    });
+
+});
+define('dummy/snippets/tabs-staticTabs-controller', ['exports', 'ember'], function (exports, Ember) {
+
+    'use strict';
+
+    exports['default'] = Ember['default'].Controller.extend({
+        data: {
+            selectedIndex: 0,
+            secondLocked: true,
+            secondLabel: 'Item Two',
+            bottom: false
+        },
+
+        alignTabs: Ember['default'].computed('data.bottom', function () {
+            return this.get('data.bottom') ? 'bottom' : 'top';
+        })
     });
 
 });
@@ -2777,7 +2906,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -2826,7 +2955,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -2877,7 +3006,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -2912,7 +3041,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -2956,7 +3085,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -2991,7 +3120,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3035,7 +3164,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3070,7 +3199,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3114,7 +3243,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3149,7 +3278,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3193,7 +3322,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3228,7 +3357,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3272,7 +3401,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3307,7 +3436,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3351,7 +3480,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3386,7 +3515,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3430,7 +3559,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3465,7 +3594,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3509,7 +3638,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3544,7 +3673,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3588,7 +3717,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3623,7 +3752,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3667,7 +3796,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3702,7 +3831,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3746,7 +3875,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3781,7 +3910,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3825,7 +3954,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3860,7 +3989,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3904,7 +4033,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -3939,7 +4068,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -3983,7 +4112,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -4018,7 +4147,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -4062,7 +4191,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -4097,7 +4226,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -4141,7 +4270,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -4176,7 +4305,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -4220,7 +4349,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -4255,7 +4384,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -4297,7 +4426,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4417,26 +4546,26 @@ define('dummy/templates/application', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var element2 = dom.childAt(fragment, [3, 1]);
+          var element1 = dom.childAt(fragment, [3, 1]);
           var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
-          var morph1 = dom.createMorphAt(element2,1,1);
-          var morph2 = dom.createMorphAt(element2,3,3);
-          var morph3 = dom.createMorphAt(element2,5,5);
-          var morph4 = dom.createMorphAt(element2,7,7);
-          var morph5 = dom.createMorphAt(element2,9,9);
-          var morph6 = dom.createMorphAt(element2,11,11);
-          var morph7 = dom.createMorphAt(element2,13,13);
-          var morph8 = dom.createMorphAt(element2,15,15);
-          var morph9 = dom.createMorphAt(element2,17,17);
-          var morph10 = dom.createMorphAt(element2,19,19);
-          var morph11 = dom.createMorphAt(element2,21,21);
-          var morph12 = dom.createMorphAt(element2,23,23);
-          var morph13 = dom.createMorphAt(element2,25,25);
-          var morph14 = dom.createMorphAt(element2,27,27);
-          var morph15 = dom.createMorphAt(element2,29,29);
-          var morph16 = dom.createMorphAt(element2,31,31);
-          var morph17 = dom.createMorphAt(element2,33,33);
-          var morph18 = dom.createMorphAt(element2,35,35);
+          var morph1 = dom.createMorphAt(element1,1,1);
+          var morph2 = dom.createMorphAt(element1,3,3);
+          var morph3 = dom.createMorphAt(element1,5,5);
+          var morph4 = dom.createMorphAt(element1,7,7);
+          var morph5 = dom.createMorphAt(element1,9,9);
+          var morph6 = dom.createMorphAt(element1,11,11);
+          var morph7 = dom.createMorphAt(element1,13,13);
+          var morph8 = dom.createMorphAt(element1,15,15);
+          var morph9 = dom.createMorphAt(element1,17,17);
+          var morph10 = dom.createMorphAt(element1,19,19);
+          var morph11 = dom.createMorphAt(element1,21,21);
+          var morph12 = dom.createMorphAt(element1,23,23);
+          var morph13 = dom.createMorphAt(element1,25,25);
+          var morph14 = dom.createMorphAt(element1,27,27);
+          var morph15 = dom.createMorphAt(element1,29,29);
+          var morph16 = dom.createMorphAt(element1,31,31);
+          var morph17 = dom.createMorphAt(element1,33,33);
+          var morph18 = dom.createMorphAt(element1,35,35);
           block(env, morph0, context, "md-toolbar", [], {}, child0, null);
           block(env, morph1, context, "link-to", ["buttons"], {"activeClass": "parentActive", "tagName": "li"}, child1, null);
           block(env, morph2, context, "link-to", ["card"], {"activeClass": "parentActive", "tagName": "li"}, child2, null);
@@ -4461,9 +4590,52 @@ define('dummy/templates/application', ['exports'], function (exports) {
       };
     }());
     var child1 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            inline(env, morph0, context, "md-icon", [], {"md-svg-src": "images/icons/ic_menu_24px.svg"});
+            return fragment;
+          }
+        };
+      }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4473,20 +4645,11 @@ define('dummy/templates/application', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
           dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n            ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("button");
-          dom.setAttribute(el2,"class","docs-menu-icon");
-          dom.setAttribute(el2,"hide-gt-sm","");
-          dom.setAttribute(el2,"aria-label","Toggle Menu");
-          var el3 = dom.createTextNode("\n                ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n            ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n\n            ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
           dom.setAttribute(el2,"class","fill-height");
@@ -4563,7 +4726,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, element = hooks.element, inline = hooks.inline, content = hooks.content;
+          var hooks = env.hooks, block = hooks.block, content = hooks.content;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -4582,11 +4745,9 @@ define('dummy/templates/application', ['exports'], function (exports) {
             fragment = this.build(dom);
           }
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [1]);
-          var morph0 = dom.createMorphAt(element1,1,1);
+          var morph0 = dom.createMorphAt(element0,1,1);
           var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 1, 3]),0,0);
-          element(env, element1, context, "action", ["toggleSidebar"], {});
-          inline(env, morph0, context, "md-icon", [], {"md-svg-src": "images/icons/ic_menu_24px.svg"});
+          block(env, morph0, context, "md-button", [], {"class": "md-icon-button", "hide-gt-sm": "", "aria-label": "Toggle Menu", "action": "toggleSidebar"}, child0, null);
           content(env, morph1, context, "demoName");
           return fragment;
         }
@@ -4594,7 +4755,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4653,12 +4814,12 @@ define('dummy/templates/application', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element3 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(fragment, [2]);
         var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        var morph1 = dom.createMorphAt(element3,1,1);
-        var morph2 = dom.createMorphAt(dom.childAt(element3, [3]),1,1);
+        var morph1 = dom.createMorphAt(element2,1,1);
+        var morph2 = dom.createMorphAt(dom.childAt(element2, [3]),1,1);
         dom.insertBoundary(fragment, 0);
-        block(env, morph0, context, "md-sidenav", [], {"classNames": "site-sidenav md-sidenav-left md-whiteframe-z2", "md-component-id": "left", "sidebarVisible": get(env, context, "sidebarVisible")}, child0, null);
+        block(env, morph0, context, "md-sidenav", [], {"classNames": "site-sidenav md-sidenav-left md-whiteframe-z2", "md-component-id": "left", "sidebarVisible": get(env, context, "sidebarVisible"), "isLockedOpen": get(env, context, "sidebarLocked")}, child0, null);
         block(env, morph1, context, "md-toolbar", [], {}, child1, null);
         content(env, morph2, context, "outlet");
         return fragment;
@@ -4676,7 +4837,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -4724,7 +4885,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4785,7 +4946,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4821,7 +4982,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4857,7 +5018,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4893,7 +5054,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4929,7 +5090,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4965,7 +5126,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5001,7 +5162,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5037,7 +5198,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5073,7 +5234,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5116,7 +5277,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child10 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5159,7 +5320,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child11 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5202,7 +5363,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child12 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5245,7 +5406,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child13 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5288,7 +5449,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child14 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5331,7 +5492,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child15 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5367,7 +5528,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child16 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5403,7 +5564,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child17 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5439,7 +5600,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child18 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5475,7 +5636,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child19 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5511,7 +5672,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child20 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5547,7 +5708,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child21 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5583,7 +5744,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child22 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5626,7 +5787,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child23 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5669,7 +5830,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
     var child24 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5709,9 +5870,52 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
         }
       };
     }());
+    var child25 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "md-icon", [], {"md-svg-icon": "images/icons/launch.svg"});
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -5922,7 +6126,11 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
         dom.appendChild(el8, el9);
         var el9 = dom.createComment("");
         dom.appendChild(el8, el9);
-        var el9 = dom.createTextNode("\n\n        ");
+        var el9 = dom.createTextNode("\n");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n        ");
         dom.appendChild(el8, el9);
         var el9 = dom.createElement("div");
         dom.setAttribute(el9,"class","label");
@@ -6012,6 +6220,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
         var morph23 = dom.createMorphAt(element7,1,1);
         var morph24 = dom.createMorphAt(element7,2,2);
         var morph25 = dom.createMorphAt(element7,3,3);
+        var morph26 = dom.createMorphAt(element7,5,5);
         attribute(env, attrMorph0, element0, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
         block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
         inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
@@ -6039,6 +6248,7 @@ define('dummy/templates/buttons', ['exports'], function (exports) {
         block(env, morph23, context, "md-button", [], {"class": "md-icon-button md-primary"}, child22, null);
         block(env, morph24, context, "md-button", [], {"class": "md-icon-button md-accent"}, child23, null);
         block(env, morph25, context, "md-button", [], {"class": "md-icon-button"}, child24, null);
+        block(env, morph26, context, "md-button", [], {"tagName": "a", "class": "md-icon-button launch", "href": "http://www.emberjs.com", "target": "_blank", "title": "Launch EmberJS.com in new window"}, child25, null);
         return fragment;
       }
     };
@@ -6054,7 +6264,7 @@ define('dummy/templates/card', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -6102,7 +6312,7 @@ define('dummy/templates/card', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6162,7 +6372,7 @@ define('dummy/templates/card', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -6362,7 +6572,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -6410,7 +6620,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6471,7 +6681,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6514,7 +6724,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6557,7 +6767,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6593,7 +6803,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6629,7 +6839,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -6664,7 +6874,7 @@ define('dummy/templates/checkbox', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -6797,7 +7007,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
             var child0 = (function() {
               return {
                 isHTMLBars: true,
-                revision: "Ember@1.11.0",
+                revision: "Ember@1.12.0",
                 blockParams: 0,
                 cachedFragment: null,
                 hasRendered: false,
@@ -6841,7 +7051,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
             }());
             return {
               isHTMLBars: true,
-              revision: "Ember@1.11.0",
+              revision: "Ember@1.12.0",
               blockParams: 1,
               cachedFragment: null,
               hasRendered: false,
@@ -6882,7 +7092,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
           }());
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -6925,7 +7135,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
             var child0 = (function() {
               return {
                 isHTMLBars: true,
-                revision: "Ember@1.11.0",
+                revision: "Ember@1.12.0",
                 blockParams: 0,
                 cachedFragment: null,
                 hasRendered: false,
@@ -6975,7 +7185,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
             }());
             return {
               isHTMLBars: true,
-              revision: "Ember@1.11.0",
+              revision: "Ember@1.12.0",
               blockParams: 1,
               cachedFragment: null,
               hasRendered: false,
@@ -7016,7 +7226,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
           }());
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -7056,7 +7266,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -7100,7 +7310,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7140,7 +7350,7 @@ define('dummy/templates/components/code-content', ['exports'], function (exports
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7187,7 +7397,7 @@ define('dummy/templates/components/code-snippet', ['exports'], function (exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7237,7 +7447,7 @@ define('dummy/templates/content', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -7285,7 +7495,7 @@ define('dummy/templates/content', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7346,7 +7556,7 @@ define('dummy/templates/content', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7395,7 +7605,7 @@ define('dummy/templates/content', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7578,7 +7788,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -7626,7 +7836,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7687,7 +7897,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7738,7 +7948,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -7814,7 +8024,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -7854,7 +8064,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7895,7 +8105,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7946,7 +8156,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -8033,7 +8243,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -8073,7 +8283,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8113,7 +8323,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8251,7 +8461,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -8299,7 +8509,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8361,7 +8571,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -8406,7 +8616,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
           },
           render: function render(context, env, contextualElement) {
             var dom = env.dom;
-            var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element, content = hooks.content;
+            var hooks = env.hooks, get = hooks.get, inline = hooks.inline, attribute = hooks.attribute, content = hooks.content;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -8428,8 +8638,9 @@ define('dummy/templates/icon', ['exports'], function (exports) {
             var element1 = dom.childAt(element0, [3, 1]);
             var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
             var morph1 = dom.createMorphAt(element1,0,0);
+            var attrMorph0 = dom.createAttrMorph(element1, 'style');
             inline(env, morph0, context, "md-icon", [], {"mdFontIcon": get(env, context, "font.name"), "class": get(env, context, "font.theme"), "style": get(env, context, "it.sizeStyle"), "classNames": "step "});
-            element(env, element1, context, "bind-attr", [], {"style": get(env, context, "it.paddingScaleStyle")});
+            attribute(env, attrMorph0, element1, "style", get(env, context, "it.paddingScaleStyle"));
             content(env, morph1, context, "it.size");
             return fragment;
           }
@@ -8437,7 +8648,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8491,7 +8702,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -8539,7 +8750,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8601,7 +8812,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -8649,7 +8860,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8709,7 +8920,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9020,153 +9231,9 @@ define('dummy/templates/index', ['exports'], function (exports) {
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      return {
-        isHTMLBars: true,
-        revision: "Ember@1.11.0",
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Getting Started");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
-    var child1 = (function() {
-      return {
-        isHTMLBars: true,
-        revision: "Ember@1.11.0",
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Demos");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
-    var child2 = (function() {
-      return {
-        isHTMLBars: true,
-        revision: "Ember@1.11.0",
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Customization");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
-    var child3 = (function() {
-      return {
-        isHTMLBars: true,
-        revision: "Ember@1.11.0",
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("API Reference");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9183,7 +9250,7 @@ define('dummy/templates/index', ['exports'], function (exports) {
         var el4 = dom.createTextNode("Ember Material Design");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" project is an implementation of Material Design in EmberJS. This project provides a set of reusable, well-tested and accessible UI\n       components based on the Material Design system.");
+        var el3 = dom.createTextNode(" project is an implementation of Material Design in EmberJS. This\n        project provides a set of reusable, well-tested and accessible UI\n        components based on the Material Design system.");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n    ");
@@ -9193,130 +9260,33 @@ define('dummy/templates/index', ['exports'], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("a");
         dom.setAttribute(el3,"href","http://material.angularjs.org");
-        var el4 = dom.createTextNode("Angular Material");
+        var el4 = dom.createTextNode("Angular\n        Material");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" as I could make it.\n    ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n    ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("ul");
-        dom.setAttribute(el2,"class","buckets");
-        dom.setAttribute(el2,"layout","");
-        dom.setAttribute(el2,"layout-align","center center");
-        dom.setAttribute(el2,"layout-wrap","");
-        var el3 = dom.createTextNode("\n        ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("li");
-        dom.setAttribute(el3,"flex","25");
-        dom.setAttribute(el3,"flex-md","50");
-        dom.setAttribute(el3,"flex-sm","50");
-        var el4 = dom.createTextNode("\n            ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("md-card");
-        var el5 = dom.createTextNode("\n                ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("md-card-content");
-        var el6 = dom.createTextNode("\n                  ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n                ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n        ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("li");
-        dom.setAttribute(el3,"flex","25");
-        dom.setAttribute(el3,"flex-md","50");
-        dom.setAttribute(el3,"flex-sm","50");
-        var el4 = dom.createTextNode("\n            ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("md-card");
-        var el5 = dom.createTextNode("\n                ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("md-card-content");
-        var el6 = dom.createTextNode("\n                  ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n                ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n        ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("li");
-        dom.setAttribute(el3,"flex","25");
-        dom.setAttribute(el3,"flex-md","50");
-        dom.setAttribute(el3,"flex-sm","50");
-        var el4 = dom.createTextNode("\n            ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("md-card");
-        var el5 = dom.createTextNode("\n                ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("md-card-content");
-        var el6 = dom.createTextNode("\n                  ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n                ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n        ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("li");
-        dom.setAttribute(el3,"flex","25");
-        dom.setAttribute(el3,"flex-md","50");
-        dom.setAttribute(el3,"flex-sm","50");
-        var el4 = dom.createTextNode("\n            ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("md-card");
-        var el5 = dom.createTextNode("\n                ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("md-card-content");
-        var el6 = dom.createTextNode("\n                  ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n                ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
+        var el3 = dom.createTextNode(" as I could make it.\n\n\n    ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        var el3 = dom.createTextNode("\n        Follow the project on ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("a");
+        dom.setAttribute(el3,"href","https://github.com/mike1o1/ember-material-design");
+        var el4 = dom.createTextNode("GitHub");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode(". Any and all\n        feedback is welcome!\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    \n    ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h2");
         dom.setAttribute(el2,"class","md-title");
         var el3 = dom.createTextNode("What is Material Design?");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n\n    ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("p");
         var el3 = dom.createTextNode("\n        ");
@@ -9326,7 +9296,7 @@ define('dummy/templates/index', ['exports'], function (exports) {
         var el4 = dom.createTextNode("Material Design");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" is a specification for a\n                                                                                         unified system of visual, motion, and interaction design that adapts across different devices and different\n                                                                                         screen sizes.\n\n                                                                                         Below is a brief video that presents the Material Design system:\n    ");
+        var el3 = dom.createTextNode(" is a specification for a\n        unified system of visual, motion, and interaction design that adapts across different devices and different\n        screen sizes.\n\n        Below is a brief video that presents the Material Design system:\n    ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n    ");
@@ -9366,7 +9336,6 @@ define('dummy/templates/index', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -9384,15 +9353,6 @@ define('dummy/templates/index', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [0, 5]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 1, 1]),1,1);
-        var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 1, 1]),1,1);
-        var morph3 = dom.createMorphAt(dom.childAt(element0, [7, 1, 1]),1,1);
-        block(env, morph0, context, "link-to", ["index"], {}, child0, null);
-        block(env, morph1, context, "link-to", ["index"], {}, child1, null);
-        block(env, morph2, context, "link-to", ["index"], {}, child2, null);
-        block(env, morph3, context, "link-to", ["index"], {}, child3, null);
         return fragment;
       }
     };
@@ -9408,7 +9368,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -9456,7 +9416,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9517,7 +9477,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9566,7 +9526,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9615,7 +9575,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9664,7 +9624,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9713,7 +9673,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9762,7 +9722,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9811,7 +9771,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9860,7 +9820,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9909,7 +9869,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9958,7 +9918,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child10 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10007,7 +9967,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child11 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10057,7 +10017,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -10105,7 +10065,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10166,7 +10126,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child13 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10215,7 +10175,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child14 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10264,7 +10224,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child15 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10313,7 +10273,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     var child16 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10361,7 +10321,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10638,7 +10598,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -10686,7 +10646,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10749,7 +10709,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -10827,7 +10787,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 2,
           cachedFragment: null,
           hasRendered: false,
@@ -10870,7 +10830,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
       var child1 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -10938,7 +10898,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
       var child2 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -11005,7 +10965,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11059,7 +11019,7 @@ define('dummy/templates/list', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11172,7 +11132,7 @@ define('dummy/templates/progress-circular', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -11220,7 +11180,7 @@ define('dummy/templates/progress-circular', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11280,7 +11240,7 @@ define('dummy/templates/progress-circular', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11492,7 +11452,7 @@ define('dummy/templates/progress-linear', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -11540,7 +11500,7 @@ define('dummy/templates/progress-linear', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11600,7 +11560,7 @@ define('dummy/templates/progress-linear', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11729,7 +11689,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -11777,7 +11737,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11838,7 +11798,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11874,7 +11834,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11910,7 +11870,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11947,7 +11907,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -11989,7 +11949,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12030,7 +11990,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12066,7 +12026,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12103,7 +12063,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -12145,7 +12105,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12185,7 +12145,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12389,7 +12349,7 @@ define('dummy/templates/slider', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -12437,7 +12397,7 @@ define('dummy/templates/slider', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12497,7 +12457,7 @@ define('dummy/templates/slider', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12810,7 +12770,7 @@ define('dummy/templates/slider', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block, inline = hooks.inline, element = hooks.element, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block, inline = hooks.inline, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -12837,6 +12797,7 @@ define('dummy/templates/slider', ['exports'], function (exports) {
         var morph0 = dom.createMorphAt(element0,1,1);
         var morph1 = dom.createMorphAt(element0,3,3);
         var attrMorph0 = dom.createAttrMorph(element0, 'class');
+        var attrMorph1 = dom.createAttrMorph(element2, 'style');
         var morph2 = dom.createMorphAt(element3,3,3);
         var morph3 = dom.createMorphAt(dom.childAt(element3, [5]),1,1);
         var morph4 = dom.createMorphAt(element4,3,3);
@@ -12854,7 +12815,7 @@ define('dummy/templates/slider', ['exports'], function (exports) {
         attribute(env, attrMorph0, element0, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
         block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
         inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
-        element(env, element2, context, "bind-attr", [], {"style": get(env, context, "colorStyle")});
+        attribute(env, attrMorph1, element2, "style", get(env, context, "colorStyle"));
         inline(env, morph2, context, "md-slider", [], {"flex": "", "min": "0", "max": "255", "value": get(env, context, "color.red")});
         inline(env, morph3, context, "input", [], {"type": "number", "value": get(env, context, "color.red")});
         inline(env, morph4, context, "md-slider", [], {"flex": "", "min": "0", "max": "255", "value": get(env, context, "color.green"), "classNames": "md-accent"});
@@ -12884,7 +12845,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -12932,7 +12893,554 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          var el3 = dom.createTextNode("Basic Usage");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"flex","");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("                ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),5,5);
+          block(env, morph0, context, "md-button", [], {"action": "showSourceDynamicHeight", "layoutType": "row", "layout-align": "center center", "style": "min-width: 72px;"}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child1 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child2 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, block = hooks.block;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+            var morph2 = dom.createMorphAt(fragment,2,2,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            block(env, morph0, context, "md-tab", [], {"label": "one"}, child0, null);
+            block(env, morph1, context, "md-tab", [], {"label": "Two"}, child1, null);
+            block(env, morph2, context, "md-tab", [], {"label": "Three"}, child2, null);
+            return fragment;
+          }
+        };
+      }());
+      var child1 = (function() {
+        var child0 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                                    ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("md-content");
+              dom.setAttribute(el1,"class","md-padding");
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("h1");
+              dom.setAttribute(el2,"class","md-display-2");
+              var el3 = dom.createTextNode("Tab One");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("p");
+              var el3 = dom.createTextNode("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n\n                                    ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child1 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                                    ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("md-content");
+              dom.setAttribute(el1,"class","md-padding");
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("h1");
+              dom.setAttribute(el2,"class","md-display-2");
+              var el3 = dom.createTextNode("Tab Two");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("p");
+              var el3 = dom.createTextNode("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("p");
+              var el3 = dom.createTextNode("Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("p");
+              var el3 = dom.createTextNode("Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                    ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child2 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                                    ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("md-content");
+              dom.setAttribute(el1,"class","md-padding");
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("h1");
+              dom.setAttribute(el2,"class","md-display-2");
+              var el3 = dom.createTextNode("Tab Three");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("p");
+              var el3 = dom.createTextNode("Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                                    ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, block = hooks.block;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
+            var morph2 = dom.createMorphAt(fragment,4,4,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            block(env, morph0, context, "md-tab-content", [], {}, child0, null);
+            block(env, morph1, context, "md-tab-content", [], {}, child1, null);
+            block(env, morph2, context, "md-tab-content", [], {}, child2, null);
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          block(env, morph0, context, "md-tabs-wrapper", [], {}, child0, null);
+          block(env, morph1, context, "md-tabs-content-wrapper", [], {}, child1, null);
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createTextNode("Source");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            inline(env, morph0, context, "md-icon", [], {"md-svg-src": "images/icons/ic_visibility_24px.svg", "style": "margin: 0 4px 0 0;"});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12990,13 +13498,13 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
-    var child1 = (function() {
+    var child3 = (function() {
       var child0 = (function() {
         var child0 = (function() {
           var child0 = (function() {
             return {
               isHTMLBars: true,
-              revision: "Ember@1.11.0",
+              revision: "Ember@1.12.0",
               blockParams: 0,
               cachedFragment: null,
               hasRendered: false,
@@ -13040,7 +13548,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
           }());
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -13080,7 +13588,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -13124,7 +13632,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
             var child0 = (function() {
               return {
                 isHTMLBars: true,
-                revision: "Ember@1.11.0",
+                revision: "Ember@1.12.0",
                 blockParams: 0,
                 cachedFragment: null,
                 hasRendered: false,
@@ -13159,7 +13667,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
             }());
             return {
               isHTMLBars: true,
-              revision: "Ember@1.11.0",
+              revision: "Ember@1.12.0",
               blockParams: 0,
               cachedFragment: null,
               hasRendered: false,
@@ -13220,7 +13728,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
           }());
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -13260,7 +13768,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -13300,7 +13808,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13345,10 +13853,10 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
-    var child2 = (function() {
+    var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13395,10 +13903,10 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
-    var child3 = (function() {
+    var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13445,10 +13953,10 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
-    var child4 = (function() {
+    var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13495,10 +14003,10 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
-    var child5 = (function() {
+    var child7 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13545,10 +14053,10 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
-    var child6 = (function() {
+    var child8 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13581,9 +14089,583 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         }
       };
     }());
+    var child9 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createTextNode("Source");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            inline(env, morph0, context, "md-icon", [], {"md-svg-src": "images/icons/ic_visibility_24px.svg", "style": "margin: 0 4px 0 0;"});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          var el3 = dom.createTextNode("Static Tabs");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"flex","");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("                ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),5,5);
+          block(env, morph0, context, "md-button", [], {"action": "showSourceStaticTabs", "layoutType": "row", "layout-align": "center center", "style": "min-width: 72px;"}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child10 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("md-tab-label");
+              var el2 = dom.createTextNode("Item One");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child1 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("md-tab-label");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              var hooks = env.hooks, content = hooks.content;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+              content(env, morph0, context, "data.secondLabel");
+              return fragment;
+            }
+          };
+        }());
+        var child2 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("md-tab-label");
+              var el2 = dom.createTextNode("Item Three");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, block = hooks.block, get = hooks.get;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+            var morph2 = dom.createMorphAt(fragment,2,2,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            block(env, morph0, context, "md-tab", [], {"id": "tab1"}, child0, null);
+            block(env, morph1, context, "md-tab", [], {"id": "tab2", "disabled": get(env, context, "data.secondLocked")}, child1, null);
+            block(env, morph2, context, "md-tab", [], {"id": "tab3"}, child2, null);
+            return fragment;
+          }
+        };
+      }());
+      var child1 = (function() {
+        var child0 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                View for Item #1 ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("br");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n                data.selectedIndex = 0;\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child1 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                View for Item #2 ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("br");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n                data.selectedIndex = 1;\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        var child2 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                View for Item #3 ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("br");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n                data.selectedIndex = 2;\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, block = hooks.block;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+            var morph2 = dom.createMorphAt(fragment,2,2,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            block(env, morph0, context, "md-tab-content", [], {}, child0, null);
+            block(env, morph1, context, "md-tab-content", [], {}, child1, null);
+            block(env, morph2, context, "md-tab-content", [], {}, child2, null);
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          block(env, morph0, context, "md-tabs-wrapper", [], {}, child0, null);
+          block(env, morph1, context, "md-tabs-content-wrapper", [], {}, child1, null);
+          return fragment;
+        }
+      };
+    }());
+    var child11 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            Disable item two?\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child12 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            Align tabs to bottom?\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13598,6 +14680,46 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         dom.setAttribute(el2,"flex","");
         dom.setAttribute(el2,"layout","column");
         dom.setAttribute(el2,"style","z-index: 1;");
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("section");
+        dom.setAttribute(el3,"class","demo-container md-whiteframe-z1");
+        var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("demo-include");
+        dom.setAttribute(el4,"class","demoDynamicHeight");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","demo-content");
+        var el6 = dom.createTextNode("\n\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("md-content");
+        dom.setAttribute(el6,"class","md-padding");
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("                    ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n\n        ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
@@ -13700,7 +14822,65 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("section");
+        var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("demo-include");
+        dom.setAttribute(el4,"class","icondemoLoadSvgIconsFromUrl");
+        var el5 = dom.createTextNode("\n\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","demo-content demoStaticTabs");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","display-content sample");
+        var el7 = dom.createTextNode("\n\n\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n    ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("div");
+        dom.setAttribute(el7,"class","after-tabs-area");
+        dom.setAttribute(el7,"layout","row");
+        dom.setAttribute(el7,"layout-sm","column");
+        dom.setAttribute(el7,"layout-margin","");
+        dom.setAttribute(el7,"layout-align","left center");
+        var el8 = dom.createTextNode("\n");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n\n\n");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n\n\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n\n\n\n\n    ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -13712,7 +14892,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block, inline = hooks.inline, element = hooks.element;
+        var hooks = env.hooks, block = hooks.block, get = hooks.get, inline = hooks.inline, concat = hooks.concat, attribute = hooks.attribute, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -13730,30 +14910,113 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element1 = dom.childAt(fragment, [0, 1, 3]);
-        var element2 = dom.childAt(element1, [5, 1, 1]);
-        var element3 = dom.childAt(element2, [3]);
-        var element4 = dom.childAt(element3, [1]);
-        var element5 = dom.childAt(element3, [3]);
-        var morph0 = dom.createMorphAt(element1,1,1);
-        var morph1 = dom.createMorphAt(element1,3,3);
-        var attrMorph0 = dom.createAttrMorph(element1, 'class');
-        var morph2 = dom.createMorphAt(element2,1,1);
-        var morph3 = dom.createMorphAt(element4,1,1);
-        var morph4 = dom.createMorphAt(element4,3,3);
-        var morph5 = dom.createMorphAt(element5,3,3);
-        var morph6 = dom.createMorphAt(element5,4,4);
-        var morph7 = dom.createMorphAt(element5,5,5);
-        attribute(env, attrMorph0, element1, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
+        var element1 = dom.childAt(fragment, [0, 1]);
+        var element2 = dom.childAt(element1, [1]);
+        var element3 = dom.childAt(element1, [5]);
+        var element4 = dom.childAt(element3, [5, 1, 1]);
+        var element5 = dom.childAt(element4, [3]);
+        var element6 = dom.childAt(element5, [1]);
+        var element7 = dom.childAt(element5, [3]);
+        var element8 = dom.childAt(element1, [7]);
+        var element9 = dom.childAt(element8, [5, 1, 1]);
+        var element10 = dom.childAt(element9, [3]);
+        var morph0 = dom.createMorphAt(element2,1,1);
+        var morph1 = dom.createMorphAt(element2,3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element2, [5, 1, 1]),1,1);
+        var morph3 = dom.createMorphAt(element3,1,1);
+        var morph4 = dom.createMorphAt(element3,3,3);
+        var attrMorph0 = dom.createAttrMorph(element3, 'class');
+        var morph5 = dom.createMorphAt(element4,1,1);
+        var morph6 = dom.createMorphAt(element6,1,1);
+        var morph7 = dom.createMorphAt(element6,3,3);
+        var morph8 = dom.createMorphAt(element7,3,3);
+        var morph9 = dom.createMorphAt(element7,4,4);
+        var morph10 = dom.createMorphAt(element7,5,5);
+        var morph11 = dom.createMorphAt(element8,1,1);
+        var morph12 = dom.createMorphAt(element8,3,3);
+        var attrMorph1 = dom.createAttrMorph(element8, 'class');
+        var morph13 = dom.createMorphAt(element9,1,1);
+        var morph14 = dom.createMorphAt(element10,1,1);
+        var morph15 = dom.createMorphAt(element10,3,3);
         block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
-        inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
-        block(env, morph2, context, "md-tabs", [], {"selectedIndex": get(env, context, "selectedIndex"), "md-border-bottom": ""}, child1, null);
-        element(env, element3, context, "action", ["addTab"], {"on": "submit"});
-        block(env, morph3, context, "md-input-container", [], {"value": get(env, context, "selectedIndex")}, child2, null);
-        block(env, morph4, context, "md-input-container", [], {"value": get(env, context, "selectedTab.title")}, child3, null);
-        block(env, morph5, context, "md-input-container", [], {"value": get(env, context, "tTitle")}, child4, null);
-        block(env, morph6, context, "md-input-container", [], {"value": get(env, context, "tContent")}, child5, null);
-        block(env, morph7, context, "md-button", [], {"class": "add-tab md-primary", "style": "max-height: 40px"}, child6, null);
+        inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFilesDynamicHeight"), "showSource": get(env, context, "showSourceDynamicHeight")});
+        block(env, morph2, context, "md-tabs", [], {"md-border-bottom": "", "dynamicHeight": true}, child1, null);
+        attribute(env, attrMorph0, element3, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
+        block(env, morph3, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child2, null);
+        inline(env, morph4, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
+        block(env, morph5, context, "md-tabs", [], {"selectedIndex": get(env, context, "selectedIndex"), "md-border-bottom": ""}, child3, null);
+        element(env, element5, context, "action", ["addTab"], {"on": "submit"});
+        block(env, morph6, context, "md-input-container", [], {"value": get(env, context, "selectedIndex")}, child4, null);
+        block(env, morph7, context, "md-input-container", [], {"value": get(env, context, "selectedTab.title")}, child5, null);
+        block(env, morph8, context, "md-input-container", [], {"value": get(env, context, "tTitle")}, child6, null);
+        block(env, morph9, context, "md-input-container", [], {"value": get(env, context, "tContent")}, child7, null);
+        block(env, morph10, context, "md-button", [], {"class": "add-tab md-primary", "style": "max-height: 40px"}, child8, null);
+        attribute(env, attrMorph1, element8, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClassStaticTabs")]));
+        block(env, morph11, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child9, null);
+        inline(env, morph12, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFilesStaticTabs"), "showSource": get(env, context, "showSourceStaticTabs")});
+        block(env, morph13, context, "md-tabs", [], {"selectedIndex": get(env, context, "data.selectedIndex"), "class": "md-accent", "md-align-tabs": get(env, context, "alignTabs")}, child10, null);
+        block(env, morph14, context, "md-checkbox", [], {"checked": get(env, context, "data.secondLocked"), "aria-label": "Disabled"}, child11, null);
+        block(env, morph15, context, "md-checkbox", [], {"checked": get(env, context, "data.bottom")}, child12, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('dummy/templates/toast', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","doc-content");
+        dom.setAttribute(el1,"layout","column");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"flex","");
+        dom.setAttribute(el2,"layout","column");
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h3");
+        var el4 = dom.createTextNode("In progress - coming soon!");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
         return fragment;
       }
     };
@@ -13769,7 +15032,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -13817,7 +15080,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13879,7 +15142,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -13922,7 +15185,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
       var child1 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -13965,7 +15228,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
       var child2 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -14007,7 +15270,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14085,7 +15348,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14134,7 +15397,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14188,7 +15451,7 @@ define('dummy/templates/toolbar', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -14326,7 +15589,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -14374,7 +15637,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14437,7 +15700,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
-            revision: "Ember@1.11.0",
+            revision: "Ember@1.12.0",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
@@ -14472,7 +15735,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -14519,7 +15782,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14577,7 +15840,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -14612,7 +15875,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14661,7 +15924,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.11.0",
+          revision: "Ember@1.12.0",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -14696,7 +15959,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14744,7 +16007,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.0",
+        revision: "Ember@1.12.0",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -14779,7 +16042,7 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.0",
+      revision: "Ember@1.12.0",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -14934,6 +16197,726 @@ define('dummy/templates/tooltip', ['exports'], function (exports) {
   }()));
 
 });
+define('dummy/templates/typography', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h3");
+          var el3 = dom.createTextNode("Heading Styles");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h3");
+          var el3 = dom.createTextNode("Body Copy");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Medium 1.4sp");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("section");
+        dom.setAttribute(el1,"class","demo-container");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","md-whiteframe-z1 docs-list");
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"style","margin-top: 0;");
+        var el4 = dom.createTextNode("\n            To preserve ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("a");
+        dom.setAttribute(el4,"href","http://webaim.org/techniques/semanticstructure/");
+        var el5 = dom.createTextNode("semantic structures");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(", you should style the ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("code");
+        var el5 = dom.createTextNode("<h1>");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(" - ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("code");
+        var el5 = dom.createTextNode("<h6>>");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(" heading tags with the styling classes shown below:");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"layout","row");
+        dom.setAttribute(el3,"class","docs-descriptions");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h4");
+        dom.setAttribute(el4,"class","md-body-1");
+        dom.setAttribute(el4,"flex","25");
+        dom.setAttribute(el4,"id","headings-selectors");
+        var el5 = dom.createTextNode("Selectors");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h4");
+        dom.setAttribute(el4,"class","md-body-1");
+        dom.setAttribute(el4,"id","headings-output");
+        var el5 = dom.createTextNode("Output");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("md-divider");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("ul");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","column");
+        dom.setAttribute(el4,"layout-gt-md","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-display-4");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-display-4 docs-output");
+        var el6 = dom.createTextNode("Light 11.2sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-display-3");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-display-3 docs-output");
+        var el6 = dom.createTextNode("Regular 5.6sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-display-2");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-display-2 docs-output");
+        var el6 = dom.createTextNode("Regular 4.5sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-display-1");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-display-1 docs-output");
+        var el6 = dom.createTextNode("Regular 3.4sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-headline");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-headline docs-output");
+        var el6 = dom.createTextNode("Regular 2.4sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-title");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-title docs-output");
+        var el6 = dom.createTextNode("Medium 2.0sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","headings-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-subhead");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h5");
+        dom.setAttribute(el5,"aria-describedby","headings-output");
+        dom.setAttribute(el5,"class","md-subhead docs-output");
+        var el6 = dom.createTextNode("Regular 1.6sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        dom.setAttribute(el3,"class","md-title");
+        var el4 = dom.createTextNode("Example");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("br");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("span");
+        dom.setAttribute(el3,"class","md-body-1");
+        var el4 = dom.createTextNode("\n  	Note: Base font size is ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("code");
+        var el5 = dom.createTextNode("10px");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(" for easy rem units (1.2rem = 12px). Body font size is ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("code");
+        var el5 = dom.createTextNode("16px");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(". sp = scaleable pixels.\n	");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("section");
+        dom.setAttribute(el1,"class","demo-container");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","md-whiteframe-z1 docs-list");
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"layout","row");
+        dom.setAttribute(el3,"class","docs-descriptions");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h4");
+        dom.setAttribute(el4,"class","md-body-1");
+        dom.setAttribute(el4,"flex","25");
+        dom.setAttribute(el4,"id","body-selectors");
+        var el5 = dom.createTextNode("Selectors");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h4");
+        dom.setAttribute(el4,"class","md-body-1");
+        dom.setAttribute(el4,"id","body-output");
+        var el5 = dom.createTextNode("Output");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("md-divider");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("ul");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","body-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-body-1");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        dom.setAttribute(el5,"class","docs-output");
+        dom.setAttribute(el5,"aria-describedby","body-output");
+        var el6 = dom.createTextNode("Regular 1.4sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","body-selectors");
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("\n            .md-body-2");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        dom.setAttribute(el5,"class","md-body-2 docs-output");
+        dom.setAttribute(el5,"aria-describedby","body-output");
+        var el6 = dom.createTextNode("Medium 1.4sp");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","body-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-caption");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","docs-output");
+        dom.setAttribute(el5,"aria-describedby","body-output");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("small");
+        dom.setAttribute(el6,"class","md-caption");
+        var el7 = dom.createTextNode("Regular 1.2sp");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        dom.setAttribute(el4,"layout","row");
+        dom.setAttribute(el4,"layout-align","start center");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"flex","25");
+        dom.setAttribute(el5,"class","docs-definition");
+        dom.setAttribute(el5,"aria-describedby","body-selectors");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode(".md-button");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","docs-output");
+        dom.setAttribute(el5,"aria-describedby","body-output");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        dom.setAttribute(el3,"class","md-title");
+        var el4 = dom.createTextNode("Examples");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(element1, [3]);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),11,11);
+        var morph2 = dom.createMorphAt(element1,1,1);
+        var morph3 = dom.createMorphAt(dom.childAt(element2, [5, 7, 3]),1,1);
+        var morph4 = dom.createMorphAt(element2,9,9);
+        block(env, morph0, context, "md-toolbar", [], {"class": "demo-toolbar"}, child0, null);
+        inline(env, morph1, context, "code-snippet", [], {"name": "typography-snippet1.hbs"});
+        block(env, morph2, context, "md-toolbar", [], {"class": "demo-toolbar"}, child1, null);
+        block(env, morph3, context, "md-button", [], {}, child2, null);
+        inline(env, morph4, context, "code-snippet", [], {"name": "typography-snippet2.hbs"});
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('dummy/tests/helpers/resolver', ['exports', 'ember/resolver', 'dummy/config/environment'], function (exports, Resolver, config) {
 
   'use strict';
@@ -14982,18 +16965,18 @@ define('dummy/tests/unit/components/md-backdrop-test', ['ember-qunit'], function
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-backdrop", {});
+  ember_qunit.moduleForComponent('md-backdrop', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15004,18 +16987,18 @@ define('dummy/tests/unit/components/md-button-link-test', ['ember-qunit'], funct
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-button-link", {});
+  ember_qunit.moduleForComponent('md-button-link', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15026,24 +17009,24 @@ define('dummy/tests/unit/components/md-button-test', ['ember', 'ember-qunit'], f
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-button", {
+  ember_qunit.moduleForComponent('md-button', {
     // Specify the other units that are required for this test
-    needs: ["service:ripple", "service:constants", "service:sniffer"]
+    needs: ['service:ripple', 'service:constants', 'service:sniffer']
   });
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test("it should have md-ripple-container after click", function (assert) {
+  ember_qunit.test('it should have md-ripple-container after click', function (assert) {
     var _this = this;
 
     var component = this.subject();
@@ -15053,14 +17036,14 @@ define('dummy/tests/unit/components/md-button-test', ['ember', 'ember-qunit'], f
     var position = this.$().position();
 
     Ember['default'].run(function () {
-      _this.$().triggerHandler({ type: "mousedown", clientX: position.left, clientY: position.top });
+      _this.$().triggerHandler({ type: 'mousedown', clientX: position.left, clientY: position.top });
     });
 
-    assert.equal(this.$()[0].getElementsByClassName("md-ripple-container").length, 1, "Ripple is added");
+    assert.equal(this.$()[0].getElementsByClassName('md-ripple-container').length, 1, 'Ripple is added');
   });
 
-  ember_qunit.test("it should not have md-ripple-container if mdNoInk attribute is set", function (assert) {
-    var _this = this;
+  ember_qunit.test('it should not have md-ripple-container if mdNoInk attribute is set', function (assert) {
+    var _this2 = this;
 
     var component = this.subject({
       mdNoInk: true
@@ -15071,10 +17054,10 @@ define('dummy/tests/unit/components/md-button-test', ['ember', 'ember-qunit'], f
     var position = this.$().position();
 
     Ember['default'].run(function () {
-      _this.$().triggerHandler({ type: "mousedown", clientX: position.left, clientY: position.top });
+      _this2.$().triggerHandler({ type: 'mousedown', clientX: position.left, clientY: position.top });
     });
 
-    assert.equal(this.$()[0].getElementsByClassName("md-ripple-container").length, 0, "Ripple is not present");
+    assert.equal(this.$()[0].getElementsByClassName('md-ripple-container').length, 0, 'Ripple is not present');
   });
 
 });
@@ -15082,125 +17065,125 @@ define('dummy/tests/unit/components/md-checkbox-test', ['ember-qunit'], function
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-checkbox", {
+  ember_qunit.moduleForComponent('md-checkbox', {
     // Specify the other units that are required for this test
-    needs: ["service:ripple", "service:constants", "service:sniffer"]
+    needs: ['service:ripple', 'service:constants', 'service:sniffer']
   });
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test("it should have md-checked class when checked", function (assert) {
+  ember_qunit.test('it should have md-checked class when checked', function (assert) {
     assert.expect(1);
 
     var component = this.subject();
 
     Ember.run(function () {
-      component.set("checked", true);
+      component.set('checked', true);
     });
 
-    assert.ok(this.$().hasClass("md-checked"));
+    assert.ok(this.$().hasClass('md-checked'));
   });
 
-  ember_qunit.test("it should be able to be checked using space bar", function (assert) {
+  ember_qunit.test('it should be able to be checked using space bar', function (assert) {
     var _this = this;
 
     assert.expect(2);
     var component = this.subject();
 
-    var e = Ember.$.Event("keypress");
+    var e = Ember.$.Event('keypress');
     e.which = 32;
 
     Ember.run(function () {
       _this.$().trigger(e);
     });
 
-    assert.ok(this.$().hasClass("md-checked"));
-    assert.equal(component.get("checked"), true);
+    assert.ok(this.$().hasClass('md-checked'));
+    assert.equal(component.get('checked'), true);
   });
 
-  ember_qunit.test("it should be able to be unchecked using space bar", function (assert) {
-    var _this = this;
+  ember_qunit.test('it should be able to be unchecked using space bar', function (assert) {
+    var _this2 = this;
 
     assert.expect(2);
     var component = this.subject({
       checked: true
     });
 
-    var e = Ember.$.Event("keypress");
+    var e = Ember.$.Event('keypress');
     e.which = 32;
 
     Ember.run(function () {
-      _this.$().trigger(e);
+      _this2.$().trigger(e);
     });
 
-    assert.ok(!this.$().hasClass("md-checked"));
-    assert.equal(component.get("checked"), false);
+    assert.ok(!this.$().hasClass('md-checked'));
+    assert.equal(component.get('checked'), false);
   });
 
-  ember_qunit.test("it should be able to be checked using enter key", function (assert) {
-    var _this = this;
+  ember_qunit.test('it should be able to be checked using enter key', function (assert) {
+    var _this3 = this;
 
     assert.expect(2);
     var component = this.subject();
 
-    var e = Ember.$.Event("keypress");
+    var e = Ember.$.Event('keypress');
     e.which = 13;
 
     Ember.run(function () {
-      _this.$().trigger(e);
+      _this3.$().trigger(e);
     });
 
-    assert.ok(this.$().hasClass("md-checked"));
-    assert.equal(component.get("checked"), true);
+    assert.ok(this.$().hasClass('md-checked'));
+    assert.equal(component.get('checked'), true);
   });
 
-  ember_qunit.test("it should be able to be unchecked using enter key", function (assert) {
-    var _this = this;
+  ember_qunit.test('it should be able to be unchecked using enter key', function (assert) {
+    var _this4 = this;
 
     assert.expect(2);
     var component = this.subject({
       checked: true
     });
 
-    var e = Ember.$.Event("keypress");
+    var e = Ember.$.Event('keypress');
     e.which = 13;
 
     Ember.run(function () {
-      _this.$().trigger(e);
+      _this4.$().trigger(e);
     });
 
-    assert.ok(!this.$().hasClass("md-checked"));
-    assert.equal(component.get("checked"), false);
+    assert.ok(!this.$().hasClass('md-checked'));
+    assert.equal(component.get('checked'), false);
   });
 
-  ember_qunit.test("should not be able to toggle value if disabled", function (assert) {
-    var _this = this;
+  ember_qunit.test('should not be able to toggle value if disabled', function (assert) {
+    var _this5 = this;
 
     var component = this.subject({
       disabled: true,
       checked: true
     });
 
-    var e = Ember.$.Event("mousedown");
+    var e = Ember.$.Event('mousedown');
     e.clientX = this.$().position().left;
     e.clientY = this.$().position().top;
 
     Ember.run(function () {
-      _this.$().trigger(e);
+      _this5.$().trigger(e);
     });
 
-    assert.ok(this.$().hasClass("md-checked"));
-    assert.equal(component.get("checked"), true);
+    assert.ok(this.$().hasClass('md-checked'));
+    assert.equal(component.get('checked'), true);
   });
 
 });
@@ -15208,18 +17191,18 @@ define('dummy/tests/unit/components/md-icon-test', ['ember-qunit'], function (em
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-icon", {});
+  ember_qunit.moduleForComponent('md-icon', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15230,18 +17213,18 @@ define('dummy/tests/unit/components/md-input-container-test', ['ember-qunit'], f
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-input-container", {});
+  ember_qunit.moduleForComponent('md-input-container', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15252,18 +17235,18 @@ define('dummy/tests/unit/components/md-input-test', ['ember-qunit'], function (e
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-input", {});
+  ember_qunit.moduleForComponent('md-input', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15274,18 +17257,18 @@ define('dummy/tests/unit/components/md-list-item-test', ['ember-qunit'], functio
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-list-item", {});
+  ember_qunit.moduleForComponent('md-list-item', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15296,18 +17279,18 @@ define('dummy/tests/unit/components/md-list-test', ['ember-qunit'], function (em
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-list", {});
+  ember_qunit.moduleForComponent('md-list', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15318,18 +17301,18 @@ define('dummy/tests/unit/components/md-progress-circular-test', ['ember-qunit'],
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-progress-circular", {});
+  ember_qunit.moduleForComponent('md-progress-circular', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15340,24 +17323,24 @@ define('dummy/tests/unit/components/md-progress-linear-test', ['ember-qunit', 'e
 
     'use strict';
 
-    ember_qunit.moduleForComponent("md-progress-linear", {
+    ember_qunit.moduleForComponent('md-progress-linear', {
         // Specify the other units that are required for this test
-        needs: ["service:constants", "service:sniffer"]
+        needs: ['service:constants', 'service:sniffer']
     });
 
-    ember_qunit.test("it renders", function (assert) {
+    ember_qunit.test('it renders', function (assert) {
         assert.expect(2);
 
         // Creates the component instance
         var component = this.subject();
-        assert.equal(component._state, "preRender");
+        assert.equal(component._state, 'preRender');
 
         // Renders the component to the page
         this.render();
-        assert.equal(component._state, "inDOM");
+        assert.equal(component._state, 'inDOM');
     });
 
-    ember_qunit.test("it sets transform based on value", function (assert) {
+    ember_qunit.test('it sets transform based on value', function (assert) {
 
         var component = this.subject({
             value: 50
@@ -15365,42 +17348,42 @@ define('dummy/tests/unit/components/md-progress-linear-test', ['ember-qunit', 'e
 
         this.render();
 
-        var bar2 = this.$().find(".md-bar2")[0];
+        var bar2 = this.$().find('.md-bar2')[0];
 
-        var bar2style = bar2.style[component.get("constants.CSS.TRANSFORM")];
+        var bar2style = bar2.style[component.get('constants.CSS.TRANSFORM')];
 
-        assert.equal(bar2style, "translateX(-25%) scale(0.5, 1)", "Transition set correctly");
+        assert.equal(bar2style, 'translateX(-25%) scale(0.5, 1)', 'Transition set correctly');
     });
 
-    ember_qunit.test("it sets transform based on buffer value", function (assert) {
+    ember_qunit.test('it sets transform based on buffer value', function (assert) {
         var component = this.subject({
             value: 50,
-            "md-buffer-value": 75
+            'md-buffer-value': 75
 
         });
 
         this.render();
 
-        var bar1 = this.$().find(".md-bar1")[0];
+        var bar1 = this.$().find('.md-bar1')[0];
 
-        var bar1style = bar1.style[component.get("constants.CSS.TRANSFORM")];
+        var bar1style = bar1.style[component.get('constants.CSS.TRANSFORM')];
 
-        assert.equal(bar1style, "translateX(-12.5%) scale(0.75, 1)", "Buffer bar transition set correctly");
+        assert.equal(bar1style, 'translateX(-12.5%) scale(0.75, 1)', 'Buffer bar transition set correctly');
     });
 
-    ember_qunit.test("it should not set transition in query mode", function (assert) {
+    ember_qunit.test('it should not set transition in query mode', function (assert) {
         var component = this.subject({
             value: 80,
-            "md-mode": "query"
+            'md-mode': 'query'
         });
 
         this.render();
 
-        var bar2 = this.$().find(".md-bar2")[0];
+        var bar2 = this.$().find('.md-bar2')[0];
 
-        var bar2style = bar2.style[component.get("constants.CSS.TRANSFORM")];
+        var bar2style = bar2.style[component.get('constants.CSS.TRANSFORM')];
 
-        assert.ok(!bar2style, "Buffer bar not set");
+        assert.ok(!bar2style, 'Buffer bar not set');
     });
 
 });
@@ -15408,90 +17391,90 @@ define('dummy/tests/unit/components/md-radio-button-test', ['ember-qunit', 'embe
 
     'use strict';
 
-    ember_qunit.moduleForComponent("md-radio-button", {
+    ember_qunit.moduleForComponent('md-radio-button', {
         // Specify the other units that are required for this test
-        needs: ["service:ripple", "service:constants", "service:sniffer"]
+        needs: ['service:ripple', 'service:constants', 'service:sniffer']
     });
 
-    ember_qunit.test("it renders", function (assert) {
+    ember_qunit.test('it renders', function (assert) {
         assert.expect(2);
 
         // Creates the component instance
         var component = this.subject();
-        assert.equal(component._state, "preRender");
+        assert.equal(component._state, 'preRender');
 
         // Renders the component to the page
         this.render();
-        assert.equal(component._state, "inDOM");
+        assert.equal(component._state, 'inDOM');
     });
 
-    ember_qunit.test("it sets checked class if checked", function (assert) {
+    ember_qunit.test('it sets checked class if checked', function (assert) {
         var component = this.subject({
             checked: true
         });
 
         this.render();
 
-        assert.ok(this.$().hasClass("md-checked"), "Radio button has md-checked class");
+        assert.ok(this.$().hasClass('md-checked'), 'Radio button has md-checked class');
     });
 
-    ember_qunit.test("it sets checked if selected", function (assert) {
-        var val = "Hooray";
+    ember_qunit.test('it sets checked if selected', function (assert) {
+        var val = 'Hooray';
 
         var component = this.subject({
-            value: "Hooray",
+            value: 'Hooray',
             selected: val
         });
 
         this.render();
 
-        assert.ok(this.$().hasClass("md-checked"), "Radio button has md-checked class");
+        assert.ok(this.$().hasClass('md-checked'), 'Radio button has md-checked class');
     });
 
-    ember_qunit.test("it updates if value == selected", function (assert) {
-        var value = "Hooray";
+    ember_qunit.test('it updates if value == selected', function (assert) {
+        var value = 'Hooray';
 
         var component = this.subject({
-            value: "Yesso",
+            value: 'Yesso',
             selected: value
         });
 
         this.render();
 
-        assert.ok(!this.$().hasClass("md-checked"), "Radio button does not have md-checked class");
+        assert.ok(!this.$().hasClass('md-checked'), 'Radio button does not have md-checked class');
 
         Ember['default'].run(function () {
-            component.set("value", "Hooray");
+            component.set('value', 'Hooray');
         });
 
-        assert.ok(this.$().hasClass("md-checked"), "Radio button has md-checked class");
+        assert.ok(this.$().hasClass('md-checked'), 'Radio button has md-checked class');
     });
 
-    ember_qunit.test("clicking the radio button updates the selected value", function (assert) {
+    ember_qunit.test('clicking the radio button updates the selected value', function (assert) {
         var component = this.subject({
-            value: "Yesso",
-            selected: "Hooray"
+            value: 'Yesso',
+            selected: 'Hooray'
         });
 
         this.render();
 
-        this.$().trigger("click");
+        this.$().trigger('click');
 
-        assert.equal(component.get("selected"), "Yesso", "Value updated correctly");
+        assert.equal(component.get('selected'), 'Yesso', 'Value updated correctly');
     });
 
-    ember_qunit.test("clicking the radio button does not update selected value if disabled", function (assert) {
+    ember_qunit.test('clicking the radio button does not update selected value if disabled', function (assert) {
         var component = this.subject({
-            value: "Yesso",
-            selected: "Hooray",
+            value: 'Yesso',
+            selected: 'Hooray',
             disabled: true
         });
 
         this.render();
 
-        this.$().trigger("click");
+        this.$().trigger('click');
 
-        assert.equal(component.get("selected"), "Hooray", "Value did not update");
+        assert.equal(component.get('selected'), 'Hooray', 'Value did not update');
     });
 
 });
@@ -15499,21 +17482,21 @@ define('dummy/tests/unit/components/md-sidenav-test', ['ember-qunit'], function 
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-sidenav", {
+  ember_qunit.moduleForComponent('md-sidenav', {
     // Specify the other units that are required for this test
-    needs: ["service:media-queries"]
+    needs: ['service:media-queries']
   });
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
 });
@@ -15521,18 +17504,18 @@ define('dummy/tests/unit/components/md-slider-test', ['ember-qunit'], function (
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-slider", {});
+  ember_qunit.moduleForComponent('md-slider', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15543,68 +17526,68 @@ define('dummy/tests/unit/components/md-tabs-test', ['ember-qunit', 'ember'], fun
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-tabs", {
+  ember_qunit.moduleForComponent('md-tabs', {
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
-    needs: ["component:md-tab", "component:md-tab-item", "component:md-tab-content", "component:md-tabs-content-wrapper", "component:md-tabs-wrapper", "service:media-queries", "service:sniffer", "service:ripple", "service:constants"]
+    needs: ['component:md-tab', 'component:md-tab-item', 'component:md-tab-content', 'component:md-tabs-content-wrapper', 'component:md-tabs-wrapper', 'component:md-icon', 'service:media-queries', 'service:sniffer', 'service:ripple', 'service:constants']
     //'template:md-tabs-content-wrapper']
   });
 
-  var oneTabTemplate = Ember['default'].HTMLBars.compile("{{#md-tabs-wrapper}}" + "{{#md-tab label=\"tab 1\"}}" + "<md-tab-label>tab 1</md-tab-label>" + "{{/md-tab}}" + "{{/md-tabs-wrapper}}" + "{{#md-tabs-content-wrapper}}" + "{{#md-tab-content}}" + "<div class=\"demo-tab\">" + "tab 1" + "<br/>" + "</div>" + "{{/md-tab-content}}" + "{{/md-tabs-content-wrapper}}");
+  var oneTabTemplate = Ember['default'].HTMLBars.compile('{{#md-tabs-wrapper}}' + '{{#md-tab label="tab 1"}}' + '<md-tab-label>tab 1</md-tab-label>' + '{{/md-tab}}' + '{{/md-tabs-wrapper}}' + '{{#md-tabs-content-wrapper}}' + '{{#md-tab-content}}' + '<div class="demo-tab">' + 'tab 1' + '<br/>' + '</div>' + '{{/md-tab-content}}' + '{{/md-tabs-content-wrapper}}');
 
-  var twoTabTemplate = Ember['default'].HTMLBars.compile("{{#md-tabs-wrapper}}" + "{{#md-tab label=\"tab 1\"}}" + "<md-tab-label>tab 1</md-tab-label>" + "{{/md-tab}}" + "{{#md-tab label=\"tab 2\"}}" + "<md-tab-label>tab 2</md-tab-label>" + "{{/md-tab}}" + "{{/md-tabs-wrapper}}" + "{{#md-tabs-content-wrapper}}" + "{{#md-tab-content}}" + "<div class=\"demo-tab\">" + "tab 1" + "<br/>" + "</div>" + "{{/md-tab-content}}" + "{{#md-tab-content}}" + "<div class=\"demo-tab\">" + "tab 2" + "<br/>" + "</div>" + "{{/md-tab-content}}" + "{{/md-tabs-content-wrapper}}");
+  var twoTabTemplate = Ember['default'].HTMLBars.compile('{{#md-tabs-wrapper}}' + '{{#md-tab label="tab 1"}}' + '<md-tab-label>tab 1</md-tab-label>' + '{{/md-tab}}' + '{{#md-tab label="tab 2"}}' + '<md-tab-label>tab 2</md-tab-label>' + '{{/md-tab}}' + '{{/md-tabs-wrapper}}' + '{{#md-tabs-content-wrapper}}' + '{{#md-tab-content}}' + '<div class="demo-tab">' + 'tab 1' + '<br/>' + '</div>' + '{{/md-tab-content}}' + '{{#md-tab-content}}' + '<div class="demo-tab">' + 'tab 2' + '<br/>' + '</div>' + '{{/md-tab-content}}' + '{{/md-tabs-content-wrapper}}');
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject({
       template: oneTabTemplate
     });
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
 
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test("selects first tab by default", function (assert) {
+  ember_qunit.test('selects first tab by default', function (assert) {
     var component = this.subject({
       template: twoTabTemplate
     });
 
     this.render();
 
-    var firstTab = this.$().find("md-tab-item").eq(0);
-    var secondTab = this.$().find("md-tab-item").eq(1);
+    var firstTab = this.$().find('md-tab-item').eq(0);
+    var secondTab = this.$().find('md-tab-item').eq(1);
 
-    assert.ok(firstTab.hasClass("md-active"), "First tab is selected");
-    assert.ok(!secondTab.hasClass("md-active"), "Second tab is not selected");
+    assert.ok(firstTab.hasClass('md-active'), 'First tab is selected');
+    assert.ok(!secondTab.hasClass('md-active'), 'Second tab is not selected');
   });
 
-  ember_qunit.test("selects and focuses a tab on click", function (assert) {
+  ember_qunit.test('selects and focuses a tab on click', function (assert) {
     var component = this.subject({
       template: twoTabTemplate
     });
 
     this.render();
 
-    var e = Ember['default'].$.Event("click");
+    var e = Ember['default'].$.Event('click');
 
-    var secondTab = this.$().find("md-tab-item").eq(1);
+    var secondTab = this.$().find('md-tab-item').eq(1);
 
-    assert.ok(secondTab, "Second tab exists");
+    assert.ok(secondTab, 'Second tab exists');
 
     Ember['default'].run(function () {
       secondTab.trigger(e);
     });
 
-    assert.ok(secondTab.hasClass("md-active"), "Second tab is selected");
-    assert.equal(component.get("selectedIndex"), 1, "Second tab is selected");
+    assert.ok(secondTab.hasClass('md-active'), 'Second tab is selected');
+    assert.equal(component.get('selectedIndex'), 1, 'Second tab is selected');
   });
 
-  ember_qunit.test("changing selected index changes active tab", function (assert) {
+  ember_qunit.test('changing selected index changes active tab', function (assert) {
     var component = this.subject({
       template: twoTabTemplate
     });
@@ -15612,13 +17595,13 @@ define('dummy/tests/unit/components/md-tabs-test', ['ember-qunit', 'ember'], fun
     this.render();
 
     Ember['default'].run(function () {
-      component.set("selectedIndex", 1);
+      component.set('selectedIndex', 1);
     });
 
-    var firstTab = this.$().find("md-tab-item").eq(0);
-    var secondTab = this.$().find("md-tab-item").eq(1);
-    assert.ok(!firstTab.hasClass("md-active"), "First tab is not selected");
-    assert.ok(secondTab.hasClass("md-active"), "Second tab is selected");
+    var firstTab = this.$().find('md-tab-item').eq(0);
+    var secondTab = this.$().find('md-tab-item').eq(1);
+    assert.ok(!firstTab.hasClass('md-active'), 'First tab is not selected');
+    assert.ok(secondTab.hasClass('md-active'), 'Second tab is selected');
   });
 
 });
@@ -15626,18 +17609,18 @@ define('dummy/tests/unit/components/md-textarea-test', ['ember-qunit'], function
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-textarea", {});
+  ember_qunit.moduleForComponent('md-textarea', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15648,18 +17631,18 @@ define('dummy/tests/unit/components/md-toast-test', ['ember-qunit'], function (e
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-toast", {});
+  ember_qunit.moduleForComponent('md-toast', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15670,18 +17653,18 @@ define('dummy/tests/unit/components/md-toolbar-test', ['ember-qunit'], function 
 
   'use strict';
 
-  ember_qunit.moduleForComponent("md-toolbar", {});
+  ember_qunit.moduleForComponent('md-toolbar', {});
 
-  ember_qunit.test("it renders", function (assert) {
+  ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
     var component = this.subject();
-    assert.equal(component._state, "preRender");
+    assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
     this.render();
-    assert.equal(component._state, "inDOM");
+    assert.equal(component._state, 'inDOM');
   });
 
   // Specify the other units that are required for this test
@@ -15692,16 +17675,16 @@ define('dummy/tests/unit/components/md-tooltip-test', ['ember-qunit', 'ember', '
 
     'use strict';
 
-    ember_qunit.moduleForComponent("md-tooltip", {
+    ember_qunit.moduleForComponent('md-tooltip', {
         // Specify the other units that are required for this test
-        needs: ["service:utility"]
+        needs: ['service:utility']
     });
 
-    var template = Ember['default'].HTMLBars.compile("test");
+    var template = Ember['default'].HTMLBars.compile('test');
 
     var rootElement = Ember['default'].$(config['default'].APP.rootElement);
 
-    ember_qunit.test("it renders", function (assert) {
+    ember_qunit.test('it renders', function (assert) {
 
         assert.expect(2);
 
@@ -15710,14 +17693,14 @@ define('dummy/tests/unit/components/md-tooltip-test', ['ember-qunit', 'ember', '
             rootElement: rootElement,
             template: template
         });
-        assert.equal(component._state, "preRender");
+        assert.equal(component._state, 'preRender');
 
         // Renders the component to the page
         this.render();
-        assert.equal(component._state, "inDOM");
+        assert.equal(component._state, 'inDOM');
     });
 
-    ember_qunit.test("it is visible on mouseover", function (assert) {
+    ember_qunit.test('it is visible on mouseover', function (assert) {
         var _this = this;
 
         var component = this.subject({
@@ -15728,18 +17711,18 @@ define('dummy/tests/unit/components/md-tooltip-test', ['ember-qunit', 'ember', '
 
         this.render();
 
-        var e = Ember['default'].$.Event("mouseenter");
+        var e = Ember['default'].$.Event('mouseenter');
         Ember['default'].run(function () {
-            Ember['default'].$(component.get("parent")).trigger(e);
+            Ember['default'].$(component.get('parent')).trigger(e);
 
             Ember['default'].run.later(_this, function () {
-                assert.equal(component.get("visible"), true);
+                assert.equal(component.get('visible'), true);
             }, 1);
         });
     });
 
-    ember_qunit.test("it becomes invisible on mouseleave", function (assert) {
-        var _this = this;
+    ember_qunit.test('it becomes invisible on mouseleave', function (assert) {
+        var _this2 = this;
 
         assert.expect(2);
 
@@ -15753,29 +17736,29 @@ define('dummy/tests/unit/components/md-tooltip-test', ['ember-qunit', 'ember', '
 
         this.render();
 
-        var e = Ember['default'].$.Event("mouseenter");
+        var e = Ember['default'].$.Event('mouseenter');
         Ember['default'].run(function () {
-            Ember['default'].$(component.get("parent")).trigger(e);
+            Ember['default'].$(component.get('parent')).trigger(e);
 
-            Ember['default'].run.later(_this, function () {
-                assert.equal(component.get("visible"), true, "Tooltip is visible");
+            Ember['default'].run.later(_this2, function () {
+                assert.equal(component.get('visible'), true, 'Tooltip is visible');
             }, 5);
         });
 
         Ember['default'].run(function () {
-            var e2 = Ember['default'].$.Event("mouseleave");
-            Ember['default'].run.later(_this, function () {
-                Ember['default'].$(component.get("parent")).trigger(e2);
+            var e2 = Ember['default'].$.Event('mouseleave');
+            Ember['default'].run.later(_this2, function () {
+                Ember['default'].$(component.get('parent')).trigger(e2);
             }, 10);
         });
 
         Ember['default'].run.later(this, function () {
-            assert.equal(component.get("visible"), false, "Tooltip is hidden");
+            assert.equal(component.get('visible'), false, 'Tooltip is hidden');
             done();
         }, 20);
     });
 
-    ember_qunit.test("it should wait for delay before being visible on mouseenter", function (assert) {
+    ember_qunit.test('it should wait for delay before being visible on mouseenter', function (assert) {
 
         var done = assert.async();
 
@@ -15789,24 +17772,20 @@ define('dummy/tests/unit/components/md-tooltip-test', ['ember-qunit', 'ember', '
 
         this.render();
 
-        var e = Ember['default'].$.Event("mouseenter");
+        var e = Ember['default'].$.Event('mouseenter');
 
         Ember['default'].run(function () {
-            Ember['default'].$(component.get("parent")).trigger(e);
+            Ember['default'].$(component.get('parent')).trigger(e);
+            assert.equal(component.get('visible'), false, 'Tooltip still invisible');
+
+            setTimeout(function () {
+                assert.equal(component.get('visible'), true, 'Tooltip is visible');
+                done();
+            }, 15);
         });
-
-        Ember['default'].run.later(this, function () {
-            assert.equal(component.get("visible"), false, "Tooltip still invisible");
-        }, 2);
-
-        Ember['default'].run.later(this, function () {
-
-            assert.equal(component.get("visible"), true, "Tooltip is visible");
-            done();
-        }, 15);
     });
 
-    ember_qunit.test("it should show if setVisible is set to true", function (assert) {
+    ember_qunit.test('it should show if setVisible is set to true', function (assert) {
         var component = this.subject({
             rootElement: rootElement,
             template: template,
@@ -15816,12 +17795,12 @@ define('dummy/tests/unit/components/md-tooltip-test', ['ember-qunit', 'ember', '
         this.render();
 
         Ember['default'].run(function () {
-            component.set("visible", true);
+            component.set('visible', true);
         });
 
         Ember['default'].run.later(this, function () {
-            var tooltipContent = Ember['default'].$(document.body).find("md-tooltip").find(".md-content");
-            assert.ok(tooltipContent.hasClass("md-show"), "Tooltip is visible");
+            var tooltipContent = Ember['default'].$(document.body).find('md-tooltip').find('.md-content');
+            assert.ok(tooltipContent.hasClass('md-show'), 'Tooltip is visible');
         }, 2);
     });
 
@@ -15832,7 +17811,7 @@ define('dummy/tests/unit/initializers/md-layout-views-test', ['ember', 'dummy/in
 
   var container, application;
 
-  qunit.module("MdLayoutViewsInitializer", {
+  qunit.module('MdLayoutViewsInitializer', {
     beforeEach: function beforeEach() {
       Ember['default'].run(function () {
         application = Ember['default'].Application.create();
@@ -15843,7 +17822,7 @@ define('dummy/tests/unit/initializers/md-layout-views-test', ['ember', 'dummy/in
   });
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     md_layout_views.initialize(container, application);
 
     // you would normally confirm the results of the initializer here
@@ -15857,7 +17836,7 @@ define('dummy/tests/unit/initializers/md-link-to-test', ['ember', 'dummy/initial
 
   var container, application;
 
-  qunit.module("MdLinkToInitializer", {
+  qunit.module('MdLinkToInitializer', {
     beforeEach: function beforeEach() {
       Ember['default'].run(function () {
         application = Ember['default'].Application.create();
@@ -15868,7 +17847,7 @@ define('dummy/tests/unit/initializers/md-link-to-test', ['ember', 'dummy/initial
   });
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     md_link_to.initialize(container, application);
 
     // you would normally confirm the results of the initializer here
@@ -15880,10 +17859,10 @@ define('dummy/tests/unit/mixins/events-test', ['ember', 'ember-material-design/m
 
   'use strict';
 
-  qunit.module("EventsMixin");
+  qunit.module('EventsMixin');
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     var EventsObject = Ember['default'].Object.extend(EventsMixin['default']);
     var subject = EventsObject.create();
     assert.ok(subject);
@@ -15894,10 +17873,10 @@ define('dummy/tests/unit/mixins/gesture-events-test', ['ember', 'ember-material-
 
   'use strict';
 
-  qunit.module("GestureEventsMixin");
+  qunit.module('GestureEventsMixin');
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     var GestureEventsObject = Ember['default'].Object.extend(GestureEventsMixin['default']);
     var subject = GestureEventsObject.create();
     assert.ok(subject);
@@ -15908,10 +17887,10 @@ define('dummy/tests/unit/mixins/has-flex-test', ['ember', 'ember-material-design
 
   'use strict';
 
-  qunit.module("HasFlexMixin");
+  qunit.module('HasFlexMixin');
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     var HasFlexObject = Ember['default'].Object.extend(HasFlexMixin['default']);
     var subject = HasFlexObject.create();
     assert.ok(subject);
@@ -15922,12 +17901,26 @@ define('dummy/tests/unit/mixins/has-layout-test', ['ember', 'ember-material-desi
 
   'use strict';
 
-  qunit.module("HasLayoutMixin");
+  qunit.module('HasLayoutMixin');
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     var HasLayoutObject = Ember['default'].Object.extend(HasLayoutMixin['default']);
     var subject = HasLayoutObject.create();
+    assert.ok(subject);
+  });
+
+});
+define('dummy/tests/unit/mixins/layout-rules-test', ['ember', 'ember-material-design/mixins/layout-rules', 'qunit'], function (Ember, LayoutMixin, qunit) {
+
+  'use strict';
+
+  qunit.module('LayoutRulesMixin');
+
+  // Replace this with your real tests.
+  qunit.test('it works', function (assert) {
+    var LayoutObject = Ember['default'].Object.extend(LayoutMixin['default']);
+    var subject = LayoutObject.create();
     assert.ok(subject);
   });
 
@@ -15936,10 +17929,10 @@ define('dummy/tests/unit/mixins/ripples-test', ['ember', 'ember-material-design/
 
   'use strict';
 
-  qunit.module("RipplesMixin");
+  qunit.module('RipplesMixin');
 
   // Replace this with your real tests.
-  qunit.test("it works", function (assert) {
+  qunit.test('it works', function (assert) {
     var RipplesObject = Ember['default'].Object.extend(RipplesMixin['default']);
     var subject = RipplesObject.create();
     assert.ok(subject);
@@ -15950,10 +17943,10 @@ define('dummy/tests/unit/services/constants-test', ['ember-qunit'], function (em
 
   'use strict';
 
-  ember_qunit.moduleFor("service:constants", {});
+  ember_qunit.moduleFor('service:constants', {});
 
   // Replace this with your real tests.
-  ember_qunit.test("it exists", function (assert) {
+  ember_qunit.test('it exists', function (assert) {
     var service = this.subject();
     assert.ok(service);
   });
@@ -15966,41 +17959,41 @@ define('dummy/tests/unit/services/icon-test', ['ember-qunit', 'ember'], function
 
 	'use strict';
 
-	ember_qunit.moduleFor("service:icon", {});
+	ember_qunit.moduleFor('service:icon', {});
 
 	function updateDefaults(svg) {
 		svg = Ember['default'].$(svg);
 
-		svg[0].setAttribute("xmlns", "http://www.w3.org/2000/svg");
+		svg[0].setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
-		svg[0].setAttribute("fit", "");
-		svg[0].setAttribute("height", "100%");
-		svg[0].setAttribute("width", "100%");
-		svg[0].setAttribute("preserveAspectRatio", "xMidYMid meet");
-		svg[0].setAttribute("viewBox", "0 0 24 24");
+		svg[0].setAttribute('fit', '');
+		svg[0].setAttribute('height', '100%');
+		svg[0].setAttribute('width', '100%');
+		svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet');
+		svg[0].setAttribute('viewBox', '0 0 24 24');
 
 		svg.css({
-			"pointer-events": "none",
-			display: "block"
+			'pointer-events': 'none',
+			'display': 'block'
 		});
 
 		return svg[0].outerHTML;
 	}
 
 	// Replace this with your real tests.
-	ember_qunit.test("it exists", function (assert) {
+	ember_qunit.test('it exists', function (assert) {
 		var service = this.subject();
 		assert.ok(service);
 	});
 
-	ember_qunit.test("should get a single svg icon", function (assert) {
+	ember_qunit.test('should get a single svg icon', function (assert) {
 
 		var icon,
-		    expected = updateDefaults("<svg version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 24 24\"><g><path d=\"M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z\"/></g></svg>"),
+		    expected = updateDefaults('<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'),
 		    service = this.subject();
 
 		Ember['default'].run(function () {
-			service.getIcon("cancel").then(function (result) {
+			service.getIcon('cancel').then(function (result) {
 				icon = result;
 			});
 		});
@@ -16008,13 +18001,13 @@ define('dummy/tests/unit/services/icon-test', ['ember-qunit', 'ember'], function
 		assert.equal(icon[0].outerHTML, expected);
 	});
 
-	ember_qunit.test("should get a single svg icon using url", function (assert) {
+	ember_qunit.test('should get a single svg icon using url', function (assert) {
 		var icon,
-		    expected = updateDefaults("<svg version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 24 24\"><g><path d=\"M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z\"/></g></svg>"),
+		    expected = updateDefaults('<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'),
 		    service = this.subject();
 
 		Ember['default'].run(function () {
-			service.getIcon("cancel.svg").then(function (result) {
+			service.getIcon('cancel.svg').then(function (result) {
 				icon = result;
 			});
 		});
@@ -16030,10 +18023,10 @@ define('dummy/tests/unit/services/media-queries-test', ['ember-qunit'], function
 
   'use strict';
 
-  ember_qunit.moduleFor("service:media-queries", {});
+  ember_qunit.moduleFor('service:media-queries', {});
 
   // Replace this with your real tests.
-  ember_qunit.test("it exists", function (assert) {
+  ember_qunit.test('it exists', function (assert) {
     var service = this.subject();
     assert.ok(service);
   });
@@ -16046,10 +18039,10 @@ define('dummy/tests/unit/services/ripple-test', ['ember-qunit'], function (ember
 
   'use strict';
 
-  ember_qunit.moduleFor("service:ripple", {});
+  ember_qunit.moduleFor('service:ripple', {});
 
   // Replace this with your real tests.
-  ember_qunit.test("it exists", function (assert) {
+  ember_qunit.test('it exists', function (assert) {
     var service = this.subject();
     assert.ok(service);
   });
@@ -16062,38 +18055,39 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
 
     'use strict';
 
-    ember_qunit.moduleFor("service:sniffer", {});
+    ember_qunit.moduleFor('service:sniffer', {});
 
     // Replace this with your real tests.
-    ember_qunit.test("it exists", function (assert) {
+    ember_qunit.test('it exists', function (assert) {
         var service = this.subject();
         assert.ok(service);
     });
 
-    ember_qunit.test("it should return the correct vendor prefix based on the browser", function (assert) {
+    ember_qunit.test('it should return the correct vendor prefix based on the browser', function (assert) {
         var expectedPrefix;
+
         var ua = window.navigator.userAgent.toLowerCase();
 
         if (/chrome/i.test(ua) || /safari/i.test(ua) || /webkit/i.test(ua)) {
-            expectedPrefix = "Webkit";
+            expectedPrefix = 'Webkit';
         } else if (/firefox/i.test(ua)) {
-            expectedPrefix = "Moz";
+            expectedPrefix = 'Moz';
         } else if (/ie/i.test(ua) || /trident/i.test(ua)) {
-            expectedPrefix = "Ms";
+            expectedPrefix = 'Ms';
         }
 
         var service = this.subject();
-        var vendorPrefix = service.get("vendorPrefix");
+        var vendorPrefix = service.get('vendorPrefix');
 
-        assert.equal(expectedPrefix, vendorPrefix);
+        assert.equal(expectedPrefix.toLowerCase(), vendorPrefix.toLowerCase());
     });
 
-    ember_qunit.test("it should work with older version of webkit", function (assert) {
+    ember_qunit.test('it should work with older version of webkit', function (assert) {
 
         var doc = {
             body: {
                 style: {
-                    WebkitOpacity: "0"
+                    WebkitOpacity: '0'
                 }
             }
         };
@@ -16102,15 +18096,15 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("vendorPrefix"), "webkit");
+        assert.equal(service.get('vendorPrefix'), 'webkit');
     });
 
-    ember_qunit.test("animations should be either true or false", function (assert) {
+    ember_qunit.test('animations should be either true or false', function (assert) {
         var service = this.subject();
-        assert.notEqual(service.get("animations"), undefined);
+        assert.notEqual(service.get('animations'), undefined);
     });
 
-    ember_qunit.test("animations should be false when there are no animations style", function (assert) {
+    ember_qunit.test('animations should be false when there are no animations style', function (assert) {
         var doc = {
             body: {
                 style: {}
@@ -16121,11 +18115,11 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("animations"), false);
+        assert.equal(service.get('animations'), false);
     });
 
-    ember_qunit.test("animations should be true with vendor specific animations", function (assert) {
-        var animationStyle = "some_animation 2s linear";
+    ember_qunit.test('animations should be true with vendor specific animations', function (assert) {
+        var animationStyle = 'some_animation 2s linear';
         var doc = {
             body: {
                 style: {
@@ -16139,11 +18133,11 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("animations"), true);
+        assert.equal(service.get('animations'), true);
     });
 
-    ember_qunit.test("animations should be true with w3c-style animations", function (assert) {
-        var animationStyle = "some_animation 2s linear";
+    ember_qunit.test('animations should be true with w3c-style animations', function (assert) {
+        var animationStyle = 'some_animation 2s linear';
         var doc = {
             body: {
                 style: {
@@ -16156,20 +18150,20 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("animations"), true);
+        assert.equal(service.get('animations'), true);
     });
 
-    ember_qunit.test("animations should be true on android with older body style properties", function (assert) {
+    ember_qunit.test('animations should be true on android with older body style properties', function (assert) {
         var doc = {
             body: {
                 style: {
-                    webkitAnimation: ""
+                    webkitAnimation: ''
                 }
             }
         };
         var win = {
             navigator: {
-                userAgent: "android 2"
+                userAgent: 'android 2'
             }
         };
 
@@ -16178,14 +18172,14 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             window: win
         });
 
-        assert.equal(service.get("animations"), true);
+        assert.equal(service.get('animations'), true);
     });
 
-    ember_qunit.test("animations should be true when an older version of webkit is used", function (assert) {
+    ember_qunit.test('animations should be true when an older version of webkit is used', function (assert) {
         var doc = {
             body: {
                 style: {
-                    WebkitOpacity: "0"
+                    WebkitOpacity: '0'
                 }
             }
         };
@@ -16194,16 +18188,16 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("animations"), false);
+        assert.equal(service.get('animations'), false);
     });
 
-    ember_qunit.test("transitions should be either true or false", function (assert) {
+    ember_qunit.test('transitions should be either true or false', function (assert) {
         var service = this.subject();
 
-        assert.notEqual(service.get("transitions"), undefined);
+        assert.notEqual(service.get('transitions'), undefined);
     });
 
-    ember_qunit.test("transitions should be false when there is no transition style", function (assert) {
+    ember_qunit.test('transitions should be false when there is no transition style', function (assert) {
         var doc = {
             body: {
                 style: {}
@@ -16214,11 +18208,11 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("transitions"), false);
+        assert.equal(service.get('transitions'), false);
     });
 
-    ember_qunit.test("transitions should be true with vendor specific transitions", function (assert) {
-        var transitionStyle = "1s linear all";
+    ember_qunit.test('transitions should be true with vendor specific transitions', function (assert) {
+        var transitionStyle = '1s linear all';
         var doc = {
             body: {
                 style: {
@@ -16232,14 +18226,14 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("transitions"), true);
+        assert.equal(service.get('transitions'), true);
     });
 
-    ember_qunit.test("transitions should be true with w3c-style transitions", function (assert) {
+    ember_qunit.test('transitions should be true with w3c-style transitions', function (assert) {
         var doc = {
             body: {
                 style: {
-                    transition: "1s linear all"
+                    transition: '1s linear all'
                 }
             }
         };
@@ -16248,20 +18242,20 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             document: $(doc)[0]
         });
 
-        assert.equal(service.get("transitions"), true);
+        assert.equal(service.get('transitions'), true);
     });
 
-    ember_qunit.test("transitions should be true on android with older body style properties", function (assert) {
+    ember_qunit.test('transitions should be true on android with older body style properties', function (assert) {
         var doc = {
             body: {
                 style: {
-                    webkitTransition: ""
+                    webkitTransition: ''
                 }
             }
         };
         var win = {
             navigator: {
-                userAgent: "android 2"
+                userAgent: 'android 2'
             }
         };
 
@@ -16270,7 +18264,7 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
             window: win
         });
 
-        assert.equal(service.get("transitions"), true);
+        assert.equal(service.get('transitions'), true);
     });
 
     // Specify the other units that are required for this test.
@@ -16281,10 +18275,10 @@ define('dummy/tests/unit/services/utility-test', ['ember-qunit'], function (embe
 
   'use strict';
 
-  ember_qunit.moduleFor("service:utility", {});
+  ember_qunit.moduleFor('service:utility', {});
 
   // Replace this with your real tests.
-  ember_qunit.test("it exists", function (assert) {
+  ember_qunit.test('it exists', function (assert) {
     var service = this.subject();
     assert.ok(service);
   });
@@ -16298,8 +18292,8 @@ define('dummy/views/application', ['exports', 'ember'], function (exports, Ember
   'use strict';
 
   var ApplicationView = Ember['default'].View.extend({
-    layoutType: "row",
-    flex: ""
+    layoutType: 'row',
+    flex: ''
   });
 
   exports['default'] = ApplicationView;
@@ -16310,7 +18304,7 @@ define('dummy/views/buttons', ['exports', 'ember'], function (exports, Ember) {
     'use strict';
 
     exports['default'] = Ember['default'].View.extend({
-        demoName: "buttons"
+        demoName: 'buttons'
     });
 
 });
@@ -16342,7 +18336,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"LOG_ACTIVE_GENERATION":true,"LOG_VIEW_LOOKUPS":true,"name":"ember-material-design","version":"0.5.0."});
+  require("dummy/app")["default"].create({"LOG_ACTIVE_GENERATION":true,"LOG_VIEW_LOOKUPS":true,"name":"ember-material-design","version":"0.5.5.106e24e1"});
 }
 
 /* jshint ignore:end */
