@@ -395,41 +395,6 @@ $colors: (
   "foreground-dark": $foreground-dark
 );
 
-//// Color classes
-//@each $color_name, $color in $colors {
-//  @each $color_type, $color_value in $color {
-//    @if $color_type == "base" {
-//      .#{$color_name} {
-//        background-color: $color_value !important;
-//      }
-//
-//      .#{$color_name}-text {
-//        color: $color_value !important;
-//      }
-//    } @else {
-//      .#{$color_name}.#{$color_type} {
-//        background-color: $color_value !important;
-//      }
-//
-//      .#{$color_name}-text.text-#{$color_type} {
-//        color: $color_value !important;
-//      }
-//
-//    }
-//  }
-//}
-//
-//// Shade classes
-//@each $color, $color_value in $shades {
-//  .#{$color} {
-//    background-color: $color_value !important;
-//  }
-//
-//  .#{$color}-text {
-//    color: $color_value !important;
-//  }
-//}
-
 @function color($color, $type: $default-color) {
   @if map-has-key($colors, $color) {
     $curr_color: map-get($colors, $color);

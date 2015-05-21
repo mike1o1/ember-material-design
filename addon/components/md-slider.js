@@ -126,9 +126,9 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
 
         var changeAmount;
 
-        if (event.keyCode === this.get('constants.KEY_CODE.LEFT_ARROW')) {
+        if (event.keyCode === this.get('constants.KEYCODE.LEFT_ARROW')) {
             changeAmount = this.get('step') * -1;
-        } else if (event.keyCode === this.get('constants.KEY_CODE.RIGHT_ARROW')) {
+        } else if (event.keyCode === this.get('constants.KEYCODE.RIGHT_ARROW')) {
             changeAmount = this.get('step');
         }
         if (changeAmount) {
