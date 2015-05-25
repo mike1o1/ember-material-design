@@ -16,7 +16,7 @@ var MdTab = Ember.Component.extend(LayoutRules, {
 
     tabsComponent: Ember.computed.alias('tabWrapperComponent.parentView'),
 
-    data: null,
+    data: {},
 
     didInsertElement() {
         this._super(...arguments);

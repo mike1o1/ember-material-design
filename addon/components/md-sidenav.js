@@ -8,13 +8,13 @@ var MdSidenav = Ember.Component.extend(LayoutRules, {
     classNameBindings: ['isLockedOpen:md-locked-open'],
 
     isLockedOpen: null,
+    sidebarVisible: false,
 
     backdrop: Ember.computed(function() {
         return Ember.$('<md-backdrop class="md-sidenav-backdrop md-opaque">');
     }),
 
     toggleSidebar: Ember.observer('sidebarVisible', function() {
-
         var sidebarVisible = this.get('sidebarVisible');
 
         var backdrop = this.get('backdrop');

@@ -368,8 +368,8 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
         this.$().css('height', newHeight + 'px');
     },
 
-    updateInkBarStyles() {
-        if (this.elements.tabs.length <= 0) {
+    updateInkBarStyles: function() {
+        if (!this.elements || !this.elements.tabs || this.elements.tabs.length <= 0) {
             return;
         }
 
