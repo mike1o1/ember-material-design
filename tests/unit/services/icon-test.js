@@ -43,7 +43,7 @@ test('should get a single svg icon', function(assert) {
 		service = this.subject();
 
 	Ember.run(() => {
-		service.getIcon('cancel').then((result) => {
+		service.getIcon('md-cancel').then((result) => {
 			icon = result;
 		});
 	});
@@ -57,7 +57,7 @@ test('should get a single svg icon using url', function(assert) {
     service = this.subject();
 
   Ember.run(() => {
-    service.getIcon('cancel.svg').then((result) => {
+    service.getIcon('md-cancel.svg').then((result) => {
       icon = result;
     });
   });

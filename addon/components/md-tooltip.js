@@ -58,7 +58,7 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
 
         // Check if we should display it or not.
         var computedStyles = window.getComputedStyle(this.$()[0]);
-        if (Ember.isPresent(computedStyles.display) && computedStyles.display == 'none') {
+        if (Ember.isPresent(computedStyles.display) && computedStyles.display === 'none') {
             this.$().detach();
             return;
         }
