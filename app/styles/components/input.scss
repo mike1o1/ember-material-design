@@ -64,18 +64,19 @@ md-input-container {
   }
 
   label:not(.md-no-float),
-  .md-placeholder {
+  .md-placeholder:not(.md-select-label) {
     order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
     padding-left: $input-container-padding;
     z-index: 1;
     transform: translate3d(0, $input-label-default-offset, 0) scale($input-label-default-scale);
-    transform-origin: left top;
     transition: transform $swift-ease-out-timing-function 0.25s;
+
+    @include rtl(transform-orgin, left top, right top);
   }
 
-  .md-placeholder {
+  .md-placeholder:not(.md-select-label) {
     position: absolute;
     top: 0;
     opacity: 0;

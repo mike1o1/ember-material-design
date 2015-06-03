@@ -33,16 +33,11 @@
   @return $map-str + '}';
 }
 
-@mixin bidi-style($prop, $value, $inverse-prop, $default-value) {
+@mixin rtl($prop, $value, $rtl-value) {
   #{$prop}: $value;
 
   html[dir=rtl] & {
-    @if $prop == $inverse-prop {
-      #{$prop}: $default-value;
-    } @else {
-      #{$inverse-prop}: $value;
-      #{$prop}: $default-value;
-    }
+    #{$prop}: $rtl-value;
   }
 }
 
