@@ -76,6 +76,9 @@ a.button,
     color: color($background, contrast);
     background-color: color($background, "50");
     &:not([disabled]) {
+      .md-icon {
+        color: color($background, 'contrast');
+      }
       &:hover {
         background-color: color($background, "50");
       }
@@ -93,11 +96,10 @@ a.button,
       color: color($warn, 'contrast');
       background-color: color($warn);
 
-      md-icon {
-        color: color($warn, 'contrast');
-      }
-
       &:not([disabled]) {
+        md-icon {
+          color: color($warn, 'contrast');
+        }
         &:hover {
           background-color: color($warn);
         }
@@ -116,11 +118,10 @@ a.button,
       color: color($accent, contrast);
       background-color: color($accent);
 
-      md-icon {
-        color: color($accent, 'contrast');
-      }
-
       &:not([disabled]) {
+        md-icon {
+          color: color($accent, 'contrast');
+        }
         &:hover {
           background-color: color($accent);
         }
@@ -129,13 +130,22 @@ a.button,
         }
       }
     }
+    &:not([disabled]) {
+      md-icon {
+        color: color($accent, 'contrast');
+      }
+    }
   }
 
   &[disabled],
   &.md-raised[disabled],
   &.md-fab[disabled] {
-    color: color($foreground, "2");
+    color: color($foreground, '3');
     cursor: not-allowed;
+
+    md-icon {
+      color: color($foreground, '3');
+    }
   }
   &.md-raised[disabled],
   &.md-fab[disabled] {
