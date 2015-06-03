@@ -57,6 +57,14 @@ md-input-container {
     -webkit-appearance: none;
   }
 
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"] {
+    min-height: $input-line-height;
+  }
+
   textarea {
     resize: none;
     overflow: hidden;
@@ -133,8 +141,14 @@ md-input-container {
   // TODO: validation messages
 
   .md-char-counter {
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
     bottom: $input-container-padding;
     right: $input-container-padding;
+
+    &:not(.md-char-counter) {
+      padding-right: 3rem;
+    }
   }
 
   &.md-input-focused,
