@@ -9,7 +9,7 @@
                     aria-disabled="{{if tabsComponent.canPageBack 'false' 'true'}}"
                     {{action 'previousPage' target=tabsComponent}}
                     class="{{if tabsComponent.canPageBack '' 'md-disabled'}}">
-        {{md-icon md-svg-icon="tabs-arrow"}}
+        {{md-icon md-svg-icon="md-tabs-arrow"}}
     </md-prev-button>
     <md-next-button tabindex="-1"
                     role="button"
@@ -17,7 +17,7 @@
                     aria-disabled="{{if tabsComponent.canPageForward 'false' 'true'}}"
                     {{action 'nextPage' target=tabsComponent}}
                     class="{{if tabsComponent.canPageForward '' 'md-disabled'}}">
-        {{md-icon md-svg-icon="tabs-arrow"}}
+        {{md-icon md-svg-icon="md-tabs-arrow"}}
     </md-next-button>
 
 {{/if}}
