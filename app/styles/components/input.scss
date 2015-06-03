@@ -147,7 +147,7 @@ md-input-container {
     right: $input-container-padding;
 
     &:not(.md-char-counter) {
-      padding-right: 3rem;
+      padding-right: rem(3);
     }
   }
 
@@ -161,7 +161,7 @@ md-input-container {
   // TODO: replace with validation
   &.md-input-focused .md-input,
   .md-input.ng-invalid.ng-dirty {
-    padding-bottom: 0px;
+    padding-bottom: 0;
     border-width: 0 0 $input-border-width-focused 0;
   }
 
