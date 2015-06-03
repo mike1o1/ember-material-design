@@ -9,8 +9,11 @@ a.button,
     &:hover {
       background-color: rgba(color($background, "500"), 0.2);
     }
-    &:focus {
+    &.md-focused {
       background-color: rgba(color($background, "500"), 0.2);
+    }
+    &.md-icon-button:hover {
+      background-color: transparent;
     }
   }
 
@@ -27,7 +30,7 @@ a.button,
       &:hover {
         background-color: color($accent);
       }
-      &:focus {
+      &.md-focused {
         background-color: color($accent, 'A700');
       }
     }
@@ -48,7 +51,7 @@ a.button,
         &:hover {
           background-color: color($primary);
         }
-        &:focus {
+        &.md-focused {
           background-color: color($primary, "600");
         }
       }
@@ -63,7 +66,7 @@ a.button,
       &:hover {
         background-color: color($accent, "A700");
       }
-      .md-focused {
+      &.md-focused {
         background-color: color($accent, "A700");
       }
     }
@@ -76,7 +79,7 @@ a.button,
       &:hover {
         background-color: color($background, "50");
       }
-      &:focus {
+      &.md-focused {
         background-color: color($background, "200");
       }
     }
@@ -98,7 +101,7 @@ a.button,
         &:hover {
           background-color: color($warn);
         }
-        &:focus {
+        &.md-focused {
           background-color: color($warn, "700");
         }
       }
@@ -121,7 +124,7 @@ a.button,
         &:hover {
           background-color: color($accent);
         }
-        &:focus {
+        &.md-focused {
           background-color: color($accent, "700");
         }
       }

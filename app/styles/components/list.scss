@@ -2,7 +2,7 @@ $list-h3-margin: 0 0 6px 0 !default;
 $list-h4-margin: 10px 0 5px 0 !default;
 $list-h4-font-weight: 400 !default;
 $list-header-line-height: 0.75em !default;
-$list-p-margin: 0 0 3px 0 !default;
+$list-p-margin: 0 0 0px 0 !default;
 $list-p-line-height: 1.6em !default;
 
 $list-padding-top: $baseline-grid !default;
@@ -20,6 +20,7 @@ $list-item-primary-width: $baseline-grid * 7 !default;
 $list-item-primary-avatar-width: $baseline-grid * 5 !default;
 $list-item-primary-icon-width: $baseline-grid * 3 !default;
 $list-item-secondary-left-margin: $baseline-grid * 2 !default;
+$list-item-secondary-button-width: $baseline-grid * 6 !default;
 $list-item-text-padding-top: $baseline-grid * 2 !default;
 $list-item-text-padding-bottom: $baseline-grid * 2.5 !default;
 $list-item-inset-divider-offset: 12 * $baseline-grid !default;
@@ -40,12 +41,22 @@ md-list-item {
     position: relative;
     padding: $list-item-padding-vertical $list-item-padding-horizontal;
     flex: 1;
+    transition: background-color 0.15s linear;
+
+    &.md-button {
+      font-size: inherit;
+      height: inherit;
+      text-align: left;
+      text-transform: none;
+      width: 100%;
+      white-space: normal;
+    }
     &:focus {
       outline: none;
     }
   }
   &.md-with-secondary {
-    padding-right: $list-item-padding-horizontal;
+    position: relative;
   }
   &.md-clickable:hover {
     cursor: pointer;
@@ -53,8 +64,8 @@ md-list-item {
 
   md-divider {
     position: absolute;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     width: 100%;
     &[md-inset] {
       left: $list-item-inset-divider-offset;
@@ -68,6 +79,7 @@ md-list-item, md-list-item .md-list-item-inner {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+
 
   // Layout for controls in primary or secondary divs, or auto-infered first child
   & > div.md-primary > md-icon,
@@ -87,16 +99,13 @@ md-list-item, md-list-item .md-list-item-inner {
       margin-right: -6px;
     }
   }
-
   & > div.md-primary > md-checkbox,
   & > div.md-secondary > md-checkbox,
-  & md-checkbox:first-child,
+  & > md-checkbox:first-child,
   md-checkbox.md-secondary {
     align-self: center;
-    .md-label {
-      display: none;
-    }
-    &:not(md-checkbox:first-child):focus {
+    .md-label { display: none; }
+    &:not(:first-child):focus {
       padding: 6px;
       margin-right: -6px;
       margin-top: 8px;
@@ -122,18 +131,34 @@ md-list-item, md-list-item .md-list-item-inner {
     box-sizing: content-box;
   }
 
-  md-checkbox.md-secondary {
-    margin-right: 0px;
-  }
-
+  md-checkbox.md-secondary,
   md-switch.md-secondary {
-    margin: 0;
-    position: relative;
-    right: -9px;
+    margin-right: 0;
   }
 
+  button.md-button.md-secondary-container {
+    background-color: transparent;
+    align-self: center;
+    border-radius: 50%;
+    margin: 0;
+    min-width: 0;
+    .md-ripple,
+    .md-ripple-container {
+      border-radius: 50%;
+    }
+  }
+
+  .md-secondary-container,
   .md-secondary {
     margin-left: $list-item-secondary-left-margin;
+    position: absolute;
+    right: $list-item-padding-horizontal;
+    top: 0;
+  }
+
+  & > .md-button.md-secondary-container > .md-secondary {
+    margin-left: 0px;
+    position: static;
   }
 
   & > p, & > .md-list-item-inner > p {
@@ -141,6 +166,7 @@ md-list-item, md-list-item .md-list-item-inner {
     margin: 0;
   }
 }
+
 
 md-list-item.md-2-line,
 md-list-item.md-2-line > .md-no-style,
@@ -153,19 +179,21 @@ md-list-item.md-3-line > .md-no-style {
     padding: $baseline-grid * 2 0;
     text-overflow: ellipsis;
 
+    &.md-offset {
+      margin-left: $list-item-primary-width;
+    }
+
     h3 {
       @extend .md-subhead;
       margin: $list-h3-margin;
       line-height: $list-header-line-height;
     }
-
     h4 {
       @extend .md-body-2;
       font-weight: $list-h4-font-weight;
       margin: $list-h4-margin;
       line-height: $list-header-line-height;
     }
-
     p {
       @extend .md-body-2;
       margin: $list-p-margin;
@@ -176,9 +204,11 @@ md-list-item.md-3-line > .md-no-style {
 
 md-list-item.md-2-line,
 md-list-item.md-2-line > .md-no-style {
-  > md-icon:first-child,
   > .md-avatar:first-child {
     margin-top: $baseline-grid * 1.5;
+  }
+  > md-icon:first-child {
+    align-self: center;
   }
   .md-list-item-text {
     flex: 1;

@@ -9,9 +9,7 @@ md-list {
     }
   }
 
-  .md-proxy-focus.md-focused div.md-no-style,
-  .md-secondary:focus,
-  .md-no-style:focus {
+  .md-proxy-focus.md-focused div.md-no-style {
     background-color: color($background, '100');
   }
 
@@ -23,6 +21,13 @@ md-list {
       &.md-accent {
         color: color($accent);
       }
+    }
+  }
+  md-list-item button {
+    background-color: color($background);
+
+    &.md-button:not([disabled]):hover {
+      background-color: color($background);
     }
   }
 }

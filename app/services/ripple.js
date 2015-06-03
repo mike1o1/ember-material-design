@@ -119,6 +119,15 @@ var RippleService = Ember.Service.extend({
         }, options));
     },
 
+    attachListControlBehavior(element, options) {
+        return this.attach(element, Ember.merge({
+            center: false,
+            dimBackground: true,
+            outline: false,
+            rippleSize: 'full'
+        }, options));
+    },
+
     attach(element, options) {
 
         // check if element has md-no-ink attribute
