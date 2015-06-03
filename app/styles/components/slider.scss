@@ -53,6 +53,10 @@ md-slider {
   margin-right: 4px;
   padding: 0;
 
+  *, *:after {
+    box-sizing: border-box;
+  }
+
   .md-slider-wrapper {
     position: relative;
   }
