@@ -35,7 +35,7 @@
     <p>Selected Value: <span class="radioValue">{{ data.group2 }}</span></p>
 
 
-    {{#each d in radioData}}
+    {{#each radioData as |d|}}
         {{#md-radio-button value=d.value
         class="md-primary"
         selected=data.group2
@@ -59,7 +59,7 @@
 
     <p style="margin-top: 0;">Selected Avatar: <span class="radioValue">{{ data.group3 }}</span></p>
 
-    {{#each it in avatarData}}
+    {{#each avatarData as |it|}}
         {{#md-radio-button value=it.value
         selected=data.group3
         aria-label=it.title}}

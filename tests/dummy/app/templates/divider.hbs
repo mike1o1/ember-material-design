@@ -30,7 +30,7 @@
 
     <md-content>
       {{#md-list}}
-        {{#each item in messages}}
+        {{#each messages as |item|}}
           {{#md-list-item class="md-3-line"}}
               <div class="md-list-item-text">
                   <h3>{{item.what}}</h3>
@@ -54,7 +54,7 @@
 
     <md-content>
       {{#md-list}}
-        {{#each item in messages}}
+        {{#each messages as |item|}}
           {{#md-list-item class="md-3-line"}}
               <img src="{{item.face}}" alt="{{item.who}}" class="face">
               <div class="md-list-item-text">

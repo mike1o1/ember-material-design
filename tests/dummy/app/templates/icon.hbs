@@ -31,10 +31,10 @@
 
     <!-- Display font icons from Icomoon.io: -->
 
-    {{#each font in icons}}
+    {{#each icons as |font|}}
         <div layout="row" layout-padding layout-margin class="glyph">
 
-            {{#each it in font.sizes}}
+            {{#each font.sizes as |it|}}
                 <div flex layout-align="center center">
                     <div class="preview-glyphs">
                         {{md-icon

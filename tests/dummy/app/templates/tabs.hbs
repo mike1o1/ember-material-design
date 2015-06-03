@@ -98,7 +98,7 @@
     {{#md-tabs selectedIndex=selectedIndex md-border-bottom=''}}
 
         {{#md-tabs-wrapper}}
-            {{#each tab in tabs}}
+            {{#each tabs as |tab|}}
                 {{#md-tab disabled=tab.disabled label=tab.title}}
                     <md-tab-label>{{tab.title}}</md-tab-label>
                 {{/md-tab}}
@@ -106,7 +106,7 @@
         {{/md-tabs-wrapper}}
 
         {{#md-tabs-content-wrapper}}
-            {{#each tab in tabs}}
+            {{#each tabs as |tab|}}
                 {{#md-tab-content}}
                     <div class="demo-tab" style="padding: 25px; text-align: center;">
                         {{tab.title}}
