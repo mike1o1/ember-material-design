@@ -24,4 +24,5 @@ export default Router.map(function() {
   this.route('typography');
   this.route('tooltip');
   this.route('toast');
+  this.route('whiteframe');
 });
