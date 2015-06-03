@@ -19,7 +19,7 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, {
         this.resetContainer();
     },
 
-    willInsertElement() {
+    didInsertElement() {
         this._super(...arguments);
         this.setupPlaceholder();
     },
@@ -44,6 +44,13 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, {
         //
         //// we don't need this on the element anymore, so get rid of it
         this.set('placeholder', '');
+
+        var inputContainerJquery = this.get('inputContainer').$();
+        if (inputContainerJquery.find('label').length === 0) {
+            var placeHolder = '<label>' + this.get('originalPlaceholder') + '</label>';
+            inputContainerJquery.addClass('md-icon-float');
+            inputContainerJquery.prepend(placeHolder);
+        }
 
         this.processInput();
 

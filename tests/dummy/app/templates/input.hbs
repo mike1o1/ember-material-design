@@ -53,7 +53,7 @@
         <div layout layout-sm="column">
             {{#md-input-container flex='' value=user.firstName }}
                 <label>First Name</label>
-                {{md-input placeholder="Placeholder text"}}
+                {{md-input}}
             {{/md-input-container}}
             {{#md-input-container flex='' value=theMax}}
                 <label>Last Name</label>
@@ -64,6 +64,10 @@
         {{#md-input-container flex='' value=user.address}}
             <label>Address</label>
             {{md-input}}
+        {{/md-input-container}}
+
+        {{#md-input-container value=user.address2 md-no-float=''}}
+            {{md-input placeholder="Address 2"}}
         {{/md-input-container}}
 
         <div layout layout-sm="column">
@@ -128,7 +132,7 @@
         {{md-icon md-svg-src="icons/ic_phone_24px.svg"}}
         {{md-input type="text" placeholder="Phone Number"}}
     {{/md-input-container}}
-    {{#md-input-container md-no-float=''}}
+    {{#md-input-container}}
         {{md-icon md-svg-src="icons/ic_email_24px.svg" class="email"}}
         {{md-input type="email" placeholder="Email (required)" required="required"}}
     {{/md-input-container}}
