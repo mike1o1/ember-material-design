@@ -3,21 +3,25 @@ import layout from '../templates/components/md-tabs-wrapper';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdTabWrapper = Ember.Component.extend(LayoutRules, {
-	layout: layout,
-    tagName: 'md-tabs-wrapper',
-    classNameBindings: ['shouldStretchTabs:md-stretch-tabs'],
+  layout: layout,
+  tagName: 'md-tabs-wrapper',
+  classNameBindings: ['shouldStretchTabs:md-stretch-tabs'],
 
-    tabsComponent: Ember.computed.alias('parentView'),
+  tabsComponent: Ember.computed.alias('parentView'),
 
-    tabs: Ember.computed.alias('tabsComponent.tabs'),
+  tabs: Ember.computed.alias('tabsComponent.tabs'),
 
-    shouldStretchTabs: Ember.computed('tabsComponent.shouldStretchTabs', function() {
-        return this.get('tabsComponent.shouldStretchTabs');
-    }),
+  shouldStretchTabs: Ember.computed('tabsComponent.shouldStretchTabs', function() {
+    return this.get('tabsComponent.shouldStretchTabs');
+  }),
 
-    shouldPaginate: Ember.computed('tabsComponent.shouldPaginate', function() {
-        return this.get('tabsComponent.shouldPaginate');
-    })
+  shouldPaginate: Ember.computed('tabsComponent.shouldPaginate', function() {
+    return this.get('tabsComponent.shouldPaginate');
+  }),
+
+  //shouldCenterTabs: Ember.computed('tabsComponent.shouldCenterTabs', function() {
+  //  return this.get('tabsComponent.shouldCenterTabs');
+  //})
 });
 
 export default MdTabWrapper;

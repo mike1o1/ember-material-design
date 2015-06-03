@@ -22,7 +22,7 @@
 
 {{/if}}
 <md-tabs-canvas tabindex="0"
-               class="{{if shouldPaginate 'md-paginated' ''}}"
+               class="{{if shouldPaginate 'md-paginated' ''}} {{if tabsComponent.shouldCenterTabs 'md-center-tabs' ''}}"
                role="tablist">
     <md-pagination-wrapper style={{tabsComponent.offsetLeftStyle}} class="{{if tabsComponent.shouldCenterTabs 'md-center-tabs' ''}}">
         {{tabsLength}}
