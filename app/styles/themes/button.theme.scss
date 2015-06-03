@@ -139,7 +139,9 @@ a.button,
 
   &[disabled],
   &.md-raised[disabled],
-  &.md-fab[disabled] {
+  &.md-fab[disabled],
+  &.md-accent[disabled],
+  &.md-warn[disabled] {
     color: color($foreground, '3');
     cursor: not-allowed;
 
