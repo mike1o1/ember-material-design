@@ -13,6 +13,8 @@ var ToastController = BaseDemoController.extend({
     this.setSourceFiles(content);
   },
 
+  toastService: Ember.inject.service('toasts'),
+
   toastPosition: Ember.A([
     {
       name: 'bottom',
@@ -29,9 +31,15 @@ var ToastController = BaseDemoController.extend({
     }
   ]),
 
+  toastNotifications: Ember.computed('toastService.toasts.[]', function() {
+    var toasts = this.get('toastService.toasts');
+
+    return toasts;
+  }),
+
   toastPositionText: Ember.computed('toastPosition.@each.enabled', function() {
     var tp = this.get('toastPosition'),
-        tpString = '';
+      tpString = '';
 
     tp.forEach((position) => {
       if (position.enabled) {
@@ -40,7 +48,43 @@ var ToastController = BaseDemoController.extend({
     });
 
     return tpString;
-  })
+  }),
+
+  actions: {
+    showCustomToast: function() {
+      var ts = this.get('toastService');
+
+      ts.addToast({
+        position: this.get('toastPositionText'),
+        action: 'Custom',
+        content: 'Not implemented yet! :(',
+        hideDelay: 5000
+      });
+    },
+
+    showSimpleToast: function() {
+      this.get('toastService').addToast({
+        content: 'Simple Toast!',
+        position: this.get('toastPositionText')
+      });
+    },
+
+
+    showActionToast: function() {
+      var ts = this.get('toastService');
+
+      ts.addToast({
+        position: this.get('toastPositionText'),
+        action: 'OK',
+        content: 'Action Toast!',
+        resolve: 'actionAction'
+      })
+    },
+
+    actionAction: function() {
+      alert('You clicked \'OK\'.');
+    }
+  }
 });
 
 export default ToastController;
