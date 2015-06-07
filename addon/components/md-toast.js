@@ -58,6 +58,9 @@ var MdToast = Ember.Component.extend(LayoutRules, {
   },
 
   rootElement: Ember.computed(function() {
+
+
+
     var re = this.container.lookup('application:main').get('rootElement');
     return Ember.$(re);
   }),
