@@ -42,6 +42,15 @@ var MdToast = Ember.Component.extend(LayoutRules, {
     }
   },
 
+  setRootElementClass: Ember.observer('toast.open', function() {
+
+    if (this.get('toast.open')) {
+      this.get('rootElement').addClass(this.get('toastOpenClass'));
+    } else {
+      this.get('rootElement').removeClass(this.get('toastOpenClass'));
+    }
+  }),
+
   removeToast() {
     if (this.get('actionClicked')) {
       this.sendAction('toast.resolve');
@@ -117,7 +126,7 @@ var MdToast = Ember.Component.extend(LayoutRules, {
   toastOpenClass: Ember.computed('toast.position', function() {
     var position = this.get('toast.position');
 
-    return 'md-toast-open' + (position.indexOf('top') > -1 ? 'top' : 'bottom');
+    return 'md-toast-open-' + (position.indexOf('top') > -1 ? 'top' : 'bottom');
 
   }),
 
