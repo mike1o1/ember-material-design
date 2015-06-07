@@ -35,6 +35,9 @@ Ember.EnumerableUtils.forEach(layoutProperties, (layoutProperty) => {
     Ember.EnumerableUtils.forEach(sizeNames, (sizeName) => {
         finalRules.push(layoutProperty + '-' + sizeName);
     });
+
+    finalRules.push('hide');
+    finalRules.push('show');
 });
 
 finalRules.push.apply(finalRules, layoutSingleRules);
