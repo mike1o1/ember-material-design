@@ -32,9 +32,7 @@ var ToastController = BaseDemoController.extend({
   ]),
 
   toastNotifications: Ember.computed('toastService.toasts.[]', function() {
-    var toasts = this.get('toastService.toasts');
-
-    return toasts;
+    return Ember.A(this.get('toastService.toasts'));
   }),
 
   toastPositionText: Ember.computed('toastPosition.@each.enabled', function() {
@@ -52,9 +50,7 @@ var ToastController = BaseDemoController.extend({
 
   actions: {
     showCustomToast: function() {
-      var ts = this.get('toastService');
-
-      ts.addToast({
+      this.get('toastService').showToast({
         position: this.get('toastPositionText'),
         action: 'Custom',
         content: 'Not implemented yet! :(',
@@ -63,17 +59,15 @@ var ToastController = BaseDemoController.extend({
     },
 
     showSimpleToast: function() {
-      this.get('toastService').addToast({
-        content: 'Simple Toast!',
-        position: this.get('toastPositionText')
+
+      this.get('toastService').showToast({
+        position: this.get('toastPositionText'),
+        content: 'Simple Toast!'
       });
     },
 
-
     showActionToast: function() {
-      var ts = this.get('toastService');
-
-      ts.addToast({
+      this.get('toastService').showToast({
         position: this.get('toastPositionText'),
         action: 'OK',
         content: 'Action Toast!',

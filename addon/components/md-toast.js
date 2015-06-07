@@ -22,8 +22,12 @@ var MdToast = Ember.Component.extend(LayoutRules, {
   },
 
   setupToast() {
+
+    // TODO: this should run one frame after render, but not sure best way to implement
     Ember.run.schedule('afterRender', () => {
-      this.set('toast.open', true);
+      Ember.run.later(this, () => {
+        this.set('toast.open', true);
+      }, 16);
     });
 
     var delay = this.get('toast.hideDelay');
@@ -43,6 +47,11 @@ var MdToast = Ember.Component.extend(LayoutRules, {
       this.sendAction('toast.resolve');
     }
   },
+
+  rootElement: Ember.computed(function() {
+    var re = this.container.lookup('application:main').get('rootElement');
+    return Ember.$(re);
+  }),
 
   positionBinding: Ember.computed('toast.position', function() {
     var position = this.get('toast.position'),

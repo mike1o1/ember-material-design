@@ -1,22 +1,26 @@
 import Ember from 'ember';
+import Toast from '../models/toast';
 
 var ToastService = Ember.Service.extend({
 
   toasts: Ember.A([]),
 
-  defaultToast: {
-    position: 'bottom left',
-    hideDelay: 3000,
-    opening: true,
-    capsule: false,
-    highlightAction: false
+  showToast: function(toast) {
+
+    toast.opening = true;
+    var newToast = Toast.createWithMixins(toast);
+
+    this.get('toasts').pushObject(newToast);
+
+    return newToast;
   },
 
-  addToast: function(toast) {
+  activeToasts: Ember.computed('toasts.@each.open', function() {
+    return Ember.A(this.get('toasts').filterBy('open', true));
+  }),
 
-    toast = Ember.$.extend({}, this.defaultToast, toast);
-    console.log(toast);
-    this.get('toasts').pushObject(toast);
+  removeToast: function(toast) {
+    toast.set('destroying', true);
   },
 
   destroyToasts: Ember.observer('toasts.@each.destroyed', function() {

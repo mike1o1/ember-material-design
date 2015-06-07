@@ -11,8 +11,14 @@ moduleForComponent('md-toast', {
 test('it renders', function(assert) {
   assert.expect(2);
 
+
+
   // Creates the component instance
-  var component = this.subject();
+  var component = this.subject({
+    toast: {
+      opening: true
+    }
+  });
   assert.equal(component._state, 'preRender');
 
   // Renders the component to the page
