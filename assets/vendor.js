@@ -59134,7 +59134,7 @@ https://highlightjs.org/
 
     // Finally register the global hljs with AMD.
     if(typeof define === 'function' && define.amd) {
-      define([], function() {
+      define('hljs', [], function() {
         return window.hljs;
       });
     }
@@ -59157,10 +59157,29 @@ https://highlightjs.org/
     return match && match.index == 0;
   }
 
+  function isNotHighlighted(language) {
+    return /no-?highlight|plain|text/.test(language);
+  }
+
   function blockLanguage(block) {
-    var classes = (block.className + ' ' + (block.parentNode ? block.parentNode.className : '')).split(/\s+/);
-    classes = classes.map(function(c) {return c.replace(/^lang(uage)?-/, '');});
-    return classes.filter(function(c) {return getLanguage(c) || /no(-?)highlight|plain|text/.test(c);})[0];
+    var i, match, length,
+        classes = block.className + ' ';
+
+    classes += block.parentNode ? block.parentNode.className : '';
+
+    // language-* takes precedence over non-prefixed class names and
+    match = /\blang(?:uage)?-([\w-]+)\b/.exec(classes);
+    if (match) {
+      return getLanguage(match[1]) ? match[1] : 'no-highlight';
+    }
+
+    classes = classes.split(/\s+/);
+    for(i = 0, length = classes.length; i < length; i++) {
+      if(getLanguage(classes[i]) || isNotHighlighted(classes[i])) {
+        return classes[i];
+      }
+    }
+
   }
 
   function inherit(parent, obj) {
@@ -59661,7 +59680,7 @@ https://highlightjs.org/
   */
   function highlightBlock(block) {
     var language = blockLanguage(block);
-    if (/no(-?)highlight|plain|text/.test(language))
+    if (isNotHighlighted(language))
         return;
 
     var node;
@@ -59799,6 +59818,11 @@ https://highlightjs.org/
       inherits || {}
     );
     mode.contains.push(hljs.PHRASAL_WORDS_MODE);
+    mode.contains.push({
+      className: 'doctag',
+      beginKeywords: "TODO FIXME NOTE BUG XXX",
+      relevance: 0
+    });
     return mode;
   };
   hljs.C_LINE_COMMENT_MODE = hljs.COMMENT('//', '$');
@@ -59868,6 +59892,7 @@ hljs.registerLanguage('1c', require('./languages/1c'));
 hljs.registerLanguage('actionscript', require('./languages/actionscript'));
 hljs.registerLanguage('apache', require('./languages/apache'));
 hljs.registerLanguage('applescript', require('./languages/applescript'));
+hljs.registerLanguage('armasm', require('./languages/armasm'));
 hljs.registerLanguage('xml', require('./languages/xml'));
 hljs.registerLanguage('asciidoc', require('./languages/asciidoc'));
 hljs.registerLanguage('aspectj', require('./languages/aspectj'));
@@ -59876,7 +59901,9 @@ hljs.registerLanguage('avrasm', require('./languages/avrasm'));
 hljs.registerLanguage('axapta', require('./languages/axapta'));
 hljs.registerLanguage('bash', require('./languages/bash'));
 hljs.registerLanguage('brainfuck', require('./languages/brainfuck'));
+hljs.registerLanguage('cal', require('./languages/cal'));
 hljs.registerLanguage('capnproto', require('./languages/capnproto'));
+hljs.registerLanguage('ceylon', require('./languages/ceylon'));
 hljs.registerLanguage('clojure', require('./languages/clojure'));
 hljs.registerLanguage('clojure-repl', require('./languages/clojure-repl'));
 hljs.registerLanguage('cmake', require('./languages/cmake'));
@@ -59890,6 +59917,7 @@ hljs.registerLanguage('dart', require('./languages/dart'));
 hljs.registerLanguage('delphi', require('./languages/delphi'));
 hljs.registerLanguage('diff', require('./languages/diff'));
 hljs.registerLanguage('django', require('./languages/django'));
+hljs.registerLanguage('dns', require('./languages/dns'));
 hljs.registerLanguage('dockerfile', require('./languages/dockerfile'));
 hljs.registerLanguage('dos', require('./languages/dos'));
 hljs.registerLanguage('dust', require('./languages/dust'));
@@ -59912,6 +59940,7 @@ hljs.registerLanguage('handlebars', require('./languages/handlebars'));
 hljs.registerLanguage('haskell', require('./languages/haskell'));
 hljs.registerLanguage('haxe', require('./languages/haxe'));
 hljs.registerLanguage('http', require('./languages/http'));
+hljs.registerLanguage('inform7', require('./languages/inform7'));
 hljs.registerLanguage('ini', require('./languages/ini'));
 hljs.registerLanguage('java', require('./languages/java'));
 hljs.registerLanguage('javascript', require('./languages/javascript'));
@@ -59937,6 +59966,7 @@ hljs.registerLanguage('nix', require('./languages/nix'));
 hljs.registerLanguage('nsis', require('./languages/nsis'));
 hljs.registerLanguage('objectivec', require('./languages/objectivec'));
 hljs.registerLanguage('ocaml', require('./languages/ocaml'));
+hljs.registerLanguage('openscad', require('./languages/openscad'));
 hljs.registerLanguage('oxygene', require('./languages/oxygene'));
 hljs.registerLanguage('parser3', require('./languages/parser3'));
 hljs.registerLanguage('perl', require('./languages/perl'));
@@ -59971,6 +60001,7 @@ hljs.registerLanguage('swift', require('./languages/swift'));
 hljs.registerLanguage('tcl', require('./languages/tcl'));
 hljs.registerLanguage('tex', require('./languages/tex'));
 hljs.registerLanguage('thrift', require('./languages/thrift'));
+hljs.registerLanguage('tp', require('./languages/tp'));
 hljs.registerLanguage('twig', require('./languages/twig'));
 hljs.registerLanguage('typescript', require('./languages/typescript'));
 hljs.registerLanguage('vala', require('./languages/vala'));
@@ -59984,7 +60015,7 @@ hljs.registerLanguage('x86asm', require('./languages/x86asm'));
 hljs.registerLanguage('xl', require('./languages/xl'));
 
 module.exports = hljs;
-},{"./highlight":1,"./languages/1c":4,"./languages/actionscript":5,"./languages/apache":6,"./languages/applescript":7,"./languages/asciidoc":8,"./languages/aspectj":9,"./languages/autohotkey":10,"./languages/avrasm":11,"./languages/axapta":12,"./languages/bash":13,"./languages/brainfuck":14,"./languages/capnproto":15,"./languages/clojure":17,"./languages/clojure-repl":16,"./languages/cmake":18,"./languages/coffeescript":19,"./languages/cpp":20,"./languages/cs":21,"./languages/css":22,"./languages/d":23,"./languages/dart":24,"./languages/delphi":25,"./languages/diff":26,"./languages/django":27,"./languages/dockerfile":28,"./languages/dos":29,"./languages/dust":30,"./languages/elixir":31,"./languages/erb":32,"./languages/erlang":34,"./languages/erlang-repl":33,"./languages/fix":35,"./languages/fortran":36,"./languages/fsharp":37,"./languages/gcode":38,"./languages/gherkin":39,"./languages/glsl":40,"./languages/go":41,"./languages/gradle":42,"./languages/groovy":43,"./languages/haml":44,"./languages/handlebars":45,"./languages/haskell":46,"./languages/haxe":47,"./languages/http":48,"./languages/ini":49,"./languages/java":50,"./languages/javascript":51,"./languages/json":52,"./languages/julia":53,"./languages/kotlin":54,"./languages/lasso":55,"./languages/less":56,"./languages/lisp":57,"./languages/livecodeserver":58,"./languages/livescript":59,"./languages/lua":60,"./languages/makefile":61,"./languages/markdown":62,"./languages/mathematica":63,"./languages/matlab":64,"./languages/mel":65,"./languages/mercury":66,"./languages/mizar":67,"./languages/monkey":68,"./languages/nginx":69,"./languages/nimrod":70,"./languages/nix":71,"./languages/nsis":72,"./languages/objectivec":73,"./languages/ocaml":74,"./languages/oxygene":75,"./languages/parser3":76,"./languages/perl":77,"./languages/pf":78,"./languages/php":79,"./languages/powershell":80,"./languages/processing":81,"./languages/profile":82,"./languages/prolog":83,"./languages/protobuf":84,"./languages/puppet":85,"./languages/python":86,"./languages/q":87,"./languages/r":88,"./languages/rib":89,"./languages/roboconf":90,"./languages/rsl":91,"./languages/ruby":92,"./languages/ruleslanguage":93,"./languages/rust":94,"./languages/scala":95,"./languages/scheme":96,"./languages/scilab":97,"./languages/scss":98,"./languages/smali":99,"./languages/smalltalk":100,"./languages/sml":101,"./languages/sql":102,"./languages/stata":103,"./languages/step21":104,"./languages/stylus":105,"./languages/swift":106,"./languages/tcl":107,"./languages/tex":108,"./languages/thrift":109,"./languages/twig":110,"./languages/typescript":111,"./languages/vala":112,"./languages/vbnet":113,"./languages/vbscript":115,"./languages/vbscript-html":114,"./languages/verilog":116,"./languages/vhdl":117,"./languages/vim":118,"./languages/x86asm":119,"./languages/xl":120,"./languages/xml":121}],4:[function(require,module,exports){
+},{"./highlight":1,"./languages/1c":4,"./languages/actionscript":5,"./languages/apache":6,"./languages/applescript":7,"./languages/armasm":8,"./languages/asciidoc":9,"./languages/aspectj":10,"./languages/autohotkey":11,"./languages/avrasm":12,"./languages/axapta":13,"./languages/bash":14,"./languages/brainfuck":15,"./languages/cal":16,"./languages/capnproto":17,"./languages/ceylon":18,"./languages/clojure":20,"./languages/clojure-repl":19,"./languages/cmake":21,"./languages/coffeescript":22,"./languages/cpp":23,"./languages/cs":24,"./languages/css":25,"./languages/d":26,"./languages/dart":27,"./languages/delphi":28,"./languages/diff":29,"./languages/django":30,"./languages/dns":31,"./languages/dockerfile":32,"./languages/dos":33,"./languages/dust":34,"./languages/elixir":35,"./languages/erb":36,"./languages/erlang":38,"./languages/erlang-repl":37,"./languages/fix":39,"./languages/fortran":40,"./languages/fsharp":41,"./languages/gcode":42,"./languages/gherkin":43,"./languages/glsl":44,"./languages/go":45,"./languages/gradle":46,"./languages/groovy":47,"./languages/haml":48,"./languages/handlebars":49,"./languages/haskell":50,"./languages/haxe":51,"./languages/http":52,"./languages/inform7":53,"./languages/ini":54,"./languages/java":55,"./languages/javascript":56,"./languages/json":57,"./languages/julia":58,"./languages/kotlin":59,"./languages/lasso":60,"./languages/less":61,"./languages/lisp":62,"./languages/livecodeserver":63,"./languages/livescript":64,"./languages/lua":65,"./languages/makefile":66,"./languages/markdown":67,"./languages/mathematica":68,"./languages/matlab":69,"./languages/mel":70,"./languages/mercury":71,"./languages/mizar":72,"./languages/monkey":73,"./languages/nginx":74,"./languages/nimrod":75,"./languages/nix":76,"./languages/nsis":77,"./languages/objectivec":78,"./languages/ocaml":79,"./languages/openscad":80,"./languages/oxygene":81,"./languages/parser3":82,"./languages/perl":83,"./languages/pf":84,"./languages/php":85,"./languages/powershell":86,"./languages/processing":87,"./languages/profile":88,"./languages/prolog":89,"./languages/protobuf":90,"./languages/puppet":91,"./languages/python":92,"./languages/q":93,"./languages/r":94,"./languages/rib":95,"./languages/roboconf":96,"./languages/rsl":97,"./languages/ruby":98,"./languages/ruleslanguage":99,"./languages/rust":100,"./languages/scala":101,"./languages/scheme":102,"./languages/scilab":103,"./languages/scss":104,"./languages/smali":105,"./languages/smalltalk":106,"./languages/sml":107,"./languages/sql":108,"./languages/stata":109,"./languages/step21":110,"./languages/stylus":111,"./languages/swift":112,"./languages/tcl":113,"./languages/tex":114,"./languages/thrift":115,"./languages/tp":116,"./languages/twig":117,"./languages/typescript":118,"./languages/vala":119,"./languages/vbnet":120,"./languages/vbscript":122,"./languages/vbscript-html":121,"./languages/verilog":123,"./languages/vhdl":124,"./languages/vim":125,"./languages/x86asm":126,"./languages/xl":127,"./languages/xml":128}],4:[function(require,module,exports){
 module.exports = function(hljs){
   var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
   var OneS_KEYWORDS = 'возврат дата для если и или иначе иначеесли исключение конецесли ' +
@@ -60289,6 +60320,98 @@ module.exports = function(hljs) {
 };
 },{}],8:[function(require,module,exports){
 module.exports = function(hljs) {
+    //local labels: %?[FB]?[AT]?\d{1,2}\w+
+  return {
+    case_insensitive: true,
+    aliases: ['arm'],
+    lexemes: '\\.?' + hljs.IDENT_RE,
+    keywords: {
+      literal:
+        'r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 '+ //standard registers
+        'pc lr sp ip sl sb fp '+ //typical regs plus backward compatibility
+        'a1 a2 a3 a4 v1 v2 v3 v4 v5 v6 v7 v8 f0 f1 f2 f3 f4 f5 f6 f7 '+ //more regs and fp
+        'p0 p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 '+ //coprocessor regs
+        'c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 '+ //more coproc
+        'q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14 q15 '+ //advanced SIMD NEON regs
+
+        //program status registers
+        'cpsr_c cpsr_x cpsr_s cpsr_f cpsr_cx cpsr_cxs cpsr_xs cpsr_xsf cpsr_sf cpsr_cxsf '+
+        'spsr_c spsr_x spsr_s spsr_f spsr_cx spsr_cxs spsr_xs spsr_xsf spsr_sf spsr_cxsf '+
+
+        //NEON and VFP registers
+        's0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 '+
+        's16 s17 s18 s19 s20 s21 s22 s23 s24 s25 s26 s27 s28 s29 s30 s31 '+
+        'd0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 '+
+        'd16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 d31 ',
+    preprocessor:
+        //GNU preprocs
+        '.2byte .4byte .align .ascii .asciz .balign .byte .code .data .else .end .endif .endm .endr .equ .err .exitm .extern .global .hword .if .ifdef .ifndef .include .irp .long .macro .rept .req .section .set .skip .space .text .word .arm .thumb .code16 .code32 .force_thumb .thumb_func .ltorg '+
+        //ARM directives
+        'ALIAS ALIGN ARM AREA ASSERT ATTR CN CODE CODE16 CODE32 COMMON CP DATA DCB DCD DCDU DCDO DCFD DCFDU DCI DCQ DCQU DCW DCWU DN ELIF ELSE END ENDFUNC ENDIF ENDP ENTRY EQU EXPORT EXPORTAS EXTERN FIELD FILL FUNCTION GBLA GBLL GBLS GET GLOBAL IF IMPORT INCBIN INCLUDE INFO KEEP LCLA LCLL LCLS LTORG MACRO MAP MEND MEXIT NOFP OPT PRESERVE8 PROC QN READONLY RELOC REQUIRE REQUIRE8 RLIST FN ROUT SETA SETL SETS SN SPACE SUBT THUMB THUMBX TTL WHILE WEND ',
+    built_in:
+        '{PC} {VAR} {TRUE} {FALSE} {OPT} {CONFIG} {ENDIAN} {CODESIZE} {CPU} {FPU} {ARCHITECTURE} {PCSTOREOFFSET} {ARMASM_VERSION} {INTER} {ROPI} {RWPI} {SWST} {NOSWST} . @ '
+    },
+    contains: [
+      {
+        className: 'keyword',
+        begin: '\\b('+     //mnemonics
+            'adc|'+
+            '(qd?|sh?|u[qh]?)?add(8|16)?|usada?8|(q|sh?|u[qh]?)?(as|sa)x|'+
+            'and|adrl?|sbc|rs[bc]|asr|b[lx]?|blx|bxj|cbn?z|tb[bh]|bic|'+
+            'bfc|bfi|[su]bfx|bkpt|cdp2?|clz|clrex|cmp|cmn|cpsi[ed]|cps|'+
+            'setend|dbg|dmb|dsb|eor|isb|it[te]{0,3}|lsl|lsr|ror|rrx|'+
+            'ldm(([id][ab])|f[ds])?|ldr((s|ex)?[bhd])?|movt?|mvn|mra|mar|'+
+            'mul|[us]mull|smul[bwt][bt]|smu[as]d|smmul|smmla|'+
+            'mla|umlaal|smlal?([wbt][bt]|d)|mls|smlsl?[ds]|smc|svc|sev|'+
+            'mia([bt]{2}|ph)?|mrr?c2?|mcrr2?|mrs|msr|orr|orn|pkh(tb|bt)|rbit|'+
+            'rev(16|sh)?|sel|[su]sat(16)?|nop|pop|push|rfe([id][ab])?|'+
+            'stm([id][ab])?|str(ex)?[bhd]?|(qd?)?sub|(sh?|q|u[qh]?)?sub(8|16)|'+
+            '[su]xt(a?h|a?b(16)?)|srs([id][ab])?|swpb?|swi|smi|tst|teq|'+
+            'wfe|wfi|yield'+
+        ')'+
+        '(eq|ne|cs|cc|mi|pl|vs|vc|hi|ls|ge|lt|gt|le|al|hs|lo)?'+ //condition codes
+        '[sptrx]?' ,                                             //legal postfixes
+        end: '\\s'
+      },
+      hljs.COMMENT('[;@]', '$', {relevance: 0}),
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.QUOTE_STRING_MODE,
+      {
+        className: 'string',
+        begin: '\'',
+        end: '[^\\\\]\'',
+        relevance: 0
+      },
+      {
+        className: 'title',
+        begin: '\\|', end: '\\|',
+        illegal: '\\n',
+        relevance: 0
+      },
+      {
+        className: 'number',
+        variants: [
+            {begin: '[#$=]?0x[0-9a-f]+'}, //hex
+            {begin: '[#$=]?0b[01]+'},     //bin
+            {begin: '[#$=]\\d+'},        //literal
+            {begin: '\\b\\d+'}           //bare number
+        ],
+        relevance: 0
+      },
+      {
+        className: 'label',
+        variants: [
+            {begin: '^[a-z_\\.\\$][a-z0-9_\\.\\$]+'}, //ARM syntax
+            {begin: '^\\s*[a-z_\\.\\$][a-z0-9_\\.\\$]+:'}, //GNU ARM syntax
+            {begin: '[=#]\\w+' }  //label reference
+        ],
+        relevance: 0
+      }
+    ]
+  };
+};
+},{}],9:[function(require,module,exports){
+module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
     contains: [
@@ -60479,7 +60602,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -60495,16 +60618,17 @@ module.exports = function (hljs) {
     keywords : KEYWORDS,
     illegal : /<\//,
     contains : [
-      {
-        className : 'javadoc',
-        begin : '/\\*\\*',
-        end : '\\*/',
-        relevance : 0,
-        contains : [{
-          className : 'javadoctag',
-          begin : '(^|\\s)@[A-Za-z]+'
-        }]
-      },
+      hljs.COMMENT(
+        '/\\*\\*',
+        '\\*/',
+        {
+          relevance : 0,
+          contains : [{
+            className : 'doctag',
+            begin : '@[A-Za-z]+'
+          }]
+        }
+      ),
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
       hljs.APOS_STRING_MODE,
@@ -60515,7 +60639,8 @@ module.exports = function (hljs) {
         end : /[{;=]/,
         excludeEnd : true,
         illegal : /[:;"\[\]]/,
-        contains : [{
+        contains : [
+          {
             beginKeywords : 'extends implements pertypewithin perthis pertarget percflowbelow percflow issingleton'
           },
           hljs.UNDERSCORE_TITLE_MODE,
@@ -60615,7 +60740,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     className: 'escape',
@@ -60677,7 +60802,7 @@ module.exports = function(hljs) {
     ])
   }
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -60739,7 +60864,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -60770,7 +60895,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -60846,7 +60971,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -60883,7 +61008,86 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+module.exports = function(hljs) {
+  var KEYWORDS =
+    'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
+    'until while with var';
+  var LITERALS = 'false true';
+  var COMMENT_MODES = [
+    hljs.C_LINE_COMMENT_MODE,
+    hljs.COMMENT(
+      /\{/,
+      /\}/,
+      {
+        relevance: 0
+      }
+    ),
+    hljs.COMMENT(
+      /\(\*/,
+      /\*\)/,
+      {
+        relevance: 10
+      }
+    )
+  ];
+  var STRING = {
+    className: 'string',
+    begin: /'/, end: /'/,
+    contains: [{begin: /''/}]
+  };
+  var CHAR_STRING = {
+    className: 'string', begin: /(#\d+)+/
+  };
+  var DATE = {
+      className: 'date',
+      begin: '\\b\\d+(\\.\\d+)?(DT|D|T)',
+      relevance: 0
+  };
+  var DBL_QUOTED_VARIABLE = {
+      className: 'variable',
+      begin: '"',
+      end: '"'
+  };
+
+  var PROCEDURE = {
+    className: 'function',
+    beginKeywords: 'procedure', end: /[:;]/,
+    keywords: 'procedure|10',
+    contains: [
+      hljs.TITLE_MODE,
+      {
+        className: 'params',
+        begin: /\(/, end: /\)/,
+        keywords: KEYWORDS,
+        contains: [STRING, CHAR_STRING]
+      }
+    ].concat(COMMENT_MODES)
+  };
+
+  var OBJECT = {
+    className: 'class',
+    begin: 'OBJECT (Table|Form|Report|Dataport|Codeunit|XMLport|MenuSuite|Page|Query) (\\d+) ([^\\r\\n]+)',
+    returnBegin: true,
+    contains: [
+      hljs.TITLE_MODE,
+        PROCEDURE
+    ]
+  };
+    
+  return {
+    case_insensitive: true,
+    keywords: { keyword: KEYWORDS, literal: LITERALS },
+    contains: [
+      STRING, CHAR_STRING,
+      DATE, DBL_QUOTED_VARIABLE,
+      hljs.NUMBER_MODE,
+      OBJECT,
+      PROCEDURE
+    ]
+  };
+};
+},{}],17:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -60932,7 +61136,75 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
+module.exports = function(hljs) {
+  // 2.3. Identifiers and keywords
+  var KEYWORDS =
+    'assembly module package import alias class interface object given value ' +
+    'assign void function new of extends satisfies abstracts in out return ' +
+    'break continue throw assert dynamic if else switch case for while try ' +
+    'catch finally then let this outer super is exists nonempty';
+  // 7.4.1 Declaration Modifiers
+  var DECLARATION_MODIFIERS =
+    'shared abstract formal default actual variable late native deprecated' +
+    'final sealed annotation suppressWarnings small';
+  // 7.4.2 Documentation
+  var DOCUMENTATION =
+    'doc by license see throws tagged';
+  var LANGUAGE_ANNOTATIONS = DECLARATION_MODIFIERS + ' ' + DOCUMENTATION;
+  var SUBST = {
+    className: 'subst', excludeBegin: true, excludeEnd: true,
+    begin: /``/, end: /``/,
+    keywords: KEYWORDS,
+    relevance: 10
+  };
+  var EXPRESSIONS = [
+    {
+      // verbatim string
+      className: 'string',
+      begin: '"""',
+      end: '"""',
+      relevance: 10
+    },
+    {
+      // string literal or template
+      className: 'string',
+      begin: '"', end: '"',
+      contains: [SUBST]
+    },
+    {
+      // character literal
+      className: 'string',
+      begin: "'",
+      end: "'",
+    },
+    {
+      // numeric literal
+      className: 'number',
+      begin: '#[0-9a-fA-F_]+|\\$[01_]+|[0-9_]+(?:\\.[0-9_](?:[eE][+-]?\\d+)?)?[kMGTPmunpf]?',
+      relevance: 0
+    }
+  ];
+  SUBST.contains = EXPRESSIONS;
+
+  return {
+    keywords: {
+      keyword: KEYWORDS,
+      annotation: LANGUAGE_ANNOTATIONS
+    },
+    illegal: '\\$[^01]|#[^0-9a-fA-F]',
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.COMMENT('/\\*', '\\*/', {contains: ['self']}),
+      {
+        // compiler annotation
+        className: 'annotation',
+        begin: '@[a-z]\\w*(?:\\:\"[^\"]*\")?'
+      }
+    ].concat(EXPRESSIONS)
+  };
+};
+},{}],19:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -60947,7 +61219,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     built_in:
@@ -61044,7 +61316,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -61083,7 +61355,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -61227,26 +61499,24 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = function(hljs) {
+  var CPP_PRIMATIVE_TYPES = {
+    className: 'keyword',
+    begin: '[a-z\\d_]*_t'
+  };
+
   var CPP_KEYWORDS = {
     keyword: 'false int float while private char catch export virtual operator sizeof ' +
       'dynamic_cast|10 typedef const_cast|10 const struct for static_cast|10 union namespace ' +
       'unsigned long volatile static protected bool template mutable if public friend ' +
       'do goto auto void enum else break extern using true class asm case typeid ' +
       'short reinterpret_cast|10 default double register explicit signed typename try this ' +
-      'switch continue wchar_t inline delete alignof char16_t char32_t constexpr decltype ' +
+      'switch continue inline delete alignof constexpr decltype ' +
       'noexcept nullptr static_assert thread_local restrict _Bool complex _Complex _Imaginary ' +
-      'intmax_t uintmax_t int8_t uint8_t int16_t uint16_t int32_t uint32_t  int64_t uint64_t ' +
-      'int_least8_t uint_least8_t int_least16_t uint_least16_t int_least32_t uint_least32_t ' +
-      'int_least64_t uint_least64_t int_fast8_t uint_fast8_t int_fast16_t uint_fast16_t int_fast32_t ' +
-      'uint_fast32_t int_fast64_t uint_fast64_t intptr_t uintptr_t atomic_bool atomic_char atomic_schar ' +
+      'atomic_bool atomic_char atomic_schar ' +
       'atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong ' +
-      'atomic_ullong atomic_wchar_t atomic_char16_t atomic_char32_t atomic_intmax_t atomic_uintmax_t ' +
-      'atomic_intptr_t atomic_uintptr_t atomic_size_t atomic_ptrdiff_t atomic_int_least8_t atomic_int_least16_t ' +
-      'atomic_int_least32_t atomic_int_least64_t atomic_uint_least8_t atomic_uint_least16_t atomic_uint_least32_t ' +
-      'atomic_uint_least64_t atomic_int_fast8_t atomic_int_fast16_t atomic_int_fast32_t atomic_int_fast64_t ' +
-      'atomic_uint_fast8_t atomic_uint_fast16_t atomic_uint_fast32_t atomic_uint_fast64_t',
+      'atomic_ullong',
     built_in: 'std string cin cout cerr clog stringstream istringstream ostringstream ' +
       'auto_ptr deque list queue stack vector map set bitset multiset multimap unordered_set ' +
       'unordered_map unordered_multiset unordered_multimap array shared_ptr abort abs acos ' +
@@ -61262,13 +61532,22 @@ module.exports = function(hljs) {
     keywords: CPP_KEYWORDS,
     illegal: '</',
     contains: [
+      CPP_PRIMATIVE_TYPES,
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
-      hljs.QUOTE_STRING_MODE,
       {
         className: 'string',
-        begin: '\'\\\\?.', end: '\'',
-        illegal: '.'
+        variants: [
+          hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
+          {
+            begin: '(u8?|U)?R"', end: '"',
+            contains: [hljs.BACKSLASH_ESCAPE]
+          },
+          {
+            begin: '\'\\\\?.', end: '\'',
+            illegal: '.'
+          }
+        ]
       },
       {
         className: 'number',
@@ -61294,7 +61573,7 @@ module.exports = function(hljs) {
       {
         begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
         keywords: CPP_KEYWORDS,
-        contains: ['self']
+        contains: ['self', CPP_PRIMATIVE_TYPES]
       },
       {
         begin: hljs.IDENT_RE + '::',
@@ -61333,7 +61612,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     // Normal keywords.
@@ -61392,10 +61671,24 @@ module.exports = function(hljs) {
       hljs.QUOTE_STRING_MODE,
       hljs.C_NUMBER_MODE,
       {
-        beginKeywords: 'class namespace interface', end: /[{;=]/,
+        beginKeywords: 'class interface', end: /[{;=]/,
         illegal: /[^\s:]/,
         contains: [
           hljs.TITLE_MODE,
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
+        ]
+      },
+      {
+        beginKeywords: 'namespace', end: /[{;=]/,
+        illegal: /[^\s:]/,
+        contains: [
+          {
+            // Customization of hljs.TITLE_MODE that allows '.'
+            className: 'title',
+            begin: '[a-zA-Z](\\.?\\w)*',
+            relevance: 0
+          },
           hljs.C_LINE_COMMENT_MODE,
           hljs.C_BLOCK_COMMENT_MODE
         ]
@@ -61420,6 +61713,8 @@ module.exports = function(hljs) {
           {
             className: 'params',
             begin: /\(/, end: /\)/,
+            excludeBegin: true,
+            excludeEnd: true,
             keywords: KEYWORDS,
             relevance: 0,
             contains: [
@@ -61436,7 +61731,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var FUNCTION = {
@@ -61476,7 +61771,7 @@ module.exports = function(hljs) {
 
   return {
     case_insensitive: true,
-    illegal: /[=\/|']/,
+    illegal: /[=\/|'\$]/,
     contains: [
       hljs.C_BLOCK_COMMENT_MODE,
       RULE,
@@ -61484,8 +61779,7 @@ module.exports = function(hljs) {
         className: 'id', begin: /\#[A-Za-z0-9_-]+/
       },
       {
-        className: 'class', begin: /\.[A-Za-z0-9_-]+/,
-        relevance: 0
+        className: 'class', begin: /\.[A-Za-z0-9_-]+/
       },
       {
         className: 'attr_selector',
@@ -61532,7 +61826,6 @@ module.exports = function(hljs) {
         className: 'rules',
         begin: '{', end: '}',
         illegal: /\S/,
-        relevance: 0,
         contains: [
           hljs.C_BLOCK_COMMENT_MODE,
           RULE,
@@ -61541,7 +61834,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -61799,7 +62092,7 @@ function(hljs) {
     ]
   };
 };
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -61864,18 +62157,22 @@ module.exports = function (hljs) {
     keywords: KEYWORDS,
     contains: [
       STRING,
-      {
-        className: 'dartdoc',
-        begin: '/\\*\\*', end: '\\*/',
-        subLanguage: 'markdown',
-        subLanguageMode: 'continuous'
-      },
-      {
-        className: 'dartdoc',
-        begin: '///', end: '$',
-        subLanguage: 'markdown',
-        subLanguageMode: 'continuous'
-      },
+      hljs.COMMENT(
+        '/\\*\\*',
+        '\\*/',
+        {
+          subLanguage: 'markdown',
+          subLanguageMode: 'continuous'
+        }
+      ),
+      hljs.COMMENT(
+        '///',
+        '$',
+        {
+          subLanguage: 'markdown',
+          subLanguageMode: 'continuous'
+        }
+      ),
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
       {
@@ -61898,7 +62195,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],25:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -61965,7 +62262,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],26:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -62005,7 +62302,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     className: 'filter',
@@ -62055,7 +62352,35 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
+module.exports = function(hljs) {
+  return {
+    aliases: ['bind', 'zone'],
+    keywords: {
+      keyword:
+        'IN A AAAA AFSDB APL CAA CDNSKEY CDS CERT CNAME DHCID DLV DNAME DNSKEY DS HIP IPSECKEY KEY KX ' +
+        'LOC MX NAPTR NS NSEC NSEC3 NSEC3PARAM PTR RRSIG RP SIG SOA SRV SSHFP TA TKEY TLSA TSIG TXT'
+    },
+    contains: [
+      hljs.COMMENT(';', '$'),
+      {
+        className: 'operator',
+        beginKeywords: '$TTL $GENERATE $INCLUDE $ORIGIN'
+      },
+      // IPv6
+      {
+        className: 'number',
+        begin: '((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:)))'
+      },
+      // IPv4
+      {
+        className: 'number',
+        begin: '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])'
+      }
+    ]
+  };
+};
+},{}],32:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
@@ -62090,7 +62415,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],29:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /@?rem\b/, /$/,
@@ -62138,7 +62463,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],30:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -62173,7 +62498,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],31:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -62275,7 +62600,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],32:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml', subLanguageMode: 'continuous',
@@ -62290,7 +62615,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],33:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -62338,7 +62663,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],34:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -62490,7 +62815,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],35:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -62519,7 +62844,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],36:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -62589,7 +62914,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],37:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -62645,7 +62970,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],38:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -62718,7 +63043,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],39:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -62730,8 +63055,13 @@ module.exports = function (hljs) {
       },
       hljs.COMMENT('@[^@\r\n\t ]+', '$'),
       {
-        className: 'string',
-        begin: '\\|', end: '\\$'
+        begin: '\\|', end: '\\|\\w*$',
+        contains: [
+          {
+            className: 'string',
+            begin: '[^|]+'
+          }
+        ]
       },
       {
         className: 'variable',
@@ -62746,7 +63076,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],40:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -62840,7 +63170,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],41:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -62879,7 +63209,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],42:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -62914,33 +63244,34 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],43:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
             typename: 'byte short char int long boolean float double void',
             literal : 'true false null',
             keyword:
-                // groovy specific keywords
+            // groovy specific keywords
             'def as in assert trait ' +
-                // common keywords with Java
+            // common keywords with Java
             'super this abstract static volatile transient public private protected synchronized final ' +
             'class interface enum if else for while switch case break default continue ' +
             'throw throws try catch finally implements extends new import package return instanceof'
         },
 
         contains: [
+            hljs.COMMENT(
+                '/\\*\\*',
+                '\\*/',
+                {
+                    relevance : 0,
+                    contains : [{
+                        className : 'doctag',
+                        begin : '@[A-Za-z]+'
+                    }]
+                }
+            ),
             hljs.C_LINE_COMMENT_MODE,
-            {
-                className: 'javadoc',
-                begin: '/\\*\\*', end: '\\*//*',
-                relevance: 0,
-                contains: [
-                    {
-                        className: 'javadoctag', begin: '(^|\\s)@[A-Za-z]+'
-                    }
-                ]
-            },
             hljs.C_BLOCK_COMMENT_MODE,
             {
                 className: 'string',
@@ -63000,7 +63331,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],44:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -63036,7 +63367,7 @@ function(hljs) {
           },
           {
             className: 'value',
-            begin: '[#\\.]\\w+'
+            begin: '[#\\.][\\w-]+'
           },
           {
             begin: '{\\s*',
@@ -63054,16 +63385,8 @@ function(hljs) {
                     className: 'symbol',
                     begin: ':\\w+'
                   },
-                  {
-                    className: 'string',
-                    begin: '"',
-                    end: '"'
-                  },
-                  {
-                    className: 'string',
-                    begin: '\'',
-                    end: '\''
-                  },
+                  hljs.APOS_STRING_MODE,
+                  hljs.QUOTE_STRING_MODE,
                   {
                     begin: '\\w+',
                     relevance: 0
@@ -63089,16 +63412,8 @@ function(hljs) {
                     begin: '\\w+',
                     relevance: 0
                   },
-                  {
-                    className: 'string',
-                    begin: '"',
-                    end: '"'
-                  },
-                  {
-                    className: 'string',
-                    begin: '\'',
-                    end: '\''
-                  },
+                  hljs.APOS_STRING_MODE,
+                  hljs.QUOTE_STRING_MODE,
                   {
                     begin: '\\w+',
                     relevance: 0
@@ -63124,7 +63439,7 @@ function(hljs) {
     ]
   };
 };
-},{}],45:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield';
   return {
@@ -63157,7 +63472,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],46:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODES = [
     hljs.COMMENT('--', '$'),
@@ -63281,7 +63596,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],47:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -63342,7 +63657,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],48:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['https'],
@@ -63377,7 +63692,75 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],49:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
+module.exports = function(hljs) {
+  var START_BRACKET = '\\[';
+  var END_BRACKET = '\\]';
+  return {
+    aliases: ['i7'],
+    case_insensitive: true,
+    keywords: {
+      // Some keywords more or less unique to I7, for relevance.
+      keyword:
+        // kind:
+        'thing|10 room|10 person|10 man|10 woman|10 animal|10 container ' +
+        'supporter|10 backdrop|10 door|10 ' +
+        // characteristic:
+        'scenery|10 open closed|10 locked|10 inside|10 gender|10 ' +
+        // verb:
+        'is are say|10 understand|10 ' +
+        // misc keyword:
+        'kind|10 of rule|10'
+    },
+    contains: [
+      {
+        className: 'string',
+        begin: '"', end: '"',
+        relevance: 0,
+        contains: [
+          {
+            className: 'subst',
+            begin: START_BRACKET, end: END_BRACKET
+          }
+        ]
+      },
+      {
+        className: 'title',
+        beginKeywords: '^Volume ^Book ^Part ^Chapter ^Section',
+        end: '$',
+        relevance: 10
+      },
+      {
+        // Table
+        className: 'title',
+        beginKeywords: '^Table',
+        end: '$',
+        relevance: 10
+      },
+      {
+        // Rule definition
+        // This is here for relevance.
+        begin: '^\\b(Check|Carry out|Report|Instead of|To|Rule|When|Before|After)',
+        end: ':',
+        contains: [
+          {
+            //Rule name
+            begin: '\\b\\(This',
+            end: '\\)',
+            relevance: 10
+          }
+        ],
+        relevance: 10
+      },
+      {
+        className: 'comment',
+        begin: START_BRACKET, end: END_BRACKET,
+        contains: ['self']
+      }
+    ]
+  };
+};
+},{}],54:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -63404,7 +63787,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],50:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = function(hljs) {
   var GENERIC_IDENT_RE = hljs.UNDERSCORE_IDENT_RE + '(<' + hljs.UNDERSCORE_IDENT_RE + '>)?';
   var KEYWORDS =
@@ -63414,7 +63797,20 @@ module.exports = function(hljs) {
     'package default double public try this switch continue throws protected public private';
 
   // https://docs.oracle.com/javase/7/docs/technotes/guides/language/underscores-literals.html
-  var JAVA_NUMBER_RE = '(\\b(0b[01_]+)|\\b0[xX][a-fA-F0-9_]+|(\\b[\\d_]+(\\.[\\d_]*)?|\\.[\\d_]+)([eE][-+]?\\d+)?)[lLfF]?'; // 0b..., 0x..., 0..., decimal, float
+  var JAVA_NUMBER_RE = '\\b' +
+    '(' +
+      '0[bB]([01]+[01_]+[01]+|[01]+)' + // 0b...
+      '|' +
+      '0[xX]([a-fA-F0-9]+[a-fA-F0-9_]+[a-fA-F0-9]+|[a-fA-F0-9]+)' + // 0x...
+      '|' +
+      '(' +
+        '([\\d]+[\\d_]+[\\d]+|[\\d]+)(\\.([\\d]+[\\d_]+[\\d]+|[\\d]+))?' +
+        '|' +
+        '\\.([\\d]+[\\d_]+[\\d]+|[\\d]+)' +
+      ')' +
+      '([eE][-+]?\\d+)?' + // octal, decimal, float
+    ')' +
+    '[lLfF]?';
   var JAVA_NUMBER_MODE = {
     className: 'number',
     begin: JAVA_NUMBER_RE,
@@ -63426,14 +63822,17 @@ module.exports = function(hljs) {
     keywords: KEYWORDS,
     illegal: /<\//,
     contains: [
-      {
-        className: 'javadoc',
-        begin: '/\\*\\*', end: '\\*/',
-        relevance: 0,
-        contains: [{
-          className: 'javadoctag', begin: '(^|\\s)@[A-Za-z]+'
-        }]
-      },
+      hljs.COMMENT(
+        '/\\*\\*',
+        '\\*/',
+        {
+          relevance : 0,
+          contains : [{
+            className : 'doctag',
+            begin : '@[A-Za-z]+'
+          }]
+        }
+      ),
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
       hljs.APOS_STRING_MODE,
@@ -63451,7 +63850,7 @@ module.exports = function(hljs) {
       {
         // Expression keywords prevent 'keyword Name(...)' from being
         // recognized as a function definition
-        beginKeywords: 'new throw return',
+        beginKeywords: 'new throw return else',
         relevance: 0
       },
       {
@@ -63488,7 +63887,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],51:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['js'],
@@ -63496,7 +63895,7 @@ module.exports = function(hljs) {
       keyword:
         'in of if for while finally var new function do return void else break catch ' +
         'instanceof with throw case default try this switch continue typeof delete ' +
-        'let yield const export super debugger as await',
+        'let yield const export super debugger as async await',
       literal:
         'true false null undefined NaN Infinity',
       built_in:
@@ -63513,10 +63912,7 @@ module.exports = function(hljs) {
       {
         className: 'pi',
         relevance: 10,
-        variants: [
-          {begin: /^\s*('|")use strict('|")/},
-          {begin: /^\s*('|")use asm('|")/}
-        ]
+        begin: /^\s*['"]use (strict|asm)['"]/
       },
       hljs.APOS_STRING_MODE,
       hljs.QUOTE_STRING_MODE,
@@ -63535,7 +63931,11 @@ module.exports = function(hljs) {
       hljs.C_BLOCK_COMMENT_MODE,
       {
         className: 'number',
-        begin: '\\b(0[xXbBoO][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)', // 0x..., 0..., 0b..., 0o..., decimal, float
+        variants: [
+          { begin: '\\b(0[bB][01]+)' },
+          { begin: '\\b(0[oO][0-7]+)' },
+          { begin: hljs.C_NUMBER_RE }
+        ],
         relevance: 0
       },
       { // "value" container
@@ -63561,6 +63961,8 @@ module.exports = function(hljs) {
           {
             className: 'params',
             begin: /\(/, end: /\)/,
+            excludeBegin: true,
+            excludeEnd: true,
             contains: [
               hljs.C_LINE_COMMENT_MODE,
               hljs.C_BLOCK_COMMENT_MODE
@@ -63597,7 +63999,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],52:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -63635,7 +64037,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],53:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -63796,107 +64198,108 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],54:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = 'val var get set class trait object public open private protected ' +
-	'final enum if else do while for when break continue throw try catch finally ' +
-	'import package is as in return fun override default companion reified inline volatile transient native';
-  
+    'final enum if else do while for when break continue throw try catch finally ' +
+    'import package is as in return fun override default companion reified inline volatile transient native';
+
   return {
     keywords: {
-      typename : 'Byte Short Char Int Long Boolean Float Double Void Unit Nothing',
-      literal : 'true false null',
+      typename: 'Byte Short Char Int Long Boolean Float Double Void Unit Nothing',
+      literal: 'true false null',
       keyword: KEYWORDS
     },
     contains : [
+      hljs.COMMENT(
+        '/\\*\\*',
+        '\\*/',
+        {
+          relevance : 0,
+          contains : [{
+            className : 'doctag',
+            begin : '@[A-Za-z]+'
+          }]
+        }
+      ),
       hljs.C_LINE_COMMENT_MODE,
-      {
-	  className: 'javadoc',
-	  begin: '/\\*\\*', end: '\\*//*',
-	  relevance: 0,
-	  contains: [
-	      {
-		  className: 'javadoctag', begin: '(^|\\s)@[A-Za-z]+'
-	      }
-	  ]
-      },
       hljs.C_BLOCK_COMMENT_MODE,
       {
-	className: 'type',
-	begin: /</, end: />/,
-	returnBegin: true,
-	excludeEnd: false,
-	relevance: 0
+        className: 'type',
+        begin: /</, end: />/,
+        returnBegin: true,
+        excludeEnd: false,
+        relevance: 0
       },
       {
-	className: 'function',
-	beginKeywords: 'fun', end: '[(]|$',
-	returnBegin: true,
-	excludeEnd : true,
-	keywords: KEYWORDS,
-	illegal: /fun\s+(<.*>)?[^\s\(]+(\s+[^\s\(]+)\s*=/,
-	relevance : 5,
-	contains: [
-	  {
+        className: 'function',
+        beginKeywords: 'fun', end: '[(]|$',
+        returnBegin: true,
+        excludeEnd: true,
+        keywords: KEYWORDS,
+        illegal: /fun\s+(<.*>)?[^\s\(]+(\s+[^\s\(]+)\s*=/,
+        relevance: 5,
+        contains: [
+          {
             begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(', returnBegin: true,
             relevance: 0,
             contains: [hljs.UNDERSCORE_TITLE_MODE]
           },
-	  {
-	    className : 'type',
-	    begin: /</, end : />/, keywords: 'reified',
-	    relevance: 0
-	  },
+          {
+            className: 'type',
+            begin: /</, end: />/, keywords: 'reified',
+            relevance: 0
+          },
           {
             className: 'params',
             begin: /\(/, end: /\)/,
             keywords: KEYWORDS,
             relevance: 0,
-	    illegal : /\([^\(,\s:]+,/,
+            illegal: /\([^\(,\s:]+,/,
             contains: [
-	      {
-		className: 'typename',
-		begin: /:\s*/, end: /\s*[=\)]/, excludeBegin: true, returnEnd: true,
-		relevance: 0
-	      }
+              {
+                className: 'typename',
+                begin: /:\s*/, end: /\s*[=\)]/, excludeBegin: true, returnEnd: true,
+                relevance: 0
+              }
             ]
           },
           hljs.C_LINE_COMMENT_MODE,
           hljs.C_BLOCK_COMMENT_MODE
-	]
+        ]
       },
       {
-	className: 'class',
-	beginKeywords: 'class trait', end: /[:\{(]|$/,
-	excludeEnd : true,
-	illegal: 'extends implements',
-	contains: [
-	  hljs.UNDERSCORE_TITLE_MODE,
-	  {
-	    className : 'type',
-	    begin: /</, end : />/, excludeBegin: true, excludeEnd: true,
-	    relevance: 0
-	  },
-	  {
-	    className : 'typename',
-	    begin : /[,:]\s*/, end : /[<\(,]|$/, excludeBegin: true, returnEnd: true
-	  }
-	]
+        className: 'class',
+        beginKeywords: 'class trait', end: /[:\{(]|$/,
+        excludeEnd: true,
+        illegal: 'extends implements',
+        contains: [
+          hljs.UNDERSCORE_TITLE_MODE,
+          {
+            className: 'type',
+            begin: /</, end: />/, excludeBegin: true, excludeEnd: true,
+            relevance: 0
+          },
+          {
+            className: 'typename',
+            begin: /[,:]\s*/, end: /[<\(,]|$/, excludeBegin: true, returnEnd: true
+          }
+        ]
       },
       {
-	className: 'variable', beginKeywords: 'var val', end : /\s*[=:$]/, excludeEnd: true
+        className: 'variable', beginKeywords: 'var val', end: /\s*[=:$]/, excludeEnd: true
       },
       hljs.QUOTE_STRING_MODE,
       {
-	  className: 'shebang',
-	  begin: "^#!/usr/bin/env", end: '$',
-	  illegal: '\n'
+        className: 'shebang',
+        begin: "^#!/usr/bin/env", end: '$',
+        illegal: '\n'
       },
       hljs.C_NUMBER_MODE
     ]
   };
 };
-},{}],55:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -63955,12 +64358,11 @@ module.exports = function(hljs) {
     begin: '\'' + LASSO_IDENT_RE + '\''
   };
   var LASSO_CODE = [
+    hljs.COMMENT(
+      '/\\*\\*!',
+      '\\*/'
+    ),
     hljs.C_LINE_COMMENT_MODE,
-    {
-      className: 'javadoc',
-      begin: '/\\*\\*!', end: '\\*/',
-      contains: [hljs.PHRASAL_WORDS_MODE]
-    },
     hljs.C_BLOCK_COMMENT_MODE,
     hljs.inherit(hljs.C_NUMBER_MODE, {begin: hljs.C_NUMBER_RE + '|(-?infinity|nan)\\b'}),
     hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
@@ -64083,7 +64485,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],56:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -64220,7 +64622,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],57:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -64327,7 +64729,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],58:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable', begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -64445,7 +64847,8 @@ module.exports = function(hljs) {
       },
       {
         className: 'function',
-        beginKeywords: 'end', end: '$',
+        begin: '\\bend\\s+', end: '$',
+        keywords: 'end',
         contains: [
           TITLE2,
           TITLE1
@@ -64465,25 +64868,15 @@ module.exports = function(hljs) {
         ]
       },
       {
-        className: 'command',
-        beginKeywords: 'end', end: '$',
-        contains: [
-          TITLE2,
-          TITLE1
+        className: 'preprocessor',
+        variants: [
+          {
+            begin: '<\\?(rev|lc|livecode)',
+            relevance: 10
+          },
+          { begin: '<\\?' },
+          { begin: '\\?>' }
         ]
-      },
-      {
-        className: 'preprocessor',
-        begin: '<\\?rev|<\\?lc|<\\?livecode',
-        relevance: 10
-      },
-      {
-        className: 'preprocessor',
-        begin: '<\\?'
-      },
-      {
-        className: 'preprocessor',
-        begin: '\\?>'
       },
       hljs.APOS_STRING_MODE,
       hljs.QUOTE_STRING_MODE,
@@ -64494,7 +64887,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^='
   };
 };
-},{}],59:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -64645,7 +65038,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],60:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -64701,7 +65094,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],61:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -64747,7 +65140,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],62:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -64849,7 +65242,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],63:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -64908,7 +65301,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],64:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -64999,7 +65392,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],65:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -65229,7 +65622,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],66:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -65318,7 +65711,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],67:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -65337,7 +65730,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],68:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -65415,7 +65808,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],69:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -65497,7 +65890,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],70:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -65549,7 +65942,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],71:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword: 'rec with let in inherit assert if else then',
@@ -65599,7 +65992,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],72:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'symbol',
@@ -65687,7 +66080,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],73:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -65712,7 +66105,7 @@ module.exports = function(hljs) {
   var LEXEMES = /[a-zA-Z@][a-zA-Z0-9_]*/;
   var CLASS_KEYWORDS = '@interface @class @protocol @implementation';
   return {
-    aliases: ['m', 'mm', 'objc', 'obj-c'],
+    aliases: ['mm', 'objc', 'obj-c'],
     keywords: OBJC_KEYWORDS,
     lexemes: LEXEMES,
     illegal: '</',
@@ -65766,7 +66159,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],74:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -65836,7 +66229,66 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],75:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
+module.exports = function(hljs) {
+	var SPECIAL_VARS = {
+		className: 'keyword',
+		begin: '\\$(f[asn]|t|vp[rtd]|children)'
+	},
+	LITERALS = {
+		className: 'literal',
+		begin: 'false|true|PI|undef'
+	},
+	NUMBERS = {
+		className: 'number',
+		begin: '\\b\\d+(\\.\\d+)?(e-?\\d+)?', //adds 1e5, 1e-10
+		relevance: 0
+	},
+	STRING = hljs.inherit(hljs.QUOTE_STRING_MODE,{illegal: null}),
+	PREPRO = {
+		className: 'preprocessor',
+		keywords: 'include use',
+		begin: 'include|use <',
+		end: '>'
+	},
+	PARAMS = {
+		className: 'params',
+		begin: '\\(', end: '\\)',
+		contains: ['self', NUMBERS, STRING, SPECIAL_VARS, LITERALS]
+	},
+	MODIFIERS = {
+		className: 'built_in',
+		begin: '[*!#%]',
+		relevance: 0
+	},
+	FUNCTIONS = {
+		className: 'function',
+		beginKeywords: 'module function',
+		end: '\\=|\\{',
+		contains: [PARAMS, hljs.UNDERSCORE_TITLE_MODE]
+	};
+
+	return {
+		aliases: ['scad'],
+		keywords: {
+			keyword: 'function module include use for intersection_for if else \\%',
+			literal: 'false true PI undef',
+			built_in: 'circle square polygon text sphere cube cylinder polyhedron translate rotate scale resize mirror multmatrix color offset hull minkowski union difference intersection abs sign sin cos tan acos asin atan atan2 floor round ceil ln log pow sqrt exp rands min max concat lookup str chr search version version_num norm cross parent_module echo import import_dxf dxf_linear_extrude linear_extrude rotate_extrude surface projection render children dxf_cross dxf_dim let assign'
+		},
+		contains: [
+			hljs.C_LINE_COMMENT_MODE,
+			hljs.C_BLOCK_COMMENT_MODE,
+			NUMBERS,
+			PREPRO,
+			STRING,
+			PARAMS,
+			SPECIAL_VARS,
+			MODIFIERS,
+			FUNCTIONS
+		]
+	}
+};
+},{}],81:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -65905,7 +66357,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],76:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -65953,7 +66405,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],77:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -66107,7 +66559,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],78:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -66159,7 +66611,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],79:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable', begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -66203,8 +66655,8 @@ module.exports = function(hljs) {
         {
           contains: [
             {
-              className: 'phpdoc',
-              begin: '\\s@[A-Za-z]+'
+              className: 'doctag',
+              begin: '@[A-Za-z]+'
             },
             PREPROCESSOR
           ]
@@ -66275,7 +66727,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],80:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = function(hljs) {
   var backtickEscape = {
     begin: '`[\\s\\S]',
@@ -66327,7 +66779,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],81:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -66375,7 +66827,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],82:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -66417,7 +66869,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],83:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -66506,7 +66958,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],84:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -66543,7 +66995,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],85:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = function(hljs) {
   var PUPPET_TYPE_REFERENCE =
       'augeas computer cron exec file filebucket host interface k5login macauthorization mailalias maillist mcx mount nagios_command ' +
@@ -66650,7 +67102,7 @@ module.exports = function(hljs) {
     contains: PUPPET_DEFAULT_CONTAINS
   }
 };
-},{}],86:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = function(hljs) {
   var PROMPT = {
     className: 'prompt',  begin: /^(>>>|\.\.\.) /
@@ -66735,7 +67187,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],87:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -66758,7 +67210,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],88:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -66828,7 +67280,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],89:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -66855,7 +67307,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],90:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\n{\r\n]+\\{';
 
@@ -66915,7 +67367,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],91:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -66952,7 +67404,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],92:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS =
@@ -66960,7 +67412,7 @@ module.exports = function(hljs) {
     'next until do begin unless END rescue nil else break undef not super class case ' +
     'require yield alias while ensure elsif or include attr_reader attr_writer attr_accessor';
   var YARDOCTAG = {
-    className: 'yardoctag',
+    className: 'doctag',
     begin: '@[A-Za-z]+'
   };
   var IRB_OBJECT = {
@@ -67122,7 +67574,7 @@ module.exports = function(hljs) {
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],93:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -67179,8 +67631,9 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],94:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 module.exports = function(hljs) {
+  var NUM_SUFFIX = '([uif](8|16|32|64|size))\?';
   var BLOCK_COMMENT = hljs.inherit(hljs.C_BLOCK_COMMENT_MODE);
   BLOCK_COMMENT.contains.push('self');
   return {
@@ -67210,18 +67663,22 @@ module.exports = function(hljs) {
       hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
       {
         className: 'string',
-        begin: /r(#*)".*?"\1(?!#)/
-      },
-      {
-        className: 'string',
-        begin: /'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/
-      },
-      {
-        begin: /'[a-zA-Z_][a-zA-Z0-9_]*/
+        variants: [
+           { begin: /r(#*)".*?"\1(?!#)/ },
+           { begin: /'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ },
+           { begin: /'[a-zA-Z_][a-zA-Z0-9_]*/ }
+        ]
       },
       {
         className: 'number',
-        begin: /\b(0[xbo][A-Fa-f0-9_]+|\d[\d_]*(\.[0-9_]+)?([eE][+-]?[0-9_]+)?)([uif](8|16|32|64|size))?/,
+        variants: [
+          { begin: '\\b0b([01_]+)' + NUM_SUFFIX },
+          { begin: '\\b0o([0-7_]+)' + NUM_SUFFIX },
+          { begin: '\\b0x([A-Fa-f0-9_]+)' + NUM_SUFFIX },
+          { begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)' +
+                   NUM_SUFFIX
+          }
+        ],
         relevance: 0
       },
       {
@@ -67252,7 +67709,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],95:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = {
@@ -67296,16 +67753,6 @@ module.exports = function(hljs) {
     contains: [NAME]
   };
 
-  var JAVADOC = {
-    className: 'javadoc',
-    begin: '/\\*\\*', end: '\\*/',
-    contains: [{
-      className: 'javadoctag',
-      begin: '@[A-Za-z]+'
-    }],
-    relevance: 10
-  };
-
   return {
     keywords: {
       literal: 'true false null',
@@ -67325,7 +67772,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],96:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -67447,7 +67894,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],97:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -67502,7 +67949,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],98:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -67619,7 +68066,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],99:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -67702,7 +68149,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],100:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -67755,7 +68202,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],101:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -67820,7 +68267,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],102:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -67920,7 +68367,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],103:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -67958,7 +68405,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],104:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_CLOSE_RE = 'END-ISO-10303-21;';
@@ -68010,7 +68457,7 @@ module.exports = function(hljs) {
     ].concat(STEP21_CODE)
   };
 };
-},{}],105:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -68453,7 +68900,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],106:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: 'class deinit enum extension func import init let protocol static ' +
@@ -68468,13 +68915,13 @@ module.exports = function(hljs) {
         'bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
         'bridgeToObjectiveCUnconditional c contains count countElements ' +
         'countLeadingZeros debugPrint debugPrintln distance dropFirst dropLast dump ' +
-        'encodeBitsAsWords enumerate equal false filter find getBridgedObjectiveCType ' +
+        'encodeBitsAsWords enumerate equal filter find getBridgedObjectiveCType ' +
         'getVaList indices insertionSort isBridgedToObjectiveC ' +
         'isBridgedVerbatimToObjectiveC isUniquelyReferenced join ' +
-        'lexicographicalCompare map max maxElement min minElement nil numericCast ' +
+        'lexicographicalCompare map max maxElement min minElement numericCast ' +
         'partition posix print println quickSort reduce reflect reinterpretCast ' +
         'reverse roundUpToAlignment sizeof sizeofValue sort split startsWith strideof ' +
-        'strideofValue swap swift toString transcode true underestimateCount ' +
+        'strideofValue swap swift toString transcode underestimateCount ' +
         'unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer ' +
         'withUnsafePointerToObject withUnsafePointers withVaList'
     };
@@ -68564,7 +69011,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],107:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -68626,7 +69073,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],108:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND1 = {
     className: 'command',
@@ -68681,7 +69128,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],109:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -68716,7 +69163,91 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],110:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
+module.exports = function(hljs) {
+  var TPID = {
+    className: 'number',
+    begin: '[1-9][0-9]*', /* no leading zeros */
+    relevance: 0
+  }
+  var TPLABEL = {
+    className: 'comment',
+    begin: ':[^\\]]+'
+  }
+  var TPDATA = {
+    className: 'built_in',
+    begin: '(AR|P|PAYLOAD|PR|R|SR|RSR|LBL|VR|UALM|MESSAGE|UTOOL|UFRAME|TIMER|\
+    TIMER_OVERFLOW|JOINT_MAX_SPEED|RESUME_PROG|DIAG_REC)\\[', end: '\\]',
+    contains: [
+      'self',
+      TPID,
+      TPLABEL
+    ]
+  };
+  var TPIO = {
+    className: 'built_in',
+    begin: '(AI|AO|DI|DO|F|RI|RO|UI|UO|GI|GO|SI|SO)\\[', end: '\\]',
+    contains: [
+      'self',
+      TPID,
+      hljs.QUOTE_STRING_MODE, /* for pos section at bottom */
+      TPLABEL
+    ]
+  };
+
+  return {
+    keywords: {
+      keyword:
+        'ABORT ACC ADJUST AND AP_LD BREAK CALL CNT COL CONDITION CONFIG DA DB ' +
+        'DIV DETECT ELSE END ENDFOR ERR_NUM ERROR_PROG FINE FOR GP GUARD INC ' +
+        'IF JMP LINEAR_MAX_SPEED LOCK MOD MONITOR OFFSET Offset OR OVERRIDE ' +
+        'PAUSE PREG PTH RT_LD RUN SELECT SKIP Skip TA TB TO TOOL_OFFSET ' +
+        'Tool_Offset UF UT UFRAME_NUM UTOOL_NUM UNLOCK WAIT X Y Z W P R STRLEN ' +
+        'SUBSTR FINDSTR VOFFSET',
+      constant:
+        'ON OFF max_speed LPOS JPOS ENABLE DISABLE START STOP RESET',
+    },
+    contains: [
+      TPDATA,
+      TPIO,
+      {
+        className: 'keyword',
+        begin: '/(PROG|ATTR|MN|POS|END)\\b'
+      },
+      {
+        /* this is for cases like ,CALL */
+        className: 'keyword',
+        begin: '(CALL|RUN|POINT_LOGIC|LBL)\\b'
+      },
+      {
+        /* this is for cases like CNT100 where the default lexemes do not
+         * separate the keyword and the number */
+        className: 'keyword',
+        begin: '\\b(ACC|CNT|Skip|Offset|PSPD|RT_LD|AP_LD|Tool_Offset)'
+      },
+      {
+        /* to catch numbers that do not have a word boundary on the left */
+        className: 'number',
+        begin: '\\d+(sec|msec|mm/sec|cm/min|inch/min|deg/sec|mm|in|cm)?\\b',
+        relevance: 0
+      },
+      hljs.COMMENT('//', '[;$]'),
+      hljs.COMMENT('!', '[;$]'),
+      hljs.COMMENT('--eg:', '$'),
+      hljs.QUOTE_STRING_MODE,
+      {
+        className: 'string',
+        begin: '\'', end: '\''
+      },
+      hljs.C_NUMBER_MODE,
+      {
+        className: 'variable',
+        begin: '\\$[A-Za-z0-9_]+'
+      }
+    ]
+  };
+};
+},{}],117:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -68773,38 +69304,48 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],111:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = function(hljs) {
+  var KEYWORDS = {
+    keyword:
+      'in if for while finally var new function|0 do return void else break catch ' +
+      'instanceof with throw case default try this switch continue typeof delete ' +
+      'let yield const class public private get set super interface extends' +
+      'static constructor implements enum export import declare type protected',
+    literal:
+      'true false null undefined NaN Infinity',
+    built_in:
+      'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
+      'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' +
+      'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' +
+      'TypeError URIError Number Math Date String RegExp Array Float32Array ' +
+      'Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array ' +
+      'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require ' +
+      'module console window document any number boolean string void'
+  }
+
   return {
     aliases: ['ts'],
-    keywords: {
-      keyword:
-        'in if for while finally var new function|0 do return void else break catch ' +
-        'instanceof with throw case default try this switch continue typeof delete ' +
-        'let yield const class public private get set super interface extends' +
-        'static constructor implements enum export import declare type protected',
-      literal:
-        'true false null undefined NaN Infinity',
-      built_in:
-        'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
-        'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' +
-        'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' +
-        'TypeError URIError Number Math Date String RegExp Array Float32Array ' +
-        'Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array ' +
-        'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require ' +
-        'module console window document any number boolean string void'
-    },
+    keywords: KEYWORDS,
     contains: [
       {
         className: 'pi',
-        begin: /^\s*('|")use strict('|")/,
+        begin: /^\s*['"]use strict['"]/,
         relevance: 0
       },
       hljs.APOS_STRING_MODE,
       hljs.QUOTE_STRING_MODE,
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
-      hljs.C_NUMBER_MODE,
+      {
+        className: 'number',
+        variants: [
+          { begin: '\\b(0[bB][01]+)' },
+          { begin: '\\b(0[oO][0-7]+)' },
+          { begin: hljs.C_NUMBER_RE }
+        ],
+        relevance: 0
+      },
       { // "value" container
         begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
         keywords: 'return throw case',
@@ -68822,12 +69363,17 @@ module.exports = function(hljs) {
       },
       {
         className: 'function',
-        beginKeywords: 'function', end: /\{/, excludeEnd: true,
+        begin: 'function', end: /[\{;]/, excludeEnd: true,
+        keywords: KEYWORDS,
         contains: [
+          'self',
           hljs.inherit(hljs.TITLE_MODE, {begin: /[A-Za-z$_][0-9A-Za-z$_]*/}),
           {
             className: 'params',
             begin: /\(/, end: /\)/,
+            excludeBegin: true,
+            excludeEnd: true,
+            keywords: KEYWORDS,
             contains: [
               hljs.C_LINE_COMMENT_MODE,
               hljs.C_BLOCK_COMMENT_MODE
@@ -68840,7 +69386,8 @@ module.exports = function(hljs) {
       },
       {
         className: 'constructor',
-        beginKeywords: 'constructor', end: /\{/, excludeEnd: true,
+        begin: 'constructor', end: /\{/, excludeEnd: true,
+        keywords: KEYWORDS,
         relevance: 10
       },
       {
@@ -68860,7 +69407,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],112:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -68915,7 +69462,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],113:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -68971,7 +69518,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],114:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml', subLanguageMode: 'continuous',
@@ -68983,7 +69530,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],115:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -69022,7 +69569,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],116:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['v'],
@@ -69072,7 +69619,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],117:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -69128,7 +69675,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],118:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -69191,7 +69738,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],119:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -69339,7 +69886,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],120:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES = 'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo StereoDecoder PointCloud NetworkAccess RemoteControl RegExp ChromaKey Snowfall NodeJS Speech Charts';
 
@@ -69419,7 +69966,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],121:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var PHP = {
@@ -69499,7 +70046,7 @@ module.exports = function(hljs) {
         keywords: {title: 'script'},
         contains: [TAG_INTERNALS],
         starts: {
-          end: '</script>', returnEnd: true,
+          end: '\<\/script\>', returnEnd: true,
           subLanguage: ''
         }
       },
@@ -69746,7 +70293,7 @@ define('ember-material-design/components/md-input', ['exports', 'ember', 'ember-
             this.resetContainer();
         },
 
-        willInsertElement: function willInsertElement() {
+        didInsertElement: function didInsertElement() {
             this._super.apply(this, arguments);
             this.setupPlaceholder();
         },
@@ -69771,6 +70318,13 @@ define('ember-material-design/components/md-input', ['exports', 'ember', 'ember-
             //
             //// we don't need this on the element anymore, so get rid of it
             this.set('placeholder', '');
+
+            var inputContainerJquery = this.get('inputContainer').$();
+            if (inputContainerJquery.find('label').length === 0) {
+                var placeHolder = '<label>' + this.get('originalPlaceholder') + '</label>';
+                inputContainerJquery.addClass('md-icon-float');
+                inputContainerJquery.prepend(placeHolder);
+            }
 
             this.processInput();
         },
@@ -70042,6 +70596,7 @@ define('ember-material-design/components/md-sidenav', ['exports', 'ember', 'embe
         classNameBindings: ['isLockedOpen:md-locked-open'],
 
         isLockedOpen: null,
+        sidebarVisible: false,
 
         backdrop: Ember['default'].computed(function () {
             return Ember['default'].$('<md-backdrop class="md-sidenav-backdrop md-opaque">');
@@ -70362,7 +70917,7 @@ define('ember-material-design/components/md-tab', ['exports', 'ember', 'ember-ma
 
         tabsComponent: Ember['default'].computed.alias('tabWrapperComponent.parentView'),
 
-        data: null,
+        data: {},
 
         didInsertElement: function didInsertElement() {
             this._super.apply(this, arguments);
@@ -70448,27 +71003,30 @@ define('ember-material-design/components/md-tabs-content-wrapper', ['exports', '
 });
 define('ember-material-design/components/md-tabs-wrapper', ['exports', 'ember', 'ember-material-design/templates/components/md-tabs-wrapper', 'ember-material-design/mixins/layout-rules'], function (exports, Ember, layout, LayoutRules) {
 
-    'use strict';
+  'use strict';
 
-    var MdTabWrapper = Ember['default'].Component.extend(LayoutRules['default'], {
-        layout: layout['default'],
-        tagName: 'md-tabs-wrapper',
-        classNameBindings: ['shouldStretchTabs:md-stretch-tabs'],
+  var MdTabWrapper = Ember['default'].Component.extend(LayoutRules['default'], {
+    layout: layout['default'],
+    tagName: 'md-tabs-wrapper',
+    classNameBindings: ['shouldStretchTabs:md-stretch-tabs'],
 
-        tabsComponent: Ember['default'].computed.alias('parentView'),
+    tabsComponent: Ember['default'].computed.alias('parentView'),
 
-        tabs: Ember['default'].computed.alias('tabsComponent.tabs'),
+    tabs: Ember['default'].computed.alias('tabsComponent.tabs'),
 
-        shouldStretchTabs: Ember['default'].computed('tabsComponent.shouldStretchTabs', function () {
-            return this.get('tabsComponent.shouldStretchTabs');
-        }),
+    shouldStretchTabs: Ember['default'].computed('tabsComponent.shouldStretchTabs', function () {
+      return this.get('tabsComponent.shouldStretchTabs');
+    }),
 
-        shouldPaginate: Ember['default'].computed('tabsComponent.shouldPaginate', function () {
-            return this.get('tabsComponent.shouldPaginate');
-        })
-    });
+    shouldPaginate: Ember['default'].computed('tabsComponent.shouldPaginate', function () {
+      return this.get('tabsComponent.shouldPaginate');
+    }) });
 
-    exports['default'] = MdTabWrapper;
+  exports['default'] = MdTabWrapper;
+
+  //shouldCenterTabs: Ember.computed('tabsComponent.shouldCenterTabs', function() {
+  //  return this.get('tabsComponent.shouldCenterTabs');
+  //})
 
 });
 define('ember-material-design/components/md-tabs', ['exports', 'ember', 'ember-material-design/mixins/ripples', 'ember-material-design/templates/components/md-tabs', 'ember-material-design/mixins/layout-rules'], function (exports, Ember, RippleMixin, layout, LayoutRules) {
@@ -70836,7 +71394,7 @@ define('ember-material-design/components/md-tabs', ['exports', 'ember', 'ember-m
         },
 
         updateInkBarStyles: function updateInkBarStyles() {
-            if (this.elements.tabs.length <= 0) {
+            if (!this.elements || !this.elements.tabs || this.elements.tabs.length <= 0) {
                 return;
             }
 
@@ -70982,9 +71540,145 @@ define('ember-material-design/components/md-toast', ['exports', 'ember', 'ember-
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend(LayoutRules['default'], {
-    layout: layout['default']
+  var MdToast = Ember['default'].Component.extend(LayoutRules['default'], {
+    layout: layout['default'],
+    tagName: 'md-toast',
+    classNameBindings: ['toast.capsule:md-capsule', 'toast.open:ng-enter-active', 'toast.opening:ng-enter', 'positionBinding', 'destroyingClass'],
+
+    didInsertElement: function didInsertElement() {
+      this._super.apply(this, arguments);
+      this.setupToast();
+    },
+
+    willDestroyElement: function willDestroyElement() {
+      this._super.apply(this, arguments);
+      this.removeToast();
+    },
+
+    setupToast: function setupToast() {
+      var _this = this;
+
+      // TODO: this should run one frame after render, but not sure best way to implement
+      Ember['default'].run.schedule('afterRender', function () {
+        Ember['default'].run.later(_this, function () {
+          _this.set('toast.open', true);
+        }, 16);
+      });
+
+      var delay = this.get('toast.hideDelay');
+
+      if (delay && delay > 0) {
+        Ember['default'].run.later(this, function () {
+          // destroy myself if I haven't been destroyed already.
+          if (_this.get('toast')) {
+            _this.set('toast.destroying', true);
+          }
+        }, delay);
+      }
+    },
+
+    setRootElementClass: Ember['default'].observer('toast.open', function () {
+
+      if (this.get('toast.open')) {
+        this.get('rootElement').addClass(this.get('toastOpenClass'));
+      } else {
+        this.get('rootElement').removeClass(this.get('toastOpenClass'));
+      }
+    }),
+
+    removeToast: function removeToast() {
+      if (this.get('actionClicked')) {
+        this.sendAction('toast.resolve');
+      }
+    },
+
+    rootElement: Ember['default'].computed(function () {
+      var re = this.container.lookup('application:main').get('rootElement');
+      return Ember['default'].$(re);
+    }),
+
+    positionBinding: Ember['default'].computed('toast.position', function () {
+      var position = this.get('toast.position'),
+          positions = '';
+
+      if (!position) {
+        return '';
+      }
+
+      position.split(' ').forEach(function (p) {
+        if (p.trim().length > 0) {
+          positions = positions + 'md-' + p + ' ';
+        }
+      });
+
+      return positions;
+    }),
+
+    openClass: Ember['default'].computed('toast.open', function () {
+      if (this.get('toast.open')) {
+        return 'ng-enter-active';
+      }
+
+      return '';
+    }),
+
+    destroyingClass: Ember['default'].computed('toast.destroying', function () {
+      if (this.get('toast.destroying')) {
+        return 'ng-leave ng-leave-active';
+      }
+
+      return '';
+    }),
+
+    destroying: Ember['default'].observer('toast.destroying', function () {
+      var _this2 = this;
+
+      if (!this.get('toast.destroying')) {
+        return;
+      }
+
+      this.beginPropertyChanges();
+      this.set('toast.open', false);
+      this.set('toast.opening', false);
+      this.endPropertyChanges();
+
+      Ember['default'].run.later(this, function () {
+        _this2.set('toast.destroyed', true);
+      }, 400);
+    }),
+
+    buttonClass: Ember['default'].computed('toast.highlightAction', function () {
+
+      var highlight = this.get('toast.highlightAction');
+
+      if (highlight) {
+
+        return 'md-action md-highlight';
+      }
+
+      return 'md-action';
+    }),
+
+    toastOpenClass: Ember['default'].computed('toast.position', function () {
+      var position = this.get('toast.position');
+
+      return 'md-toast-open-' + (position.indexOf('top') > -1 ? 'top' : 'bottom');
+    }),
+
+    actions: {
+      action: function action() {
+        this.beginPropertyChanges();
+
+        this.set('actionClicked', true);
+        this.set('toast.destroying', true);
+
+        this.endPropertyChanges();
+      }
+    }
+
   });
+
+  exports['default'] = MdToast;
 
 });
 define('ember-material-design/components/md-toolbar', ['exports', 'ember', 'ember-material-design/templates/components/md-toolbar', 'ember-material-design/mixins/layout-rules'], function (exports, Ember, layout, LayoutRules) {
@@ -71061,6 +71755,13 @@ define('ember-material-design/components/md-tooltip', ['exports', 'ember', 'embe
             var tooltipParent = this.get('tooltipParent');
 
             tooltipParent.append(this.$());
+
+            // Check if we should display it or not.
+            var computedStyles = window.getComputedStyle(this.$()[0]);
+            if (Ember['default'].isPresent(computedStyles.display) && computedStyles.display === 'none') {
+                this.$().detach();
+                return;
+            }
 
             this.positionTooltip();
         }),
@@ -71499,6 +72200,76 @@ define('ember-material-design/mixins/ripples', ['exports', 'ember'], function (e
     exports['default'] = RipplesMixin;
 
 });
+define('ember-material-design/models/toast', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var ToastModel = Ember['default'].Object.extend({
+    position: 'bottom left',
+    hideDelay: 3000,
+    capsule: false,
+    highlightAction: false,
+    content: '',
+    action: '',
+    resolve: null,
+    open: false
+
+  });
+
+  exports['default'] = ToastModel;
+
+});
+define('ember-material-design/services/toasts', ['exports', 'ember', 'ember-material-design/models/toast'], function (exports, Ember, Toast) {
+
+  'use strict';
+
+  var ToastService = Ember['default'].Service.extend({
+
+    toasts: Ember['default'].A([]),
+
+    showToast: function showToast(toast) {
+      var _this = this;
+
+      // check to see if there are existing toast and destroy them
+      var existingToasts = this.get('toasts').filterBy('open');
+
+      existingToasts.forEach(function (t) {
+        t.set('destroying', true);
+      });
+
+      toast.opening = true;
+      var newToast = Toast['default'].createWithMixins(toast);
+
+      var delay = existingToasts.length > 0 ? 400 : 0;
+
+      Ember['default'].run.later(this, function () {
+        _this.get('toasts').pushObject(newToast);
+        return newToast;
+      }, delay);
+    },
+
+    activeToasts: Ember['default'].computed('toasts.@each.open', function () {
+      return Ember['default'].A(this.get('toasts').filterBy('open', true));
+    }),
+
+    removeToast: function removeToast(toast) {
+      toast.set('destroying', true);
+    },
+
+    destroyToasts: Ember['default'].observer('toasts.@each.destroyed', function () {
+      var _this2 = this;
+
+      var destroyedToasts = this.get('toasts').filterBy('destroyed');
+      destroyedToasts.forEach(function (dt) {
+        _this2.get('toasts').removeObject(dt);
+      });
+    })
+
+  });
+
+  exports['default'] = ToastService;
+
+});
 define('ember-material-design/templates/components/md-backdrop', ['exports'], function (exports) {
 
   'use strict';
@@ -71714,9 +72485,15 @@ define('ember-material-design/templates/components/md-checkbox', ['exports'], fu
         dom.setAttribute(el1,"class","md-label");
         var el2 = dom.createTextNode("\n    ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("span");
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
@@ -71741,7 +72518,7 @@ define('ember-material-design/templates/components/md-checkbox', ['exports'], fu
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [2, 1]),1,1);
         content(env, morph0, context, "yield");
         return fragment;
       }
@@ -71855,14 +72632,7 @@ define('ember-material-design/templates/components/md-input-container', ['export
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","md-placeholder");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -71887,10 +72657,8 @@ define('ember-material-design/templates/components/md-input-container', ['export
           fragment = this.build(dom);
         }
         var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2]),0,0);
         dom.insertBoundary(fragment, 0);
         content(env, morph0, context, "yield");
-        content(env, morph1, context, "placeholder");
         return fragment;
       }
     };
@@ -72702,11 +73470,11 @@ define('ember-material-design/templates/components/md-tabs-wrapper', ['exports']
           attribute(env, attrMorph0, element1, "aria-disabled", concat(env, [subexpr(env, context, "if", [get(env, context, "tabsComponent.canPageBack"), "false", "true"], {})]));
           attribute(env, attrMorph1, element1, "class", concat(env, [subexpr(env, context, "if", [get(env, context, "tabsComponent.canPageBack"), "", "md-disabled"], {})]));
           element(env, element1, context, "action", ["previousPage"], {"target": get(env, context, "tabsComponent")});
-          inline(env, morph0, context, "md-icon", [], {"md-svg-icon": "tabs-arrow"});
+          inline(env, morph0, context, "md-icon", [], {"md-svg-icon": "md-tabs-arrow"});
           attribute(env, attrMorph2, element2, "aria-disabled", concat(env, [subexpr(env, context, "if", [get(env, context, "tabsComponent.canPageForward"), "false", "true"], {})]));
           attribute(env, attrMorph3, element2, "class", concat(env, [subexpr(env, context, "if", [get(env, context, "tabsComponent.canPageForward"), "", "md-disabled"], {})]));
           element(env, element2, context, "action", ["nextPage"], {"target": get(env, context, "tabsComponent")});
-          inline(env, morph1, context, "md-icon", [], {"md-svg-icon": "tabs-arrow"});
+          inline(env, morph1, context, "md-icon", [], {"md-svg-icon": "md-tabs-arrow"});
           return fragment;
         }
       };
@@ -72909,7 +73677,7 @@ define('ember-material-design/templates/components/md-tabs-wrapper', ['exports']
         var morph4 = dom.createMorphAt(dom.childAt(element3, [5]),1,1);
         content(env, morph0, context, "yield");
         block(env, morph1, context, "if", [get(env, context, "shouldPaginate")], {}, child0, null);
-        attribute(env, attrMorph0, element3, "class", concat(env, [subexpr(env, context, "if", [get(env, context, "shouldPaginate"), "md-paginated", ""], {})]));
+        attribute(env, attrMorph0, element3, "class", concat(env, [subexpr(env, context, "if", [get(env, context, "shouldPaginate"), "md-paginated", ""], {}), " ", subexpr(env, context, "if", [get(env, context, "tabsComponent.shouldCenterTabs"), "md-center-tabs", ""], {})]));
         attribute(env, attrMorph1, element4, "style", get(env, context, "tabsComponent.offsetLeftStyle"));
         attribute(env, attrMorph2, element4, "class", concat(env, [subexpr(env, context, "if", [get(env, context, "tabsComponent.shouldCenterTabs"), "md-center-tabs", ""], {})]));
         content(env, morph2, context, "tabsLength");
@@ -73022,6 +73790,90 @@ define('ember-material-design/templates/components/md-toast', ['exports'], funct
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            content(env, morph0, context, "toast.action");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          block(env, morph0, context, "md-button", [], {"class": get(env, context, "buttonClass"), "action": "action"}, child0, null);
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.12.0",
@@ -73030,15 +73882,20 @@ define('ember-material-design/templates/components/md-toast', ['exports'], funct
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"flex","");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content;
+        var hooks = env.hooks, content = hooks.content, get = hooks.get, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -73056,9 +73913,11 @@ define('ember-material-design/templates/components/md-toast', ['exports'], funct
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        content(env, morph0, context, "yield");
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
+        dom.insertBoundary(fragment, null);
+        content(env, morph0, context, "toast.content");
+        block(env, morph1, context, "if", [get(env, context, "toast.action")], {}, child0, null);
         return fragment;
       }
     };

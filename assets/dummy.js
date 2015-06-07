@@ -78,6 +78,10 @@ define('dummy/components/code-snippet', ['exports', 'ember', 'dummy/snippets'], 
             return "javascript";
           case "hbs":
             return "handlebars";
+          case "css":
+            return "css";
+          case "scss":
+            return "scss";
         }
       }
     })
@@ -905,6 +909,88 @@ define('dummy/controllers/tabs', ['exports', 'ember', 'dummy/controllers/base-de
     });
 
 });
+define('dummy/controllers/toast', ['exports', 'ember', 'dummy/controllers/base-demo-controller'], function (exports, Ember, BaseDemoController) {
+
+  'use strict';
+
+  var ToastController = BaseDemoController['default'].extend({
+    demoName: 'toast',
+
+    init: function init() {
+      var content = [{ name: 'hbs', content: 'toast.hbs' }, { name: 'controller', content: 'toast-controller.js' }];
+
+      this.setSourceFiles(content);
+    },
+
+    toastService: Ember['default'].inject.service('toasts'),
+
+    toastPosition: Ember['default'].A([{
+      name: 'bottom',
+      enabled: false
+    }, {
+      name: 'top',
+      enabled: true
+    }, {
+      name: 'left',
+      enabled: false
+    }, {
+      name: 'right',
+      enabled: true
+    }]),
+
+    toastNotifications: Ember['default'].computed('toastService.toasts.[]', function () {
+      return Ember['default'].A(this.get('toastService.toasts'));
+    }),
+
+    toastPositionText: Ember['default'].computed('toastPosition.@each.enabled', function () {
+      var tp = this.get('toastPosition'),
+          tpString = '';
+
+      tp.forEach(function (position) {
+        if (position.enabled) {
+          tpString = tpString + position.name + ' ';
+        }
+      });
+
+      return tpString;
+    }),
+
+    actions: {
+      showCustomToast: function showCustomToast() {
+        this.get('toastService').showToast({
+          position: this.get('toastPositionText'),
+          action: 'Custom',
+          content: 'Not implemented yet! :(',
+          hideDelay: 5000
+        });
+      },
+
+      showSimpleToast: function showSimpleToast() {
+
+        this.get('toastService').showToast({
+          position: this.get('toastPositionText'),
+          content: 'Simple Toast!'
+        });
+      },
+
+      showActionToast: function showActionToast() {
+        this.get('toastService').showToast({
+          position: this.get('toastPositionText'),
+          action: 'OK',
+          content: 'Action Toast!',
+          resolve: 'actionAction'
+        });
+      },
+
+      actionAction: function actionAction() {
+        alert('You clicked \'OK\'.');
+      }
+    }
+  });
+
+  exports['default'] = ToastController;
+
+});
 define('dummy/controllers/toolbar', ['exports', 'ember', 'dummy/controllers/base-demo-controller'], function (exports, Ember, BaseDemoController) {
 
     'use strict';
@@ -931,6 +1017,19 @@ define('dummy/controllers/tooltip', ['exports', 'ember', 'dummy/controllers/base
         },
 
         demo: {}
+    });
+
+});
+define('dummy/controllers/whiteframe', ['exports', 'ember', 'dummy/controllers/base-demo-controller'], function (exports, Ember, BaseDemoController) {
+
+    'use strict';
+
+    exports['default'] = BaseDemoController['default'].extend({
+        init: function init() {
+            var content = [{ name: 'hbs', content: 'whiteframe.hbs' }];
+
+            this.setSourceFiles(content);
+        }
     });
 
 });
@@ -1244,6 +1343,26 @@ define('dummy/ember-material-design/tests/modules/ember-material-design/mixins/r
   });
 
 });
+define('dummy/ember-material-design/tests/modules/ember-material-design/models/toast.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - modules/ember-material-design/models');
+  test('modules/ember-material-design/models/toast.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/models/toast.js should pass jshint.');
+  });
+
+});
+define('dummy/ember-material-design/tests/modules/ember-material-design/services/toasts.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - modules/ember-material-design/services');
+  test('modules/ember-material-design/services/toasts.js should pass jshint', function () {
+    ok(true, 'modules/ember-material-design/services/toasts.js should pass jshint.');
+  });
+
+});
 define('dummy/initializers/app-version', ['exports', 'dummy/config/environment', 'ember'], function (exports, config, Ember) {
 
   'use strict';
@@ -1390,6 +1509,15 @@ define('dummy/mixins/google-pageview', ['exports', 'ember', 'dummy/config/enviro
   });
 
 });
+define('dummy/models/toast', ['exports', 'ember-material-design/models/toast'], function (exports, toast) {
+
+	'use strict';
+
+
+
+	exports.default = toast.default;
+
+});
 define('dummy/router', ['exports', 'ember', 'dummy/config/environment', 'dummy/mixins/google-page-view'], function (exports, Ember, config, googlePageView) {
 
   'use strict';
@@ -1416,6 +1544,7 @@ define('dummy/router', ['exports', 'ember', 'dummy/config/environment', 'dummy/m
     this.route('typography');
     this.route('tooltip');
     this.route('toast');
+    this.route('whiteframe');
   });
 
 });
@@ -1772,23 +1901,23 @@ define('dummy/services/icon', ['exports', 'ember', 'ic-ajax'], function (exports
       var _this = this;
 
       var svgRegistry = [{
-        id: 'tabs-arrow',
-        url: 'tabs-arrow.svg',
+        id: 'md-tabs-arrow',
+        url: 'md-tabs-arrow.svg',
         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
 
       }, {
-        id: 'close',
-        url: 'close.svg',
+        id: 'md-close',
+        url: 'md-close.svg',
         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
 
       }, {
-        id: 'cancel',
-        url: 'cancel.svg',
+        id: 'md-cancel',
+        url: 'md-cancel.svg',
         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
 
       }, {
-        id: 'toggle-arrow',
-        url: 'toggle-arrow-svg',
+        id: 'md-toggle-arrow',
+        url: 'md-toggle-arrow-svg',
         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 48 48"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
 
       }];
@@ -2098,6 +2227,15 @@ define('dummy/services/ripple', ['exports', 'ember'], function (exports, Ember) 
         },
 
         attachTabBehavior: function attachTabBehavior(element, options) {
+            return this.attach(element, Ember['default'].merge({
+                center: false,
+                dimBackground: true,
+                outline: false,
+                rippleSize: 'full'
+            }, options));
+        },
+
+        attachListControlBehavior: function attachListControlBehavior(element, options) {
             return this.attach(element, Ember['default'].merge({
                 center: false,
                 dimBackground: true,
@@ -2443,6 +2581,15 @@ define('dummy/services/sniffer', ['exports', 'ember'], function (exports, Ember)
     exports['default'] = SnifferService;
 
 });
+define('dummy/services/toasts', ['exports', 'ember-material-design/services/toasts'], function (exports, toasts) {
+
+	'use strict';
+
+
+
+	exports.default = toasts.default;
+
+});
 define('dummy/services/utility', ['exports', 'ember'], function (exports, Ember) {
 
     'use strict';
@@ -2484,18 +2631,18 @@ define('dummy/snippets', ['exports'], function (exports) {
   exports['default'] = {
     "buttons-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    // No content\n});\n",
     "buttons.hbs": "<md-content>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button}}Button{{/md-button}}\n        {{#md-button mdNoInk=\"true\" classNames=\"md-primary\"}}Primary (md-noink){{/md-button}}\n        {{#md-button disabled=\"true\" classNames=\"md-primary\"}}Disabled{{/md-button}}\n        {{#md-button class=\"md-warn\"}}Warn{{/md-button}}\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-raised\"}}Button{{/md-button}}\n        {{#md-button class=\"md-raised md-primary\"}}Primary{{/md-button}}\n        {{#md-button disabled=\"true\" class=\"md-raised md-primary\"}}Disabled{{/md-button}}\n        {{#md-button class=\"md-raised md-warn\"}}Warn{{/md-button}}\n        <div class=\"label\">raised</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-fab\" aria-label=\"Eat cake\"}}\n            {{md-icon md-svg-src=\"images/icons/cake.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-primary\" aria-label=\"Use Android\"}}\n            {{md-icon md-svg-src=\"images/icons/android.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab\" disabled=\"true\" aria-label=\"Comment\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_comment_24px.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-primary md-hue-2\" aria-label=\"Profile\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_people_24px.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-mini\" aria-label=\"Eat cake\"}}\n            {{md-icon md-svg-src=\"images/icons/cake.svg\"}}\n        {{/md-button}}\n\n        {{#md-button class=\"md-fab md-mini md-primary\" aria-label=\"Use Android\"}}\n            {{md-icon md-svg-src=\"images/icons/android.svg\" style=\"color: greenyellow;\"}}\n        {{/md-button}}\n\n        <div class=\"label\">FAB</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button tagName=\"a\" href=\"http://www.emberjs.com\" target=\"_blank\"}}Default\n                                                                                Link{{/md-button}}\n        {{#md-button tagName=\"a\" class=\"md-primary\" href=\"http://www.emberjs.com\" target=\"_blank\"}}\n                                                                                Primary\n                                                                                Link{{/md-button}}\n\n        {{#md-button}}Default Button{{/md-button}}\n        <div class=\"label\">Link vs. Button</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-primary md-hue-1\"}}Primary Hue 1{{/md-button}}\n        {{#md-button class=\"md-warn md-raised md-hue-2\"}}Warn Hue 2{{/md-button}}\n        {{#md-button class=\"md-accent\"}}Accent{{/md-button}}\n        {{#md-button class=\"md-accent md-raised md-hue-1\"}}Accent Hue 1{{/md-button}}\n        <div class=\"label\">Themed</div>\n    </section>\n\n    <section layout=\"row\" layout-sm=\"column\" layout-align=\"center center\">\n        {{#md-button class=\"md-icon-button md-primary\"}}\n            {{md-icon md-svg-icon=\"images/icons/menu.svg\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button md-accent\"}}\n            {{md-icon md-svg-icon=\"images/icons/favorite.svg\" style=\"color: greenyellow;\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button\"}}\n            {{md-icon md-svg-icon=\"images/icons/more_vert.svg\"}}\n        {{/md-button}}\n\n        {{#md-button tagName=\"a\"\n                    class=\"md-icon-button launch\"\n                    href=\"http://www.emberjs.com\"\n                    target=\"_blank\"\n                    title=\"Launch EmberJS.com in new window\"}}\n            {{md-icon md-svg-icon=\"images/icons/launch.svg\"}}\n        {{/md-button}}\n\n        <div class=\"label\">Icon Button</div>\n    </section>\n\n</md-content>",
-    "card.hbs": "<md-content>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n\n</md-content>",
+    "card.hbs": "<md-content>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n        <div class=\"md-actions\" layout=\"row\" layout-align=\"end center\">\n            {{#md-button}}Action 1{{/md-button}}\n            {{#md-button}}Action 2{{/md-button}}\n        </div>\n    </md-card>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n    <md-card>\n        <img src=\"images/washedout.png\" alt=\"Washed Out\">\n        <md-card-content>\n            <h2 class=\"md-title\">Paracosm</h2>\n\n            <p>\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            </p>\n        </md-card-content>\n    </md-card>\n\n\n</md-content>",
     "checkbox-controller.js": "import Ember from 'ember';\nimport BaseDemoController from '../controllers/base-demo-controller';\n\nexport default BaseDemoController.extend({\n\n    demoName: 'checkbox',\n\n    data: {\n        cb1: true,\n        cb2: false,\n        cb3: false,\n        cb4: true,\n        cb5: false\n    }\n});\n",
     "content.hbs": "<div class=\"display-content\" layout=\"column\" style=\"padding-bottom: 15px;\">\n    {{#md-toolbar class=\"md-warn\"}}\n        <div class=\"md-toolbar-tools\">\n            <h2 class=\"md-flex\">Toolbar: md-warn</h2>\n        </div>\n    {{/md-toolbar}}\n\n    <md-content class=\"md-padding\" style=\"height: 600px;padding: 24px;\">\n        <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in\n           lobortis conclusionemque nam. Ne deleniti appetere reprimique pro, inani labitur\n           disputationi te sed. At vix sale omnesque, id pro labitur reformidans accommodare, cum\n           labores honestatis eu. Nec quem lucilius in, eam praesent reformidans no. Sed laudem\n           aliquam ne.</p>\n\n\n        <p>\n            Facete delenit argumentum cum at. Pro rebum nostrum contentiones ad. Mel exerci tritani\n            maiorum at, mea te audire phaedrum, mel et nibh aliquam. Malis causae equidem vel eu.\n            Noster melius vis ea, duis alterum oporteat ea sea. Per cu vide munere fierent.\n        </p>\n\n        <p>\n            Ad sea dolor accusata consequuntur. Sit facete convenire reprehendunt et. Usu cu nonumy\n            dissentiet, mei choro omnes fuisset ad. Te qui docendi accusam efficiantur, doming\n            noster prodesset eam ei. In vel posse movet, ut convenire referrentur eum, ceteros\n            singulis intellegam eu sit.\n        </p>\n\n        <p>\n            Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est\n            laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum\n            virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit.\n            Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu\n            zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam\n            principes qui, reque justo omnes et quo.\n        </p>\n\n        <p>\n            Sint unum eam id. At sit fastidii theophrastus, mutat senserit repudiare et has. Atqui\n            appareat repudiare ad nam, et ius alii incorrupte. Alii nullam libris his ei, meis\n            aeterno at eum. Ne aeque tincidunt duo. In audire malorum mel, tamquam efficiantur has\n            te.\n        </p>\n\n        <p>\n            Qui utamur tacimates quaestio ad, quod graece omnium ius ut. Pri ut vero debitis\n            interpretaris, qui cu mentitum adipiscing disputationi. Voluptatum mediocritatem quo ut.\n            Fabulas dolorem ei has, quem molestie persequeris et sit.\n        </p>\n\n        <p>\n            Est in vivendum comprehensam conclusionemque, alia cetero iriure no usu, te cibo\n            deterruisset pro. Ludus epicurei quo id, ex cum iudicabit intellegebat. Ex modo\n            deseruisse quo, mel noster menandri sententiae ea, duo et tritani malorum recteque.\n            Nullam suscipit partiendo nec id, indoctum vulputate per ex. Et has enim habemus\n            tibique. Cu latine electram cum, ridens propriae intellegat eu mea.\n        </p>\n\n        <p>\n            Duo at aliquid mnesarchum, nec ne impetus hendrerit. Ius id aeterno debitis atomorum, et\n            sed feugait voluptua, brute tibique no vix. Eos modo esse ex, ei omittam imperdiet pro.\n            Vel assum albucius incorrupte no. Vim viris prompta repudiare ne, vel ut viderer\n            scripserit, dicant appetere argumentum mel ea. Eripuit feugait tincidunt pri ne, cu\n            facilisi molestiae usu.\n        </p>\n\n        <p>\n            Qui utamur tacimates quaestio ad, quod graece omnium ius ut. Pri ut vero debitis\n            interpretaris, qui cu mentitum adipiscing disputationi. Voluptatum mediocritatem quo ut.\n            Fabulas dolorem ei has, quem molestie persequeris et sit.\n        </p>\n\n        <p>\n            Est in vivendum comprehensam conclusionemque, alia cetero iriure no usu, te cibo\n            deterruisset pro. Ludus epicurei quo id, ex cum iudicabit intellegebat. Ex modo\n            deseruisse quo, mel noster menandri sententiae ea, duo et tritani malorum recteque.\n            Nullam suscipit partiendo nec id, indoctum vulputate per ex. Et has enim habemus\n            tibique. Cu latine electram cum, ridens propriae intellegat eu mea.\n        </p>\n\n        <p>\n            Duo at aliquid mnesarchum, nec ne impetus hendrerit. Ius id aeterno debitis atomorum, et\n            sed feugait voluptua, brute tibique no vix. Eos modo esse ex, ei omittam imperdiet pro.\n            Vel assum albucius incorrupte no. Vim viris prompta repudiare ne, vel ut viderer\n            scripserit, dicant appetere argumentum mel ea. Eripuit feugait tincidunt pri ne, cu\n            facilisi molestiae usu.\n        </p>\n\n    </md-content>\n</div>",
     "divider-controller.js": "import Ember from 'ember';\nimport BaseDemoController from '../controllers/base-demo-controller';\n\nexport default BaseDemoController.extend({\n  demoName: 'divider',\n  messages: Ember.A([{\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }, {\n    face : 'http://lorempixel.com/50/50/people',\n    what: 'Brunch this weekend?',\n    who: 'Min Li Chan',\n    when: '3:08PM',\n    notes: \" I'll be in your neighborhood doing errands\"\n  }])\n});\n",
-    "divider.hbs": "<div class=\"display-content\">\n  {{#md-toolbar class=\"md-theme-light\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Full Bleed</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <md-content>\n      {{#md-list}}\n        {{#each item in messages}}\n          {{#md-list-item class=\"md-3-line\"}}\n              <div class=\"md-list-item-text\">\n                  <h3>{{item.what}}</h3>\n                  <h4>{{item.who}}</h4>\n\n                  <p>\n                    {{item.notes}}\n                  </p>\n              </div>\n              <md-divider></md-divider>\n          {{/md-list-item}}\n        {{/each}}\n      {{/md-list}}\n    </md-content>\n\n  {{#md-toolbar class=\"md-theme-light\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Inset</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <md-content>\n      {{#md-list}}\n        {{#each item in messages}}\n          {{#md-list-item class=\"md-3-line\"}}\n              <img src=\"{{item.face}}\" alt=\"{{item.who}}\" class=\"face\">\n              <div class=\"md-list-item-text\">\n                  <h3>{{item.what}}</h3>\n                  <h4>{{item.who}}</h4>\n\n                  <p>\n                    {{item.notes}}\n                  </p>\n              </div>\n              <md-divider md-inset></md-divider>\n          {{/md-list-item}}\n        {{/each}}\n      {{/md-list}}\n    </md-content>\n</div>",
+    "divider.hbs": "<div class=\"display-content\">\n  {{#md-toolbar class=\"md-theme-light\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Full Bleed</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <md-content>\n      {{#md-list}}\n        {{#each messages as |item|}}\n          {{#md-list-item class=\"md-3-line\"}}\n              <div class=\"md-list-item-text\">\n                  <h3>{{item.what}}</h3>\n                  <h4>{{item.who}}</h4>\n\n                  <p>\n                    {{item.notes}}\n                  </p>\n              </div>\n              <md-divider></md-divider>\n          {{/md-list-item}}\n        {{/each}}\n      {{/md-list}}\n    </md-content>\n\n  {{#md-toolbar class=\"md-theme-light\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Inset</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <md-content>\n      {{#md-list}}\n        {{#each messages as |item|}}\n          {{#md-list-item class=\"md-3-line\"}}\n              <img src=\"{{item.face}}\" alt=\"{{item.who}}\" class=\"face\">\n              <div class=\"md-list-item-text\">\n                  <h3>{{item.what}}</h3>\n                  <h4>{{item.who}}</h4>\n\n                  <p>\n                    {{item.notes}}\n                  </p>\n              </div>\n              <md-divider md-inset></md-divider>\n          {{/md-list-item}}\n        {{/each}}\n      {{/md-list}}\n    </md-content>\n</div>",
     "icon-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n\n  iconData: [\n    {name: 'icon-home'        , color: \"#777\" },\n    {name: 'icon-user-plus'   , color: \"rgb(89, 226, 168)\" },\n    {name: 'icon-google-plus2', color: \"#A00\" },\n    {name: 'icon-youtube4'    , color:\"#00A\" },\n    // Use theming to color the font-icon\n    {name: 'icon-settings'    , color:\"#A00\", theme:\"md-warn md-hue-5\"}\n  ],\n\n  sizes: [\n    {size:12,padding:0, previewScaleStyle: 'padding-left: 0px', sizeStyle: 'font-size: 12px; height: 12px;'},\n    {size:21,padding:2, previewScaleStyle: 'padding-left: 2px', sizeStyle: 'font-size: 21px; height: 21px;'},\n    {size:36,padding:6, previewScaleStyle: 'padding-left: 6px', sizeStyle: 'font-size: 36px; height: 36px;'},\n    {size:48,padding:10, previewScaleStyle: 'padding-left: 10px', sizeStyle: 'font-size: 48px; height: 48px;'}\n  ],\n\n  icons: Ember.computed('iconData', function() {\n    var self = this;\n\n    var iconData = this.get('iconData');\n\n    iconData.forEach(function(i) {\n      i.sizes = Ember.A(Ember.copy(self.sizes, true));\n\n      i.sizes.forEach(function(size) {\n        var color = !i.theme && i.color;\n        size.sizeStyle = size.sizeStyle + ' color: ' + color + '; ';\n      });\n    });\n\n    return Ember.A(this.get('iconData'));\n\n  }),\n\n  insertDriveIconURL: 'images/icons/ic_insert_drive_file_24px.svg',\n\n  getAndroid: Ember.computed('', function() {\n    return 'images/icons/android.svg';\n  })\n\n});\n",
-    "icon-fontIcons.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    <p>\n        Display 5 font-icons, each with different sizes and colors:\n    </p>\n\n    <!-- Display font icons from Icomoon.io: -->\n\n    {{#each font in icons}}\n        <div layout=\"row\" layout-padding layout-margin class=\"glyph\">\n\n            {{#each it in font.sizes}}\n                <div flex layout-align=\"center center\">\n                    <div class=\"preview-glyphs\">\n                        {{md-icon\n                        mdFontIcon=font.name\n                        class=font.theme\n                        style=it.sizeStyle\n                        classNames=\"step \"}}\n                    </div>\n\n                    <div class=\"preview-scale\">\n                        <span class=\"step\" style={{it.paddingScaleStyle}}>{{it.size}}</span>\n                    </div>\n                </div>\n            {{/each}}\n\n\n        </div>\n    {{/each}}\n\n</div>",
+    "icon-fontIcons.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    <p>\n        Display 5 font-icons, each with different sizes and colors:\n    </p>\n\n    <!-- Display font icons from Icomoon.io: -->\n\n    {{#each icons as |font|}}\n        <div layout=\"row\" layout-padding layout-margin class=\"glyph\">\n\n            {{#each font.sizes as |it|}}\n                <div flex layout-align=\"center center\">\n                    <div class=\"preview-glyphs\">\n                        {{md-icon\n                        mdFontIcon=font.name\n                        class=font.theme\n                        style=it.sizeStyle\n                        classNames=\"step \"}}\n                    </div>\n\n                    <div class=\"preview-scale\">\n                        <span class=\"step\" style={{it.paddingScaleStyle}}>{{it.size}}</span>\n                    </div>\n                </div>\n            {{/each}}\n\n\n        </div>\n    {{/each}}\n\n</div>",
     "icon-fromSet.hbs": "<div layout=\"column\" layout-margin>\n\n    <p>Display an icon from a pre-registered set of icons:</p>\n\n    <p>\n        {{md-icon md-svg-icon=\"alarm\" style=\"color: #0F0;\" alt=\"Alarm Icon\"}}\n        {{md-icon md-svg-icon=\"social:cake\" style=\"color: #f00;width:60px;height:60px;\" alt=\"Cake Icon\"}}\n        {{md-icon md-svg-icon=\"social:people\" style=\"color: #00F;\" class=\"s48\" alt=\"People Icon\"}}\n    </p>\n\n</div>",
     "icon-fromUrl.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    <p>The simplest way to display a single SVG icon is by referencing it by URL:</p>\n\n    <p>\n        {{md-icon md-svg-src=insertDriveIconURL\n        alt=\"Insert Drive Icon\"}}\n    </p>\n\n    <p>Style the icon size and color with CSS:</p>\n\n    <p>\n        {{md-icon md-svg-src=\"images/icons/cake.svg\" class=\"s24\" alt=\"Cake\"}}\n        {{md-icon md-svg-src=getAndroid class=\"s36\" alt=\"Android \"}}\n        {{md-icon md-svg-src=\"images/icons/addShoppingCart.svg\" class=\"s48\" alt=\"Cart\"}}\n    </p>\n\n</div>",
-    "input-Icons.hbs": "<md-content class=\"md-padding\">\n    {{#md-input-container md-no-float='' value=user2.name}}\n        {{md-icon md-svg-src=\"icons/ic_person_24px.svg\" class=\"name\"}}\n        {{md-input type=\"text\" placeholder=\"Name\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float='' value=user2.phon}}\n        {{md-icon md-svg-src=\"icons/ic_phone_24px.svg\"}}\n        {{md-input type=\"text\" placeholder=\"Phone Number\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float=''}}\n        {{md-icon md-svg-src=\"icons/ic_email_24px.svg\" class=\"email\"}}\n        {{md-input type=\"email\" placeholder=\"Email (required)\" required=\"required\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float=''}}\n        {{md-icon md-svg-src=\"icons/ic_place_24px.svg\"}}\n        {{md-input type=\"text\" placeholder=\"Address\"}}\n    {{/md-input-container}}\n</md-content>",
+    "input-Icons.hbs": "<md-content class=\"md-padding\">\n    {{#md-input-container md-no-float='' value=user2.name}}\n        {{md-icon md-svg-src=\"icons/ic_person_24px.svg\" class=\"name\"}}\n        {{md-input type=\"text\" placeholder=\"Name\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float='' value=user2.phon}}\n        {{md-icon md-svg-src=\"icons/ic_phone_24px.svg\"}}\n        {{md-input type=\"text\" placeholder=\"Phone Number\"}}\n    {{/md-input-container}}\n    {{#md-input-container}}\n        {{md-icon md-svg-src=\"icons/ic_email_24px.svg\" class=\"email\"}}\n        {{md-input type=\"email\" placeholder=\"Email (required)\" required=\"required\"}}\n    {{/md-input-container}}\n    {{#md-input-container md-no-float=''}}\n        {{md-icon md-svg-src=\"icons/ic_place_24px.svg\"}}\n        {{md-input type=\"text\" placeholder=\"Address\"}}\n    {{/md-input-container}}\n</md-content>",
     "input-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    user: {\n        title: 'Developer',\n        email: 'ipsum@lorem.com',\n        firstName: '',\n        lastName: '' ,\n        company: 'Google' ,\n        address: '1600 Amphitheatre Pkwy' ,\n        city: 'Mountain View' ,\n        state: 'CA' ,\n        biography: 'Loves kittens, snowboarding, and can type at 130 WPM.\\n\\nAnd rumor has it she bouldered up Castle Craig!',\n        postalCode : '94043',\n        submissionDate: null\n    },\n\n    user2: {\n        name: 'John Doe',\n        email: '',\n        phone: '',\n        address: 'Mountain View, CA'\n    }\n});\n",
-    "input.hbs": "<md-content class=\"md-padding\" layout=\"row\" layout-sm=\"column\">\n    {{#md-input-container value=user.title}}\n        <label>Title</label>\n        {{md-input }}\n    {{/md-input-container}}\n    {{#md-input-container value=user.email}}\n        <label>Email</label>\n        {{md-input type=\"email\"}}\n    {{/md-input-container}}\n</md-content>\n\n<md-content class=\"md-padding\">\n    <form name=\"userForm\">\n\n        <div layout layout-sm=\"column\">\n            {{#md-input-container style=\"width:80%\" value=user.company}}\n                <label>Company (Disabled)</label>\n                {{md-input disabled=true}}\n            {{/md-input-container}}\n\n\n            {{#md-input-container flex='' value=user.submissionDate}}\n                <label>Submission Date</label>\n                {{md-input type=\"date\"}}\n            {{/md-input-container}}\n        </div>\n\n\n        <div layout layout-sm=\"column\">\n            {{#md-input-container flex='' value=user.firstName }}\n                <label>First Name</label>\n                {{md-input placeholder=\"Placeholder text\"}}\n            {{/md-input-container}}\n            {{#md-input-container flex='' value=theMax}}\n                <label>Last Name</label>\n                {{md-input }}\n            {{/md-input-container}}\n        </div>\n\n        {{#md-input-container flex='' value=user.address}}\n            <label>Address</label>\n            {{md-input}}\n        {{/md-input-container}}\n\n        <div layout layout-sm=\"column\">\n            {{#md-input-container flex='' value=user.city}}\n                <label>City</label>\n                {{md-input}}\n            {{/md-input-container}}\n            {{#md-input-container flex='' value=user.state}}\n                <label>State</label>\n                {{md-input}}\n            {{/md-input-container}}\n            {{#md-input-container flex='' value=user.postalCode}}\n                <label>Postal Code</label>\n                {{md-input }}\n            {{/md-input-container}}\n        </div>\n\n        {{#md-input-container flex='' value=user.biography}}\n            <label>Biography</label>\n            {{md-textarea columns=\"1\" md-maxlength=\"150\"}}\n        {{/md-input-container}}\n\n    </form>\n</md-content>",
+    "input.hbs": "<md-content class=\"md-padding\" layout=\"row\" layout-sm=\"column\">\n    {{#md-input-container value=user.title}}\n        <label>Title</label>\n        {{md-input }}\n    {{/md-input-container}}\n    {{#md-input-container value=user.email}}\n        <label>Email</label>\n        {{md-input type=\"email\"}}\n    {{/md-input-container}}\n</md-content>\n\n<md-content class=\"md-padding\">\n    <form name=\"userForm\">\n\n        <div layout layout-sm=\"column\">\n            {{#md-input-container style=\"width:80%\" value=user.company}}\n                <label>Company (Disabled)</label>\n                {{md-input disabled=true}}\n            {{/md-input-container}}\n\n\n            {{#md-input-container flex='' value=user.submissionDate}}\n                <label>Submission Date</label>\n                {{md-input type=\"date\"}}\n            {{/md-input-container}}\n        </div>\n\n\n        <div layout layout-sm=\"column\">\n            {{#md-input-container flex='' value=user.firstName }}\n                <label>First Name</label>\n                {{md-input}}\n            {{/md-input-container}}\n            {{#md-input-container flex='' value=theMax}}\n                <label>Last Name</label>\n                {{md-input }}\n            {{/md-input-container}}\n        </div>\n\n        {{#md-input-container flex='' value=user.address}}\n            <label>Address</label>\n            {{md-input}}\n        {{/md-input-container}}\n\n        {{#md-input-container value=user.address2 md-no-float=''}}\n            {{md-input placeholder=\"Address 2\"}}\n        {{/md-input-container}}\n\n        <div layout layout-sm=\"column\">\n            {{#md-input-container flex='' value=user.city}}\n                <label>City</label>\n                {{md-input}}\n            {{/md-input-container}}\n            {{#md-input-container flex='' value=user.state}}\n                <label>State</label>\n                {{md-input}}\n            {{/md-input-container}}\n            {{#md-input-container flex='' value=user.postalCode}}\n                <label>Postal Code</label>\n                {{md-input }}\n            {{/md-input-container}}\n        </div>\n\n        {{#md-input-container flex='' value=user.biography}}\n            <label>Biography</label>\n            {{md-textarea columns=\"1\" md-maxlength=\"150\"}}\n        {{/md-input-container}}\n\n    </form>\n</md-content>",
     "list-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    todos: Ember.A([\n        {\n            face : 'http://lorempixel.com/50/50/people',\n            what: 'Brunch this weekend?',\n            who: 'Min Li Chan',\n            when: '3:08PM',\n            notes: \" I'll be in your neighborhood doing errands\"\n        },\n        {\n            face : 'http://lorempixel.com/50/50/people',\n            what: 'Brunch this weekend?',\n            who: 'Min Li Chan',\n            when: '3:08PM',\n            notes: \" I'll be in your neighborhood doing errands\"\n        },\n        {\n            face : 'http://lorempixel.com/50/50/people',\n            what: 'Brunch this weekend?',\n            who: 'Min Li Chan',\n            when: '3:08PM',\n            notes: \" I'll be in your neighborhood doing errands\"\n        },\n        {\n            face : 'http://lorempixel.com/50/50/people',\n            what: 'Brunch this weekend?',\n            who: 'Min Li Chan',\n            when: '3:08PM',\n            notes: \" I'll be in your neighborhood doing errands\"\n        },\n        {\n            face : 'http://lorempixel.com/50/50/people',\n            what: 'Brunch this weekend?',\n            who: 'Min Li Chan',\n            when: '3:08PM',\n            notes: \" I'll be in your neighborhood doing errands\"\n        }\n    ]),\n\n    firstTodo: Ember.computed('', function() {\n        return this.get('todos')[0];\n    })\n});\n",
     "list.hbs": "<md-content>\n\n    {{#md-list}}\n\n        {{#each todos as |item index|}}\n            {{#md-list-item class=\"md-3-line\"}}\n                <img class=\"md-avatar\" src=\"{{item.face}}?{{index}}\" alt=\"{{item.who}}\">\n                <div class=\"md-list-item-text\">\n                    <h3>{{item.who}}</h3>\n                    <h4>{{item.what}}</h4>\n                    <p>{{item.notes}}</p>\n                </div>\n            {{/md-list-item}}\n        {{/each}}\n\n        {{#md-list-item class=\"md-2-line\"}}\n            <img class=\"md-avatar\" src=\"{{firstTodo.face}}?20\" alt=\"{{firstTodo.who}}\"/>\n            <div class=\"md-list-item-text\">\n                <h3>{{firstTodo.who}}</h3>\n                <p>Secondary Text</p>\n            </div>\n        {{/md-list-item}}\n\n        {{#md-list-item class=\"md-3-line\"}}\n            <img class=\"md-avatar\" src=\"{{firstTodo.face}}?25\" alt=\"{{firstTodo.who}}\"/>\n            <div class=\"md-list-item-text\">\n                <h3>{{firstTodo.who}}</h3>\n                <p>Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.</p>\n            </div>\n        {{/md-list-item}}\n\n    {{/md-list}}\n\n</md-content>",
     "progress-circular-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    mode: 'query',\n    determinateValue: 30,\n\n    setupTimer: function() {\n        Ember.run.later(this, function() {\n            this.incrementProperty('determinateValue', 1);\n            if (this.get('determinateValue') > 100) {\n                this.set('determinateValue', 30);\n            }\n\n            Ember.run.later(this, this.setupTimer);\n\n        }, 100);\n    }\n});\n",
@@ -2503,18 +2650,20 @@ define('dummy/snippets', ['exports'], function (exports) {
     "progress-linear-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    mode: 'query',\n    determinateValue: 30,\n    determinateValue2: 30,\n\n    setupTimer: function() {\n        Ember.run.later(this, function() {\n            this.incrementProperty('determinateValue', 1);\n            this.incrementProperty('determinateValue2', 1.5);\n            if (this.get('determinateValue') > 100) {\n                this.set('determinateValue', 30);\n                this.set('determinateValue2', 30);\n            }\n\n            Ember.run.later(this, this.setupTimer);\n\n        }, 100);\n    },\n\n    setupTimer2: function() {\n        Ember.run.later(this, function() {\n            this.set('mode', this.get('mode') == 'query' ? 'determinate' : 'query');\n            Ember.run.later(this, this.setupTimer2);\n        }, 7200);\n    }\n});\n",
     "progress-linear.hbs": "<div layout=\"column\" layout-margin style=\"padding:25px;\">\n\n    {{md-progress-linear md-mode=\"indeterminate\"}}\n\n    {{md-progress-linear class=\"md-warn\" md-mode=\"buffer\" value=determinateValue md-buffer-value=determinateValue2}}\n\n    {{md-progress-linear class=\"md-accent\" md-mode=mode value=determinateValue}}\n\n</div>",
     "radio-button-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    data: {\n        group1: 'Banana',\n        group2: 2,\n        group3: 'avatar-1'\n    },\n\n    avatarData: Ember.A([{\n        id: 'avatars:svg-1',\n        title: 'avatar 1',\n        value: 'avatar-1'\n    }, {\n        id: 'avatars:svg-2',\n        title: 'avatar 2',\n        value: 'avatar-2'\n    }, {\n        id: 'avatars:svg-3',\n        title: 'avatar 3',\n        value: 'avatar-3'\n    }]),\n\n    radioData: Ember.ArrayProxy.create({\n        content: Ember.A([\n            {label: '1', value: 1},\n            {label: '2', value: 2},\n            {label: '3', value: '3', isDisabled: true},\n            {label: '4', value: '4'}\n        ])\n    }),\n\n    //radioData: [\n    //    {label: '1', value: 1},\n    //    {label: '2', value: 2},\n    //    {label: '3', value: '3', isDisabled: true},\n    //    {label: '4', value: '4'}\n    //],\n    //\n\n    actions: {\n        submit: function() {\n            alert('submit');\n        },\n\n        addItem: function() {\n            var r = Math.ceil(Math.random() * 1000);\n            this.get('radioData').addObject({label: r, value: r});\n            return false;\n        },\n\n        removeItem: function() {\n            this.get('radioData').popObject();\n            return false;\n        }\n    }\n});\n",
-    "radio-button.hbs": "<form>\n    <p>Selected Value: <span class=\"radioValue\">{{ data.group1 }}</span></p>\n\n\n    {{#md-radio-button value=\"Apple\" selected=data.group1 class=\"md-primary\"}}Apple{{/md-radio-button}}\n    {{#md-radio-button value=\"Banana\" selected=data.group1}}Banana{{/md-radio-button}}\n    {{#md-radio-button value=\"Mango\" selected=data.group1}}Mango{{/md-radio-button}}\n\n\n    <hr/>\n\n    <p>Selected Value: <span class=\"radioValue\">{{ data.group2 }}</span></p>\n\n\n    {{#each d in radioData}}\n        {{#md-radio-button value=d.value\n        class=\"md-primary\"\n        selected=data.group2\n        disabled=d.isDisabled}}\n            {{ d.label }}\n        {{/md-radio-button}}\n    {{/each}}\n\n\n\n\n    <p>\n        {{#md-button class=\"md-raised\" action='addItem' type=\"button\"}}Add{{/md-button}}\n        {{#md-button class=\"md-raised\" action='removeItem' type=\"button\"}}Remove{{/md-button}}\n    </p>\n\n    <hr/>\n\n    <p style=\"margin-bottom: 0;\">Graphic radio buttons need to be labeled with the\n        <code>aria-label</code> attribute.</p>\n\n    <p style=\"margin-top: 0;\">Selected Avatar: <span class=\"radioValue\">{{ data.group3 }}</span></p>\n\n    {{#each it in avatarData}}\n        {{#md-radio-button value=it.value\n        selected=data.group3\n        aria-label=it.title}}\n            {{md-icon md-svg-icon=it.id}}\n        {{/md-radio-button}}\n    {{/each}}\n\n</form>",
+    "radio-button.hbs": "<form>\n    <p>Selected Value: <span class=\"radioValue\">{{ data.group1 }}</span></p>\n\n\n    {{#md-radio-button value=\"Apple\" selected=data.group1 class=\"md-primary\"}}Apple{{/md-radio-button}}\n    {{#md-radio-button value=\"Banana\" selected=data.group1}}Banana{{/md-radio-button}}\n    {{#md-radio-button value=\"Mango\" selected=data.group1}}Mango{{/md-radio-button}}\n\n\n    <hr/>\n\n    <p>Selected Value: <span class=\"radioValue\">{{ data.group2 }}</span></p>\n\n\n    {{#each radioData as |d|}}\n        {{#md-radio-button value=d.value\n        class=\"md-primary\"\n        selected=data.group2\n        disabled=d.isDisabled}}\n            {{ d.label }}\n        {{/md-radio-button}}\n    {{/each}}\n\n\n\n\n    <p>\n        {{#md-button class=\"md-raised\" action='addItem' type=\"button\"}}Add{{/md-button}}\n        {{#md-button class=\"md-raised\" action='removeItem' type=\"button\"}}Remove{{/md-button}}\n    </p>\n\n    <hr/>\n\n    <p style=\"margin-bottom: 0;\">Graphic radio buttons need to be labeled with the\n        <code>aria-label</code> attribute.</p>\n\n    <p style=\"margin-top: 0;\">Selected Avatar: <span class=\"radioValue\">{{ data.group3 }}</span></p>\n\n    {{#each avatarData as |it|}}\n        {{#md-radio-button value=it.value\n        selected=data.group3\n        aria-label=it.title}}\n            {{md-icon md-svg-icon=it.id}}\n        {{/md-radio-button}}\n    {{/each}}\n\n</form>",
     "slider-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    color: {\n        red: Math.floor(Math.random() * 255),\n        green: Math.floor(Math.random() * 255),\n        blue: Math.floor(Math.random() * 255)\n    },\n\n    colorStyle: Ember.computed('color.red', 'color.green', 'color.blue', function() {\n        return Ember.String.htmlSafe(\"border: 1px solid #333; background: rgb(\" + this.get('color.red') + \",\" + this.get('color.green') + \",\" + this.get('color.blue') + \")\");\n    }),\n\n    rating1: 3,\n    rating2: 2,\n    rating3: 4,\n\n    disabled1: 0,\n    disabled2: 70\n});\n",
     "slider.hbs": "<md-content class=\"md-padding\">\n\n    <h3>\n        RGB <span style={{colorStyle}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>\n    </h3>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>R</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.red}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.red}}\n        </div>\n    </div>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>G</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.green classNames='md-accent'}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.green}}\n        </div>\n    </div>\n\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>B</span>\n        </div>\n        {{md-slider flex='' min='0' max='255' value=color.blue classNames='md-primary'}}\n        <div flex=\"20\" layout layout-align=\"center center\">\n            {{input type=\"number\" value=color.blue}}\n        </div>\n    </div>\n\n    <h3>Rating: {{rating}}/5 - demo of theming classes</h3>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>default</span>\n        </div>\n        {{md-slider flex='' md-discrete='' value=rating1 step='1' min='1' max='5'}}\n    </div>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>md-warn</span>\n        </div>\n        {{md-slider flex='' classNames=\"md-warn\" md-discrete='' value=rating2 step=\"1\" min=\"1\" max=\"5\"}}\n    </div>\n    <div layout>\n        <div flex=\"10\" layout layout-align=\"center center\">\n            <span>md-primary</span>\n        </div>\n        {{md-slider flex='' classNames=\"md-primary\" md-discrete='' value=rating3 step=\"1\" min=\"1\" max=\"5\"}}\n    </div>\n\n    <h3>Disabled</h3>\n    {{md-slider value=disabled1 disabled=true}}\n    {{md-slider value=disabled2 disabled=true}}\n\n    <h3>Disabled, Discrete</h3>\n    {{md-slider value=disabled1 disabled=true step=\"3\" md-discrete='' min=\"0\" max=\"10\"}}\n    {{md-slider value=disabled2 disabled=true step=\"10\" md-discrete=''}}\n\n\n</md-content>",
     "tabs-StaticTabs.hbs": "<div class=\"display-content sample\">\n\n\n    {{#md-tabs selectedIndex=data.selectedIndex class=\"md-accent\" md-align-tabs=alignTabs}}\n        {{#md-tabs-wrapper}}\n            {{#md-tab id=\"tab1\"}}\n                <md-tab-label>Item One</md-tab-label>\n            {{/md-tab}}\n            {{#md-tab id=\"tab2\" disabled=data.secondLocked}}\n                <md-tab-label>{{data.secondLabel}}</md-tab-label>\n            {{/md-tab}}\n            {{#md-tab id=\"tab3\"}}\n                <md-tab-label>Item Three</md-tab-label>\n            {{/md-tab}}\n        {{/md-tabs-wrapper}}\n        {{#md-tabs-content-wrapper}}\n            {{#md-tab-content}}\n                View for Item #1 <br/>\n                data.selectedIndex = 0;\n            {{/md-tab-content}}\n            {{#md-tab-content}}\n                View for Item #2 <br/>\n                data.selectedIndex = 1;\n            {{/md-tab-content}}\n            {{#md-tab-content}}\n                View for Item #3 <br/>\n                data.selectedIndex = 2;\n            {{/md-tab-content}}\n        {{/md-tabs-content-wrapper}}\n    {{/md-tabs}}\n\n    <div class=\"after-tabs-area\" layout=\"row\" layout-sm=\"column\" layout-margin layout-align=\"left center\">\n        {{#md-checkbox checked=data.secondLocked aria-label=\"Disabled\"}}\n            Disable item two?\n        {{/md-checkbox}}\n\n        {{#md-checkbox checked=data.bottom}}\n            Align tabs to bottom?\n        {{/md-checkbox}}\n\n\n    </div>\n\n\n\n</div>",
     "tabs-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n\n    tabs: Ember.ArrayProxy.create({\n        content: Ember.A([\n            { title: 'One', content: \"Tabs will become paginated if there isn't enough room for them.\"},\n            { title: 'Two', content: \"You can swipe left and right on a mobile device to change tabs.\"},\n            { title: 'Three', content: \"You can bind the selected tab via the selected attribute on the md-tabs element.\"},\n            { title: 'Four', content: \"If you set the selected tab binding to -1, it will leave no tab selected.\"},\n            { title: 'Five', content: \"If you remove a tab, it will try to select a new one.\"},\n            { title: 'Six', content: \"There's an ink bar that follows the selected tab, you can turn it off if you want.\"},\n            { title: 'Seven', content: \"If you set ng-disabled on a tab, it becomes unselectable. If the currently selected tab becomes disabled, it will try to select the next tab.\"},\n            { title: 'Eight', content: \"If you look at the source, you're using tabs to look at a demo for tabs. Recursion!\"},\n            { title: 'Nine', content: \"If you set md-theme=\\\"green\\\" on the md-tabs element, you'll get green tabs.\"},\n            { title: 'Ten', content: \"If you're still reading this, you should just go check out the API docs for tabs!\"}\n        ])\n    }),\n\n    cantRemoveTabs: Ember.computed('tabs.length', function() {\n\n        return this.get('tabs.length') <= 1;\n    }),\n\n    selectedIndex: 2,\n\n    selectedTab: Ember.computed('selectedIndex', 'tabs.[]', function() {\n        return this.get('tabs').objectAt(this.get('selectedIndex'));\n    }),\n\n    actions: {\n        showSource: function() {\n            this.toggleProperty('showSource');\n        },\n\n        addTab: function() {\n            var title = this.get('tTitle'),\n                content = this.get('tContent');\n\n            this.get('tabs').pushObject({\n                title: title,\n                content: content || title + \" Content View\"\n            });\n        },\n\n        removeTab: function() {\n            this.get('tabs').removeAt(this.get('selectedIndex'));\n        }\n    }\n});\n",
     "tabs-staticTabs-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    data: {\n        selectedIndex: 0,\n        secondLocked: true,\n        secondLabel: \"Item Two\",\n        bottom: false\n    },\n\n    alignTabs: Ember.computed('data.bottom', function() {\n        return this.get('data.bottom') ? 'bottom' : 'top';\n    })\n});\n",
-    "tabs.hbs": "<div class=\"sample\" layout=\"column\">\n\n    {{#md-tabs selectedIndex=selectedIndex md-border-bottom=''}}\n\n        {{#md-tabs-wrapper}}\n            {{#each tab in tabs}}\n                {{#md-tab disabled=tab.disabled label=tab.title}}\n                    <md-tab-label>{{tab.title}}</md-tab-label>\n                {{/md-tab}}\n            {{/each}}\n        {{/md-tabs-wrapper}}\n\n        {{#md-tabs-content-wrapper}}\n            {{#each tab in tabs}}\n                {{#md-tab-content}}\n                    <div class=\"demo-tab\" style=\"padding: 25px; text-align: center;\">\n                        {{tab.title}}\n                        <br/>\n                        {{#md-button class=\"md-primary md-raised\" disabled=cantRemoveTabs action='removeTab'}}\n                            Remove Tab{{/md-button}}\n                    </div>\n                {{/md-tab-content}}\n            {{/each}}\n        {{/md-tabs-content-wrapper}}\n    {{/md-tabs}}\n\n    <form layout=\"column\"\n          style=\"padding-top:20px;padding-left:20px;\" {{action 'addTab' on='submit'}}>\n        <div layout=\"row\" layout-sm=\"column\" layout-margin>\n            {{#md-input-container value=selectedIndex}}\n                <label for=\"activeIndex\">Active Index</label>\n                {{md-input type=\"text\" id=\"activeIndex\" disabled=true}}\n            {{/md-input-container}}\n\n            {{#md-input-container value=selectedTab.title}}\n                <label for=\"activeTitle\">Active Title</label>\n                {{md-input type=\"text\" id=\"activeTitle\"}}\n            {{/md-input-container}}\n        </div>\n\n        <div layout=\"row\" layout-sm=\"column\" layout-margin>\n            <span class=\"title\">Add a new Tab:</span>\n            {{#md-input-container value=tTitle}}\n                <label for=\"label\">Label</label>\n                {{md-input type=\"text\" id=\"label\"}}\n            {{/md-input-container}}\n            {{#md-input-container value=tContent}}\n                <label for=\"content\">Content</label>\n                {{md-input type=\"text\" id=\"content\"}}\n            {{/md-input-container}}\n            {{#md-button class=\"add-tab md-primary\" style=\"max-height: 40px\" }}\n                Add Tab\n            {{/md-button}}\n        </div>\n    </form>\n\n\n</div>\n",
+    "tabs.hbs": "<div class=\"sample\" layout=\"column\">\n\n    {{#md-tabs selectedIndex=selectedIndex md-border-bottom=''}}\n\n        {{#md-tabs-wrapper}}\n            {{#each tabs as |tab|}}\n                {{#md-tab disabled=tab.disabled label=tab.title}}\n                    <md-tab-label>{{tab.title}}</md-tab-label>\n                {{/md-tab}}\n            {{/each}}\n        {{/md-tabs-wrapper}}\n\n        {{#md-tabs-content-wrapper}}\n            {{#each tabs as |tab|}}\n                {{#md-tab-content}}\n                    <div class=\"demo-tab\" style=\"padding: 25px; text-align: center;\">\n                        {{tab.title}}\n                        <br/>\n                        {{#md-button class=\"md-primary md-raised\" disabled=cantRemoveTabs action='removeTab'}}\n                            Remove Tab{{/md-button}}\n                    </div>\n                {{/md-tab-content}}\n            {{/each}}\n        {{/md-tabs-content-wrapper}}\n    {{/md-tabs}}\n\n    <form layout=\"column\"\n          style=\"padding-top:20px;padding-left:20px;\" {{action 'addTab' on='submit'}}>\n        <div layout=\"row\" layout-sm=\"column\" layout-margin>\n            {{#md-input-container value=selectedIndex}}\n                <label for=\"activeIndex\">Active Index</label>\n                {{md-input type=\"text\" id=\"activeIndex\" disabled=true}}\n            {{/md-input-container}}\n\n            {{#md-input-container value=selectedTab.title}}\n                <label for=\"activeTitle\">Active Title</label>\n                {{md-input type=\"text\" id=\"activeTitle\"}}\n            {{/md-input-container}}\n        </div>\n\n        <div layout=\"row\" layout-sm=\"column\" layout-margin>\n            <span class=\"title\">Add a new Tab:</span>\n            {{#md-input-container value=tTitle}}\n                <label for=\"label\">Label</label>\n                {{md-input type=\"text\" id=\"label\"}}\n            {{/md-input-container}}\n            {{#md-input-container value=tContent}}\n                <label for=\"content\">Content</label>\n                {{md-input type=\"text\" id=\"content\"}}\n            {{/md-input-container}}\n            {{#md-button class=\"add-tab md-primary\" style=\"max-height: 40px\" }}\n                Add Tab\n            {{/md-button}}\n        </div>\n    </form>\n\n\n</div>\n",
+    "toast.hbs": "<div layout-fill layout=\"column\" class=\"inset\">\n\n    {{#each toastNotifications as |toast|}}\n        {{md-toast toast=toast}}\n    {{/each}}\n\n    <p>Toast can be dismissed with a swipe, a timer, or a button.</p>\n\n    <div layout=\"row\" layout-sm=\"column\" layout-align=\"space-around\">\n        <div style=\"width:50px\"></div>\n        {{#md-button action=\"showCustomToast\"}}\n            Show Custom\n        {{/md-button}}\n        {{#md-button action=\"showSimpleToast\"}}\n            Show Simple\n        {{/md-button}}\n        {{#md-button class=\"md-raised\" action=\"showActionToast\"}}\n            Show With Action\n        {{/md-button}}\n        <div style=\"width:50px\"></div>\n    </div>\n\n    <div>\n        <br/>\n        <b>Toast Position: \"{{toastPositionText}}\"</b>\n        <br/>\n        {{#each toastPosition as |name|}}\n            {{#md-checkbox checked=name.enabled}}\n                {{name.name}}\n            {{/md-checkbox}}\n        {{/each}}\n\n        {{#md-button class=\"md-primary md-fab md-fab-bottom-right\"}}\n            FAB\n        {{/md-button}}\n        {{#md-button class=\"md-accent md-fab md-fab-top-right\"}}\n            FAB\n        {{/md-button}}\n    </div>\n</div>\n",
     "toolbar.hbs": "<md-content>\n\n  {{#md-toolbar}}\n      <div class=\"md-toolbar-tools\">\n        {{#md-button class=\"md-icon-button\"}}\n          {{md-icon md-svg-icon=\"images/icons/menu.svg\"}}\n        {{/md-button}}\n          <h2>\n              <span>Toolbar with icon buttons</span>\n          </h2>\n          <span flex></span>\n        {{#md-button class=\"md-icon-button\"}}\n          {{md-icon md-svg-icon=\"images/icons/favorite.svg\"}}\n        {{/md-button}}\n        {{#md-button class=\"md-icon-button\"}}\n          {{md-icon md-svg-icon=\"images/icons/more_vert.svg\"}}\n        {{/md-button}}\n      </div>\n  {{/md-toolbar}}\n\n    <br>\n\n    <br>\n\n  {{#md-toolbar class=\"md-tall md-accent\"}}\n      <h2 class=\"md-toolbar-tools\">\n          <span>Toolbar: tall (md-accent)</span>\n      </h2>\n  {{/md-toolbar}}\n\n    <br>\n\n  {{#md-toolbar class=\"md-tall md-warn md-hue-3\"}}\n      <span flex></span>\n\n      <h2 class=\"md-toolbar-tools md-toolbar-tools-bottom\">\n          <span class=\"md-flex\">Toolbar: tall with actions pin to the bottom (md-warn md-hue-3)</span>\n      </h2>\n  {{/md-toolbar}}\n\n</md-content>",
     "tooltip-controller.js": "import Ember from 'ember';\n\nexport default Ember.Controller.extend({\n    demo: {}\n});\n",
     "tooltip.hbs": "<div>\n\n    {{#md-toolbar class=\"md-accent\"}}\n        <h2 class=\"md-toolbar-tools\">\n            <span flex>Awesome Md App</span>\n            {{#md-button class=\"md-fab md-accent\" aria-label=\"refresh\"}}\n                {{#md-tooltip}}\n                    Refresh\n                {{/md-tooltip}}\n                {{md-icon icon=\"/images/icons/ic_refresh_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{/md-button}}\n        </h2>\n    {{/md-toolbar}}\n    <md-content class=\"md-padding\">\n\n        <p>\n            The tooltip is visible when the button is hovered, focused, or touched.\n        </p>\n\n        {{#md-button class=\"md-fab md-fab-top-left left\" aria-label=\"Insert Drive\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_insert_drive_file_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{#md-tooltip visible=demo.showTooltip}}\n                Insert Drive\n            {{/md-tooltip}}\n        {{/md-button}}\n        {{#md-button class=\"md-fab md-fab-top-right right\" aria-label=\"Photos\"}}\n            {{md-icon md-svg-src=\"images/icons/ic_photo_24px.svg\" style=\"width: 24px; height: 24px;\"}}\n            {{#md-tooltip}}\n                Photos\n            {{/md-tooltip}}\n        {{/md-button}}\n\n\n        <div style=\"margin-top: 15rem;\">\n            <p>Additionally, the Tooltip's `md-visible` attribute can use data-binding to programmatically show/hide itself. Toggle the checkbox below...</p>\n        </div>\n\n\n        {{#md-checkbox checked=demo.showTooltip}}\n            Insert Drive\n        {{/md-checkbox}}\n\n    </md-content>\n</div>",
     "typography-snippet1.hbs": "<h1 class=\"md-display-3\">Headline</h1>\n<h2 class=\"md-display-1\">Headline</h2>\n<h3 class=\"md-headline\">Headline</h3>\n",
-    "typography-snippet2.hbs": "<p class=\"md-body-2\">Body copy with medium weight.</p>\n{{#md-button}}Button{{/md-button}}\n<p class=\"md-body-1\">Regular body copy <small class=\"md-caption\">with small text</small>.</p>\n<span class=\"md-caption\">Caption</span>"
+    "typography-snippet2.hbs": "<p class=\"md-body-2\">Body copy with medium weight.</p>\n{{#md-button}}Button{{/md-button}}\n<p class=\"md-body-1\">Regular body copy <small class=\"md-caption\">with small text</small>.</p>\n<span class=\"md-caption\">Caption</span>",
+    "whiteframe.hbs": "                    <div layout=\"column\" layout-fill style=\"padding-bottom: 32px;\">\n\n                        <md-whiteframe class=\"md-whiteframe-z1\" layout layout-align=\"center center\">\n                            <span>.md-whiteframe-z1</span>\n                        </md-whiteframe>\n\n                        <md-whiteframe class=\"md-whiteframe-z2\" layout layout-align=\"center center\">\n                            <span>.md-whiteframe-z2</span>\n                        </md-whiteframe>\n\n                        <md-whiteframe class=\"md-whiteframe-z3\" layout layout-align=\"center center\">\n                            <span>.md-whiteframe-z3</span>\n                        </md-whiteframe>\n\n                        <md-whiteframe class=\"md-whiteframe-z4\" layout layout-align=\"center center\">\n                            <span>.md-whiteframe-z4</span>\n                        </md-whiteframe>\n\n                        <md-whiteframe class=\"md-whiteframe-z5\" layout layout-align=\"center center\">\n                            <span>.md-whiteframe-z5</span>\n                        </md-whiteframe>\n\n                    </div>\n"
   };
 
 });
@@ -4355,6 +4504,85 @@ define('dummy/templates/application', ['exports'], function (exports) {
             hasRendered: false,
             build: function build(dom) {
               var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("Whiteframe");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, block = hooks.block;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            block(env, morph0, context, "link-to", ["whiteframe"], {"class": "md-button"}, child0, null);
+            return fragment;
+          }
+        };
+      }());
+      var child19 = (function() {
+        var child0 = (function() {
+          return {
+            isHTMLBars: true,
+            revision: "Ember@1.12.0",
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createDocumentFragment();
               var el1 = dom.createTextNode("Index");
               dom.appendChild(el0, el1);
               return el0;
@@ -4512,6 +4740,10 @@ define('dummy/templates/application', ['exports'], function (exports) {
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           var el3 = dom.createTextNode("\n\n");
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
@@ -4566,6 +4798,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
           var morph16 = dom.createMorphAt(element1,31,31);
           var morph17 = dom.createMorphAt(element1,33,33);
           var morph18 = dom.createMorphAt(element1,35,35);
+          var morph19 = dom.createMorphAt(element1,37,37);
           block(env, morph0, context, "md-toolbar", [], {}, child0, null);
           block(env, morph1, context, "link-to", ["buttons"], {"activeClass": "parentActive", "tagName": "li"}, child1, null);
           block(env, morph2, context, "link-to", ["card"], {"activeClass": "parentActive", "tagName": "li"}, child2, null);
@@ -4584,7 +4817,8 @@ define('dummy/templates/application', ['exports'], function (exports) {
           block(env, morph15, context, "link-to", ["toolbar"], {"activeClass": "parentActive", "tagName": "li"}, child15, null);
           block(env, morph16, context, "link-to", ["tooltip"], {"activeClass": "parentActive", "tagName": "li"}, child16, null);
           block(env, morph17, context, "link-to", ["typography"], {"activeClass": "parentActive", "tagName": "li"}, child17, null);
-          block(env, morph18, context, "link-to", ["index"], {"activeClass": "parentActive", "tagName": "li"}, child18, null);
+          block(env, morph18, context, "link-to", ["whiteframe"], {"activeClass": "parentActive", "tagName": "li"}, child18, null);
+          block(env, morph19, context, "link-to", ["index"], {"activeClass": "parentActive", "tagName": "li"}, child19, null);
           return fragment;
         }
       };
@@ -6370,6 +6604,78 @@ define('dummy/templates/card', ['exports'], function (exports) {
         }
       };
     }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Action 1");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Action 2");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.12.0",
@@ -6436,6 +6742,23 @@ define('dummy/templates/card', ['exports'], function (exports) {
         var el10 = dom.createElement("p");
         var el11 = dom.createTextNode("\n                The titles of Washed Out's breakthrough song and the first single from Paracosm\n                share the\n                two most important words in Ernest Greene's musical language: feel it. It's a\n                simple request, as well...\n            ");
         dom.appendChild(el10, el11);
+        dom.appendChild(el9, el10);
+        var el10 = dom.createTextNode("\n        ");
+        dom.appendChild(el9, el10);
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n        ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("div");
+        dom.setAttribute(el9,"class","md-actions");
+        dom.setAttribute(el9,"layout","row");
+        dom.setAttribute(el9,"layout-align","end center");
+        var el10 = dom.createTextNode("\n            ");
+        dom.appendChild(el9, el10);
+        var el10 = dom.createComment("");
+        dom.appendChild(el9, el10);
+        var el10 = dom.createTextNode("\n            ");
+        dom.appendChild(el9, el10);
+        var el10 = dom.createComment("");
         dom.appendChild(el9, el10);
         var el10 = dom.createTextNode("\n        ");
         dom.appendChild(el9, el10);
@@ -6551,12 +6874,17 @@ define('dummy/templates/card', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0, 1, 1]);
+        var element1 = dom.childAt(element0, [5, 1, 1, 1, 1, 5]);
         var morph0 = dom.createMorphAt(element0,1,1);
         var morph1 = dom.createMorphAt(element0,3,3);
         var attrMorph0 = dom.createAttrMorph(element0, 'class');
+        var morph2 = dom.createMorphAt(element1,1,1);
+        var morph3 = dom.createMorphAt(element1,3,3);
         attribute(env, attrMorph0, element0, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
         block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
         inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
+        block(env, morph2, context, "md-button", [], {}, child1, null);
+        block(env, morph3, context, "md-button", [], {}, child2, null);
         return fragment;
       }
     };
@@ -8025,7 +8353,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
         return {
           isHTMLBars: true,
           revision: "Ember@1.12.0",
-          blockParams: 0,
+          blockParams: 1,
           cachedFragment: null,
           hasRendered: false,
           build: function build(dom) {
@@ -8034,9 +8362,9 @@ define('dummy/templates/divider', ['exports'], function (exports) {
             dom.appendChild(el0, el1);
             return el0;
           },
-          render: function render(context, env, contextualElement) {
+          render: function render(context, env, contextualElement, blockArguments) {
             var dom = env.dom;
-            var hooks = env.hooks, block = hooks.block;
+            var hooks = env.hooks, set = hooks.set, block = hooks.block;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -8057,6 +8385,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
             var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
             dom.insertBoundary(fragment, null);
             dom.insertBoundary(fragment, 0);
+            set(env, context, "item", blockArguments[0]);
             block(env, morph0, context, "md-list-item", [], {"class": "md-3-line"}, child0, null);
             return fragment;
           }
@@ -8097,7 +8426,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
           dom.insertBoundary(fragment, null);
           dom.insertBoundary(fragment, 0);
-          block(env, morph0, context, "each", [get(env, context, "messages")], {"keyword": "item"}, child0, null);
+          block(env, morph0, context, "each", [get(env, context, "messages")], {}, child0, null);
           return fragment;
         }
       };
@@ -8244,7 +8573,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
         return {
           isHTMLBars: true,
           revision: "Ember@1.12.0",
-          blockParams: 0,
+          blockParams: 1,
           cachedFragment: null,
           hasRendered: false,
           build: function build(dom) {
@@ -8253,9 +8582,9 @@ define('dummy/templates/divider', ['exports'], function (exports) {
             dom.appendChild(el0, el1);
             return el0;
           },
-          render: function render(context, env, contextualElement) {
+          render: function render(context, env, contextualElement, blockArguments) {
             var dom = env.dom;
-            var hooks = env.hooks, block = hooks.block;
+            var hooks = env.hooks, set = hooks.set, block = hooks.block;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -8276,6 +8605,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
             var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
             dom.insertBoundary(fragment, null);
             dom.insertBoundary(fragment, 0);
+            set(env, context, "item", blockArguments[0]);
             block(env, morph0, context, "md-list-item", [], {"class": "md-3-line"}, child0, null);
             return fragment;
           }
@@ -8316,7 +8646,7 @@ define('dummy/templates/divider', ['exports'], function (exports) {
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
           dom.insertBoundary(fragment, null);
           dom.insertBoundary(fragment, 0);
-          block(env, morph0, context, "each", [get(env, context, "messages")], {"keyword": "item"}, child0, null);
+          block(env, morph0, context, "each", [get(env, context, "messages")], {}, child0, null);
           return fragment;
         }
       };
@@ -8572,7 +8902,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
         return {
           isHTMLBars: true,
           revision: "Ember@1.12.0",
-          blockParams: 0,
+          blockParams: 1,
           cachedFragment: null,
           hasRendered: false,
           build: function build(dom) {
@@ -8614,9 +8944,9 @@ define('dummy/templates/icon', ['exports'], function (exports) {
             dom.appendChild(el0, el1);
             return el0;
           },
-          render: function render(context, env, contextualElement) {
+          render: function render(context, env, contextualElement, blockArguments) {
             var dom = env.dom;
-            var hooks = env.hooks, get = hooks.get, inline = hooks.inline, attribute = hooks.attribute, content = hooks.content;
+            var hooks = env.hooks, set = hooks.set, get = hooks.get, inline = hooks.inline, attribute = hooks.attribute, content = hooks.content;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -8639,6 +8969,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
             var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
             var morph1 = dom.createMorphAt(element1,0,0);
             var attrMorph0 = dom.createAttrMorph(element1, 'style');
+            set(env, context, "it", blockArguments[0]);
             inline(env, morph0, context, "md-icon", [], {"mdFontIcon": get(env, context, "font.name"), "class": get(env, context, "font.theme"), "style": get(env, context, "it.sizeStyle"), "classNames": "step "});
             attribute(env, attrMorph0, element1, "style", get(env, context, "it.paddingScaleStyle"));
             content(env, morph1, context, "it.size");
@@ -8649,7 +8980,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
-        blockParams: 0,
+        blockParams: 1,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
@@ -8672,9 +9003,9 @@ define('dummy/templates/icon', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
+        render: function render(context, env, contextualElement, blockArguments) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, block = hooks.block;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -8693,7 +9024,8 @@ define('dummy/templates/icon', ['exports'], function (exports) {
             fragment = this.build(dom);
           }
           var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-          block(env, morph0, context, "each", [get(env, context, "font.sizes")], {"keyword": "it"}, child0, null);
+          set(env, context, "font", blockArguments[0]);
+          block(env, morph0, context, "each", [get(env, context, "font.sizes")], {}, child0, null);
           return fragment;
         }
       };
@@ -9206,7 +9538,7 @@ define('dummy/templates/icon', ['exports'], function (exports) {
         attribute(env, attrMorph0, element3, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
         block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
         inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
-        block(env, morph2, context, "each", [get(env, context, "icons")], {"keyword": "font"}, child1, null);
+        block(env, morph2, context, "each", [get(env, context, "icons")], {}, child1, null);
         attribute(env, attrMorph1, element4, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClassFromUrl")]));
         block(env, morph3, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child2, null);
         inline(env, morph4, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFilesFromUrl"), "showSource": get(env, context, "showSourceFromUrl")});
@@ -9695,7 +10027,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, inline = hooks.inline;
+          var hooks = env.hooks, content = hooks.content;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -9714,7 +10046,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
             fragment = this.build(dom);
           }
           var morph0 = dom.createMorphAt(fragment,3,3,contextualElement);
-          inline(env, morph0, context, "md-input", [], {"placeholder": "Placeholder text"});
+          content(env, morph0, context, "md-input");
           return fragment;
         }
       };
@@ -9826,13 +10158,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("                ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("label");
-          var el2 = dom.createTextNode("City");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n                ");
+          var el1 = dom.createTextNode("            ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -9842,7 +10168,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, content = hooks.content;
+          var hooks = env.hooks, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -9860,8 +10186,8 @@ define('dummy/templates/input', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,3,3,contextualElement);
-          content(env, morph0, context, "md-input");
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "md-input", [], {"placeholder": "Address 2"});
           return fragment;
         }
       };
@@ -9878,7 +10204,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
           var el1 = dom.createTextNode("                ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("label");
-          var el2 = dom.createTextNode("State");
+          var el2 = dom.createTextNode("City");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n                ");
@@ -9927,7 +10253,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
           var el1 = dom.createTextNode("                ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("label");
-          var el2 = dom.createTextNode("Postal Code");
+          var el2 = dom.createTextNode("State");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n                ");
@@ -9965,6 +10291,55 @@ define('dummy/templates/input', ['exports'], function (exports) {
       };
     }());
     var child11 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("label");
+          var el2 = dom.createTextNode("Postal Code");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,3,3,contextualElement);
+          content(env, morph0, context, "md-input");
+          return fragment;
+        }
+      };
+    }());
+    var child12 = (function() {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
@@ -10013,7 +10388,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         }
       };
     }());
-    var child12 = (function() {
+    var child13 = (function() {
       var child0 = (function() {
         return {
           isHTMLBars: true,
@@ -10123,7 +10498,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         }
       };
     }());
-    var child13 = (function() {
+    var child14 = (function() {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
@@ -10172,7 +10547,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         }
       };
     }());
-    var child14 = (function() {
+    var child15 = (function() {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
@@ -10221,7 +10596,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         }
       };
     }());
-    var child15 = (function() {
+    var child16 = (function() {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
@@ -10270,7 +10645,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         }
       };
     }());
-    var child16 = (function() {
+    var child17 = (function() {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
@@ -10413,6 +10788,10 @@ define('dummy/templates/input', ['exports'], function (exports) {
         dom.appendChild(el8, el9);
         var el9 = dom.createComment("");
         dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
         var el9 = dom.createTextNode("\n        ");
         dom.appendChild(el8, el9);
         var el9 = dom.createElement("div");
@@ -10538,7 +10917,7 @@ define('dummy/templates/input', ['exports'], function (exports) {
         var element4 = dom.childAt(element2, [3, 1]);
         var element5 = dom.childAt(element4, [1]);
         var element6 = dom.childAt(element4, [3]);
-        var element7 = dom.childAt(element4, [7]);
+        var element7 = dom.childAt(element4, [9]);
         var element8 = dom.childAt(element0, [3]);
         var element9 = dom.childAt(element8, [5, 1, 1, 1]);
         var morph0 = dom.createMorphAt(element1,1,1);
@@ -10551,17 +10930,18 @@ define('dummy/templates/input', ['exports'], function (exports) {
         var morph6 = dom.createMorphAt(element6,1,1);
         var morph7 = dom.createMorphAt(element6,2,2);
         var morph8 = dom.createMorphAt(element4,5,5);
-        var morph9 = dom.createMorphAt(element7,1,1);
-        var morph10 = dom.createMorphAt(element7,2,2);
-        var morph11 = dom.createMorphAt(element7,3,3);
-        var morph12 = dom.createMorphAt(element4,9,9);
-        var morph13 = dom.createMorphAt(element8,1,1);
-        var morph14 = dom.createMorphAt(element8,3,3);
+        var morph9 = dom.createMorphAt(element4,7,7);
+        var morph10 = dom.createMorphAt(element7,1,1);
+        var morph11 = dom.createMorphAt(element7,2,2);
+        var morph12 = dom.createMorphAt(element7,3,3);
+        var morph13 = dom.createMorphAt(element4,11,11);
+        var morph14 = dom.createMorphAt(element8,1,1);
+        var morph15 = dom.createMorphAt(element8,3,3);
         var attrMorph1 = dom.createAttrMorph(element8, 'class');
-        var morph15 = dom.createMorphAt(element9,1,1);
-        var morph16 = dom.createMorphAt(element9,2,2);
-        var morph17 = dom.createMorphAt(element9,3,3);
-        var morph18 = dom.createMorphAt(element9,4,4);
+        var morph16 = dom.createMorphAt(element9,1,1);
+        var morph17 = dom.createMorphAt(element9,2,2);
+        var morph18 = dom.createMorphAt(element9,3,3);
+        var morph19 = dom.createMorphAt(element9,4,4);
         attribute(env, attrMorph0, element1, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
         block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
         inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
@@ -10572,17 +10952,18 @@ define('dummy/templates/input', ['exports'], function (exports) {
         block(env, morph6, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.firstName")}, child5, null);
         block(env, morph7, context, "md-input-container", [], {"flex": "", "value": get(env, context, "theMax")}, child6, null);
         block(env, morph8, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.address")}, child7, null);
-        block(env, morph9, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.city")}, child8, null);
-        block(env, morph10, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.state")}, child9, null);
-        block(env, morph11, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.postalCode")}, child10, null);
-        block(env, morph12, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.biography")}, child11, null);
+        block(env, morph9, context, "md-input-container", [], {"value": get(env, context, "user.address2"), "md-no-float": ""}, child8, null);
+        block(env, morph10, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.city")}, child9, null);
+        block(env, morph11, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.state")}, child10, null);
+        block(env, morph12, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.postalCode")}, child11, null);
+        block(env, morph13, context, "md-input-container", [], {"flex": "", "value": get(env, context, "user.biography")}, child12, null);
         attribute(env, attrMorph1, element8, "class", concat(env, ["demo-container ", get(env, context, "showSourceClassIcons")]));
-        block(env, morph13, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child12, null);
-        inline(env, morph14, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFilesIcons"), "showSource": get(env, context, "showSourceIcons")});
-        block(env, morph15, context, "md-input-container", [], {"md-no-float": "", "value": get(env, context, "user2.name")}, child13, null);
-        block(env, morph16, context, "md-input-container", [], {"md-no-float": "", "value": get(env, context, "user2.phon")}, child14, null);
-        block(env, morph17, context, "md-input-container", [], {"md-no-float": ""}, child15, null);
-        block(env, morph18, context, "md-input-container", [], {"md-no-float": ""}, child16, null);
+        block(env, morph14, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child13, null);
+        inline(env, morph15, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFilesIcons"), "showSource": get(env, context, "showSourceIcons")});
+        block(env, morph16, context, "md-input-container", [], {"md-no-float": "", "value": get(env, context, "user2.name")}, child14, null);
+        block(env, morph17, context, "md-input-container", [], {"md-no-float": "", "value": get(env, context, "user2.phon")}, child15, null);
+        block(env, morph18, context, "md-input-container", [], {}, child16, null);
+        block(env, morph19, context, "md-input-container", [], {"md-no-float": ""}, child17, null);
         return fragment;
       }
     };
@@ -11950,7 +12331,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
-        blockParams: 0,
+        blockParams: 1,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
@@ -11959,9 +12340,9 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
+        render: function render(context, env, contextualElement, blockArguments) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, block = hooks.block;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -11982,6 +12363,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
           dom.insertBoundary(fragment, null);
           dom.insertBoundary(fragment, 0);
+          set(env, context, "d", blockArguments[0]);
           block(env, morph0, context, "md-radio-button", [], {"value": get(env, context, "d.value"), "class": "md-primary", "selected": get(env, context, "data.group2"), "disabled": get(env, context, "d.isDisabled")}, child0, null);
           return fragment;
         }
@@ -12106,7 +12488,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
       return {
         isHTMLBars: true,
         revision: "Ember@1.12.0",
-        blockParams: 0,
+        blockParams: 1,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
@@ -12115,9 +12497,9 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
           dom.appendChild(el0, el1);
           return el0;
         },
-        render: function render(context, env, contextualElement) {
+        render: function render(context, env, contextualElement, blockArguments) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, block = hooks.block;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -12138,6 +12520,7 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
           dom.insertBoundary(fragment, null);
           dom.insertBoundary(fragment, 0);
+          set(env, context, "it", blockArguments[0]);
           block(env, morph0, context, "md-radio-button", [], {"value": get(env, context, "it.value"), "selected": get(env, context, "data.group3"), "aria-label": get(env, context, "it.title")}, child0, null);
           return fragment;
         }
@@ -12329,11 +12712,11 @@ define('dummy/templates/radio-button', ['exports'], function (exports) {
         block(env, morph4, context, "md-radio-button", [], {"value": "Banana", "selected": get(env, context, "data.group1")}, child2, null);
         block(env, morph5, context, "md-radio-button", [], {"value": "Mango", "selected": get(env, context, "data.group1")}, child3, null);
         content(env, morph6, context, "data.group2");
-        block(env, morph7, context, "each", [get(env, context, "radioData")], {"keyword": "d"}, child4, null);
+        block(env, morph7, context, "each", [get(env, context, "radioData")], {}, child4, null);
         block(env, morph8, context, "md-button", [], {"class": "md-raised", "action": "addItem", "type": "button"}, child5, null);
         block(env, morph9, context, "md-button", [], {"class": "md-raised", "action": "removeItem", "type": "button"}, child6, null);
         content(env, morph10, context, "data.group3");
-        block(env, morph11, context, "each", [get(env, context, "avatarData")], {"keyword": "it"}, child7, null);
+        block(env, morph11, context, "each", [get(env, context, "avatarData")], {}, child7, null);
         return fragment;
       }
     };
@@ -13549,7 +13932,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
           return {
             isHTMLBars: true,
             revision: "Ember@1.12.0",
-            blockParams: 0,
+            blockParams: 1,
             cachedFragment: null,
             hasRendered: false,
             build: function build(dom) {
@@ -13558,9 +13941,9 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
               dom.appendChild(el0, el1);
               return el0;
             },
-            render: function render(context, env, contextualElement) {
+            render: function render(context, env, contextualElement, blockArguments) {
               var dom = env.dom;
-              var hooks = env.hooks, get = hooks.get, block = hooks.block;
+              var hooks = env.hooks, set = hooks.set, get = hooks.get, block = hooks.block;
               dom.detectNamespace(contextualElement);
               var fragment;
               if (env.useFragmentCache && dom.canClone) {
@@ -13581,6 +13964,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
               var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
               dom.insertBoundary(fragment, null);
               dom.insertBoundary(fragment, 0);
+              set(env, context, "tab", blockArguments[0]);
               block(env, morph0, context, "md-tab", [], {"disabled": get(env, context, "tab.disabled"), "label": get(env, context, "tab.title")}, child0, null);
               return fragment;
             }
@@ -13621,7 +14005,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
             var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
             dom.insertBoundary(fragment, null);
             dom.insertBoundary(fragment, 0);
-            block(env, morph0, context, "each", [get(env, context, "tabs")], {"keyword": "tab"}, child0, null);
+            block(env, morph0, context, "each", [get(env, context, "tabs")], {}, child0, null);
             return fragment;
           }
         };
@@ -13729,7 +14113,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
           return {
             isHTMLBars: true,
             revision: "Ember@1.12.0",
-            blockParams: 0,
+            blockParams: 1,
             cachedFragment: null,
             hasRendered: false,
             build: function build(dom) {
@@ -13738,9 +14122,9 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
               dom.appendChild(el0, el1);
               return el0;
             },
-            render: function render(context, env, contextualElement) {
+            render: function render(context, env, contextualElement, blockArguments) {
               var dom = env.dom;
-              var hooks = env.hooks, block = hooks.block;
+              var hooks = env.hooks, set = hooks.set, block = hooks.block;
               dom.detectNamespace(contextualElement);
               var fragment;
               if (env.useFragmentCache && dom.canClone) {
@@ -13761,6 +14145,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
               var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
               dom.insertBoundary(fragment, null);
               dom.insertBoundary(fragment, 0);
+              set(env, context, "tab", blockArguments[0]);
               block(env, morph0, context, "md-tab-content", [], {}, child0, null);
               return fragment;
             }
@@ -13801,7 +14186,7 @@ define('dummy/templates/tabs', ['exports'], function (exports) {
             var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
             dom.insertBoundary(fragment, null);
             dom.insertBoundary(fragment, 0);
-            block(env, morph0, context, "each", [get(env, context, "tabs")], {"keyword": "tab"}, child0, null);
+            block(env, morph0, context, "each", [get(env, context, "tabs")], {}, child0, null);
             return fragment;
           }
         };
@@ -14968,6 +15353,425 @@ define('dummy/templates/toast', ['exports'], function (exports) {
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createTextNode("Source");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            inline(env, morph0, context, "md-icon", [], {"md-svg-src": "images/icons/ic_visibility_24px.svg", "style": "margin: 0 4px 0 0;"});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          var el3 = dom.createTextNode("Basic Usage");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"flex","");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("                ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),5,5);
+          block(env, morph0, context, "md-button", [], {"action": "showSource", "layoutType": "row", "layout-align": "center center", "style": "min-width: 72px;"}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement, blockArguments) {
+          var dom = env.dom;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          set(env, context, "toast", blockArguments[0]);
+          inline(env, morph0, context, "md-toast", [], {"toast": get(env, context, "toast")});
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            Show Custom\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            Show Simple\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child4 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            Show With Action\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child5 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            content(env, morph0, context, "name.name");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement, blockArguments) {
+          var dom = env.dom;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          set(env, context, "name", blockArguments[0]);
+          block(env, morph0, context, "md-checkbox", [], {"checked": get(env, context, "name.enabled")}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child6 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            FAB\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child7 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            FAB\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.12.0",
@@ -14984,10 +15788,119 @@ define('dummy/templates/toast', ['exports'], function (exports) {
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"flex","");
         dom.setAttribute(el2,"layout","column");
-        var el3 = dom.createTextNode("\n        ");
+        var el3 = dom.createTextNode("\n\n        ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("h3");
-        var el4 = dom.createTextNode("In progress - coming soon!");
+        var el3 = dom.createElement("section");
+        var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("demo-include");
+        dom.setAttribute(el4,"class","toastdemoBasicUsage");
+        var el5 = dom.createTextNode("\n\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","demo-content buttonsDemo1");
+        var el6 = dom.createTextNode("\n\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","display-content");
+        var el7 = dom.createTextNode("\n\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("div");
+        dom.setAttribute(el7,"layout-fill","");
+        dom.setAttribute(el7,"layout","column");
+        dom.setAttribute(el7,"class","inset");
+        var el8 = dom.createTextNode("\n\n");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n    ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("p");
+        var el9 = dom.createTextNode("Toast can be dismissed with a swipe, a timer, or a button.");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("div");
+        dom.setAttribute(el8,"layout","row");
+        dom.setAttribute(el8,"layout-sm","column");
+        dom.setAttribute(el8,"layout-align","space-around");
+        var el9 = dom.createTextNode("\n        ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("div");
+        dom.setAttribute(el9,"style","width:50px");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("        ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("div");
+        dom.setAttribute(el9,"style","width:50px");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n    ");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("div");
+        var el9 = dom.createTextNode("\n        ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("br");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n        ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("b");
+        var el10 = dom.createTextNode("Toast Position: \"");
+        dom.appendChild(el9, el10);
+        var el10 = dom.createComment("");
+        dom.appendChild(el9, el10);
+        var el10 = dom.createTextNode("\"");
+        dom.appendChild(el9, el10);
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n        ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("br");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("    ");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n\n                    ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
@@ -14996,10 +15909,13 @@ define('dummy/templates/toast', ['exports'], function (exports) {
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block, inline = hooks.inline, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -15017,6 +15933,32 @@ define('dummy/templates/toast', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
+        var element0 = dom.childAt(fragment, [0, 1, 1]);
+        var element1 = dom.childAt(element0, [5, 1, 1, 1]);
+        var element2 = dom.childAt(element1, [5]);
+        var element3 = dom.childAt(element1, [7]);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(element0,3,3);
+        var attrMorph0 = dom.createAttrMorph(element0, 'class');
+        var morph2 = dom.createMorphAt(element1,1,1);
+        var morph3 = dom.createMorphAt(element2,3,3);
+        var morph4 = dom.createMorphAt(element2,4,4);
+        var morph5 = dom.createMorphAt(element2,5,5);
+        var morph6 = dom.createMorphAt(dom.childAt(element3, [3]),1,1);
+        var morph7 = dom.createMorphAt(element3,7,7);
+        var morph8 = dom.createMorphAt(element3,9,9);
+        var morph9 = dom.createMorphAt(element3,10,10);
+        attribute(env, attrMorph0, element0, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
+        block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
+        inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
+        block(env, morph2, context, "each", [get(env, context, "toastNotifications")], {}, child1, null);
+        block(env, morph3, context, "md-button", [], {"action": "showCustomToast"}, child2, null);
+        block(env, morph4, context, "md-button", [], {"action": "showSimpleToast"}, child3, null);
+        block(env, morph5, context, "md-button", [], {"class": "md-raised", "action": "showActionToast"}, child4, null);
+        content(env, morph6, context, "toastPositionText");
+        block(env, morph7, context, "each", [get(env, context, "toastPosition")], {}, child5, null);
+        block(env, morph8, context, "md-button", [], {"class": "md-primary md-fab md-fab-bottom-right"}, child6, null);
+        block(env, morph9, context, "md-button", [], {"class": "md-accent md-fab md-fab-top-right"}, child7, null);
         return fragment;
       }
     };
@@ -16917,6 +17859,306 @@ define('dummy/templates/typography', ['exports'], function (exports) {
   }()));
 
 });
+define('dummy/templates/whiteframe', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n                        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createTextNode("Source");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            inline(env, morph0, context, "md-icon", [], {"md-svg-src": "images/icons/ic_visibility_24px.svg", "style": "margin: 0 4px 0 0;"});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","md-toolbar-tools");
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          var el3 = dom.createTextNode("Basic Usage");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"flex","");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("                ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),5,5);
+          block(env, morph0, context, "md-button", [], {"action": "showSource", "layoutType": "row", "layout-align": "center center", "style": "min-width: 72px;"}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","doc-content");
+        dom.setAttribute(el1,"layout","column");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"flex","");
+        dom.setAttribute(el2,"layout","column");
+        dom.setAttribute(el2,"style","z-index: 1;");
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","doc-description");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("The Dynamic Tabs demo shows how internal tab views can be easily used.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("section");
+        var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("demo-include");
+        dom.setAttribute(el4,"class","whiteframedemoBasicUsage");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","demo-content ");
+        var el6 = dom.createTextNode("\n\n\n\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"layout","column");
+        dom.setAttribute(el6,"layout-fill","");
+        dom.setAttribute(el6,"style","padding-bottom: 32px;");
+        var el7 = dom.createTextNode("\n\n                        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("md-whiteframe");
+        dom.setAttribute(el7,"class","md-whiteframe-z1");
+        dom.setAttribute(el7,"layout","");
+        dom.setAttribute(el7,"layout-align","center center");
+        var el8 = dom.createTextNode("\n                            ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("span");
+        var el9 = dom.createTextNode(".md-whiteframe-z1");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n                        ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n                        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("md-whiteframe");
+        dom.setAttribute(el7,"class","md-whiteframe-z2");
+        dom.setAttribute(el7,"layout","");
+        dom.setAttribute(el7,"layout-align","center center");
+        var el8 = dom.createTextNode("\n                            ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("span");
+        var el9 = dom.createTextNode(".md-whiteframe-z2");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n                        ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n                        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("md-whiteframe");
+        dom.setAttribute(el7,"class","md-whiteframe-z3");
+        dom.setAttribute(el7,"layout","");
+        dom.setAttribute(el7,"layout-align","center center");
+        var el8 = dom.createTextNode("\n                            ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("span");
+        var el9 = dom.createTextNode(".md-whiteframe-z3");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n                        ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n                        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("md-whiteframe");
+        dom.setAttribute(el7,"class","md-whiteframe-z4");
+        dom.setAttribute(el7,"layout","");
+        dom.setAttribute(el7,"layout-align","center center");
+        var el8 = dom.createTextNode("\n                            ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("span");
+        var el9 = dom.createTextNode(".md-whiteframe-z4");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n                        ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n                        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("md-whiteframe");
+        dom.setAttribute(el7,"class","md-whiteframe-z5");
+        dom.setAttribute(el7,"layout","");
+        dom.setAttribute(el7,"layout-align","center center");
+        var el8 = dom.createTextNode("\n                            ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("span");
+        var el9 = dom.createTextNode(".md-whiteframe-z5");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n                        ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n\n                    ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n\n\n\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n\n\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0, 1, 3]);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(element0,3,3);
+        var attrMorph0 = dom.createAttrMorph(element0, 'class');
+        attribute(env, attrMorph0, element0, "class", concat(env, ["demo-container md-whiteframe-z1 ", get(env, context, "showSourceClass")]));
+        block(env, morph0, context, "md-toolbar", [], {"classNames": "demo-toolbar"}, child0, null);
+        inline(env, morph1, context, "code-content", [], {"sourceFiles": get(env, context, "sourceFiles"), "showSource": get(env, context, "showSource")});
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('dummy/tests/helpers/resolver', ['exports', 'ember/resolver', 'dummy/config/environment'], function (exports, Resolver, config) {
 
   'use strict';
@@ -17627,17 +18869,31 @@ define('dummy/tests/unit/components/md-textarea-test', ['ember-qunit'], function
   // needs: ['component:foo', 'helper:bar']
 
 });
-define('dummy/tests/unit/components/md-toast-test', ['ember-qunit'], function (ember_qunit) {
+define('dummy/tests/unit/components/md-toast-test', ['ember-qunit', 'ember', 'dummy/config/environment'], function (ember_qunit, Ember, config) {
 
   'use strict';
 
   ember_qunit.moduleForComponent('md-toast', {});
 
+  var rootElement = Ember['default'].$(config['default'].APP.rootElement);
+
   ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
-    var component = this.subject();
+    var component = this.subject({
+      rootElement: rootElement,
+      toast: {
+        opening: true,
+        position: 'bottom left',
+        hideDelay: 3000,
+        capsule: false,
+        highlightAction: false,
+        content: '',
+        action: '',
+        resolve: null
+      }
+    });
     assert.equal(component._state, 'preRender');
 
     // Renders the component to the page
@@ -17993,7 +19249,7 @@ define('dummy/tests/unit/services/icon-test', ['ember-qunit', 'ember'], function
 		    service = this.subject();
 
 		Ember['default'].run(function () {
-			service.getIcon('cancel').then(function (result) {
+			service.getIcon('md-cancel').then(function (result) {
 				icon = result;
 			});
 		});
@@ -18007,7 +19263,7 @@ define('dummy/tests/unit/services/icon-test', ['ember-qunit', 'ember'], function
 		    service = this.subject();
 
 		Ember['default'].run(function () {
-			service.getIcon('cancel.svg').then(function (result) {
+			service.getIcon('md-cancel.svg').then(function (result) {
 				icon = result;
 			});
 		});
@@ -18271,6 +19527,22 @@ define('dummy/tests/unit/services/sniffer-test', ['ember-qunit'], function (embe
     // needs: ['service:foo']
 
 });
+define('dummy/tests/unit/services/toasts-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('service:toasts', 'Unit | Service | toasts', {});
+
+  // Replace this with your real tests.
+  ember_qunit.test('it exists', function (assert) {
+    var service = this.subject();
+    assert.ok(service);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['service:foo']
+
+});
 define('dummy/tests/unit/services/utility-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -18299,13 +19571,17 @@ define('dummy/views/application', ['exports', 'ember'], function (exports, Ember
   exports['default'] = ApplicationView;
 
 });
-define('dummy/views/buttons', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/views/toast', ['exports', 'ember'], function (exports, Ember) {
 
-    'use strict';
+  'use strict';
 
-    exports['default'] = Ember['default'].View.extend({
-        demoName: 'buttons'
-    });
+  var ToastView = Ember['default'].View.extend({
+    toastService: Ember['default'].inject.service('toasts'),
+
+    classNameBindings: ''
+  });
+
+  exports['default'] = ToastView;
 
 });
 /* jshint ignore:start */
@@ -18336,7 +19612,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"LOG_ACTIVE_GENERATION":true,"LOG_VIEW_LOOKUPS":true,"name":"ember-material-design","version":"0.5.5.106e24e1"});
+  require("dummy/app")["default"].create({"LOG_ACTIVE_GENERATION":true,"LOG_VIEW_LOOKUPS":true,"name":"ember-material-design","version":"0.7.0"});
 }
 
 /* jshint ignore:end */
