@@ -7,12 +7,24 @@ var ToastService = Ember.Service.extend({
 
   showToast: function(toast) {
 
+    // check to see if there are existing toast and destroy them
+    var existingToasts = this.get('toasts').filterBy('open');
+
+    existingToasts.forEach((t) => {
+      t.set('destroying', true);
+    });
+
     toast.opening = true;
     var newToast = Toast.createWithMixins(toast);
 
-    this.get('toasts').pushObject(newToast);
+    var delay = existingToasts.length > 0 ? 400 : 0;
 
-    return newToast;
+    Ember.run.later(this, () => {
+      this.get('toasts').pushObject(newToast);
+      return newToast;
+    }, delay);
+
+
   },
 
   activeToasts: Ember.computed('toasts.@each.open', function() {
