@@ -1,1 +1,6 @@
-{{yield}}
+<span flex>{{toast.content}}</span>
+{{#if toast.action}}
+    {{#md-button class=buttonClass action='action'}}
+        {{toast.action}}
+    {{/md-button}}
+{{/if}}
