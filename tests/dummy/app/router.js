@@ -25,4 +25,5 @@ export default Router.map(function() {
   this.route('tooltip');
   this.route('toast');
   this.route('whiteframe');
+  this.route('sidenav');
 });

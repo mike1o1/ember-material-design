@@ -30,7 +30,7 @@ var MdSidenav = Ember.Component.extend(LayoutRules, {
 
         if (sidebarVisible) {
             this.$().removeClass('md-closed');
-            this.get('parentView').$().prepend(backdrop);
+            this.$().parent().prepend(backdrop);
             backdrop.addClass('ng-enter');
             backdrop.removeClass('ng-leave');
         } else {
