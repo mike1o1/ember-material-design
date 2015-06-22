@@ -24,9 +24,9 @@ md-sidenav {
     list-style: none;
   }
 
-  &.md-closed {
-    display: none;
-  }
+  //&.md-closed {
+  //  display: none;
+  //}
 
   // angular specific animations. how to replicate using jQuery or Ember?
   &.md-closed-add,
@@ -40,6 +40,8 @@ md-sidenav {
   &.md-closed-remove.md-closed-remove-active {
     transition: $swift-ease-out;
   }
+
+  transition: $swift-ease-out;
 
   &.md-locked-open-add,
   &.md-locked-open-remove {
@@ -66,8 +68,8 @@ md-sidenav {
   &.md-locked-open-remove-active {
     transition: width $swift-ease-in-duration $swift-ease-in-timing-function,
                 min-width $swift-ease-in-duration $swift-ease-in-timing-function;
-    width: 0;
-    min-width: 0;
+    //width: 0;
+    //min-width: 0;
   }
 
   &.md-closed.md-locked-open-add {
