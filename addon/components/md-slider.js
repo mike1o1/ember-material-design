@@ -64,7 +64,8 @@ var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
 
     stepValidator(value) {
         var step = parseInt(this.get('step'), 10);
-        return Math.round(value / step) * step;
+        var formattedValue = (Math.round(value / step) * step);
+        return (Math.round(formattedValue * 1000) / 1000);
     },
 
     active: false,
