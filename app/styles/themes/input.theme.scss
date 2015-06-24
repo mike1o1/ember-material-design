@@ -69,8 +69,8 @@ md-input-container {
     [disabled] & {
       border-bottom-color: transparent;
       color: color($foreground, "3");
-      background-image: linear-gradient(to right, color($foreground, "4") 0%, color($foreground, "4") 33%, transparent 0%);
-      background-image: -ms-linear-gradient(left, transparent 0%, color($foreground, "4") 100%);
+      background-image: linear-gradient(to right, color($foreground, "3") 0%, color($foreground, "3") 33%, transparent 0%);
+      background-image: -ms-linear-gradient(left, transparent 0%, color($foreground, "3") 100%);
     }
   }
 }
