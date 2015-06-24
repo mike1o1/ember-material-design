@@ -172,6 +172,9 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
     }),
 
     adjustOffset() {
+        if (!this.elements.tabs[this.get('focusIndex')]) {
+          return;
+        }
         if (this.get('shouldCenterTabs')) {
             return;
         }
