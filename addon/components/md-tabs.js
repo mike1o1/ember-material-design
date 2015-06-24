@@ -189,7 +189,7 @@ var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
     offsetLeftStyle: Ember.computed('offsetLeft', function() {
         var offsetLeft = this.get('offsetLeft');
         var newValue = this.get('shouldCenterTabs') ? '' : '-' + offsetLeft + 'px';
-        newValue = 'left: ' + newValue;
+        newValue = `transform: translate3d(${newValue}, 0, 0)`;
 
         return Ember.String.htmlSafe(newValue);
     }),
