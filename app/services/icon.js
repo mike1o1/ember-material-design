@@ -5,7 +5,7 @@ import {
   from 'ic-ajax';
 
 var config = {
-  defaultIconSize: 24
+  defaultViewBoxSize: 24
 };
 
 var urlRegex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
@@ -44,7 +44,7 @@ function cloneSVG() {
  * loaded iconCache store.
  */
 function prepareAndStyle() {
-  var iconSize = this.config ? this.config.iconSize : config.defaultIconSize;
+  var viewBoxSize = this.config ? this.config.viewBoxSize : config.defaultViewBoxSize;
   var svg = this.element;
 
   svg[0].setAttribute('fit', '');
@@ -52,7 +52,7 @@ function prepareAndStyle() {
   svg[0].setAttribute('width', '100%');
   svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
-  svg[0].setAttribute('viewBox', svg[0].getAttribute('viewBox') || ('0 0 ' + iconSize + ' ' + iconSize));
+  svg[0].setAttribute('viewBox', svg[0].getAttribute('viewBox') || ('0 0 ' + viewBoxSize + ' ' + viewBoxSize));
 
   svg.css({
     'pointer-events': 'none',
@@ -130,33 +130,37 @@ var IconService = Ember.Service.extend({
       .then(this.cacheIcon(id));
   },
 
-  icon(id, url, iconSize) {
+  icon(id, url, viewBoxSize) {
     if (id.indexOf(':') == -1) {
       id = '$default:' + id;
     }
 
     config[id] = {
       url: url,
-      iconSize: iconSize || config.defaultIconSize
+      viewBoxSize: viewBoxSize || config.defaultViewBoxSize
     };
   },
 
-  iconSet(id, url, iconSize) {
+  iconSet(id, url, viewBoxSize) {
     config[id] = {
       url: url,
-      iconSize: iconSize || config.defaultIconSize
+      viewBoxSize: viewBoxSize || config.defaultViewBoxSize
     };
   },
 
-  defaultIconSet(url, iconSize) {
+  defaultIconSet(url, viewBoxSize) {
     var setName = '$default';
 
     if (!config[setName]) {
       config[setName] = {
         url: url,
-        iconSize: iconSize || config.defaultIconSize
+        viewBoxSize: viewBoxSize || config.defaultViewBoxSize
       };
     }
+  },
+
+  defaultViewBoxSize(viewBoxSize) {
+    config.defaultViewBoxSize = viewBoxSize;
   },
 
   loadByID(id) {
