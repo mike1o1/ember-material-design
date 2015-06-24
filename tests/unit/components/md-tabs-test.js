@@ -20,7 +20,8 @@ moduleForComponent('md-tabs', {
       'service:sniffer',
       'service:ripple',
       'service:constants'
-    ]
+    ],
+    integration: true
     //'template:md-tabs-content-wrapper']
 });
 

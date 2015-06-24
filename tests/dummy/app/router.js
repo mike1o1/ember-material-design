@@ -26,4 +26,5 @@ export default Router.map(function() {
   this.route('toast');
   this.route('whiteframe');
   this.route('sidenav');
+  this.route('fab-toolbar');
 });
