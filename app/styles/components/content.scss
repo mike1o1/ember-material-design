@@ -17,7 +17,11 @@ md-content {
   }
 
   &[md-scroll-xy] {
+  }
 
+  // For iOS allow disabling of momentum scrolling
+  &.autoScroll {
+    -webkit-overflow-scrolling: auto;
   }
 
   &.md-padding {
