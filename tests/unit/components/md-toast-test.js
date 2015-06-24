@@ -9,6 +9,7 @@ import config from '../../../config/environment';
 moduleForComponent('md-toast', {
   // Specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
+  unit: true
 });
 
 var rootElement = Ember.$(config.APP.rootElement);

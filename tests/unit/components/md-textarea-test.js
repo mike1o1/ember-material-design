@@ -6,6 +6,7 @@ import {
 moduleForComponent('md-textarea', {
   // Specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
+  unit: true
 });
 
 test('it renders', function(assert) {

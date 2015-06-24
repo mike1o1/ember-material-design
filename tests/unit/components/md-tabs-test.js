@@ -81,17 +81,34 @@ test('it renders', function(assert) {
 });
 
 test('selects first tab by default', function(assert) {
+  var done = assert.async();
   var component = this.subject({
     template: twoTabTemplate
   });
 
   this.render();
 
-  var firstTab = this.$().find('md-tab-item').eq(0);
-  var secondTab = this.$().find('md-tab-item').eq(1);
+  Ember.run(() => {
+    component.rerender();
 
-  assert.ok(firstTab.hasClass('md-active'), 'First tab is selected');
-  assert.ok(!secondTab.hasClass('md-active'), 'Second tab is not selected');
+    setTimeout(() => {
+
+      var firstTab = this.$().find('md-tab-item').eq(0);
+      var secondTab = this.$().find('md-tab-item').eq(1);
+
+      assert.ok(firstTab.hasClass('md-active'), 'First tab is selected');
+      assert.ok(!secondTab.hasClass('md-active'), 'Second tab is not selected');
+      done();
+    }, 180);
+  });
+
+
+
+  console.log(Ember.View.views);
+
+
+
+
 });
 
 test('selects and focuses a tab on click', function(assert) {
@@ -105,7 +122,7 @@ test('selects and focuses a tab on click', function(assert) {
 
   var secondTab = this.$().find('md-tab-item').eq(1);
 
-  assert.ok(secondTab, 'Second tab exists');
+  assert.ok(secondTab.length, 'Second tab exists');
 
   Ember.run(() => {
     secondTab.trigger(e);
