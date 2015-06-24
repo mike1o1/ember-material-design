@@ -39,19 +39,20 @@ md-radio-button,
 
   .md-off {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: $radio-width;
     height: $radio-width;
-    border: solid 2px;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 50%;
     transition: border-color ease 0.28s;
   }
 
   .md-on {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: $radio-width;
     height: $radio-width;
     border-radius: 50%;
