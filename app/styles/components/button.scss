@@ -67,7 +67,7 @@ $icon-button-margin: rem(0.600) !default;
   overflow: hidden; // for ink element
 
   transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
-              background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+  background-color $swift-ease-out-duration $swift-ease-out-timing-function;
 
   *,
   *:before,
@@ -110,6 +110,15 @@ $icon-button-margin: rem(0.600) !default;
     padding-left: 0;
     padding-right: 0;
     width: $icon-button-width;
+    border-radius: 50%;
+    .md-ripple-container {
+      border-radius: 50%;
+      background-clip: padding-box;
+      overflow: hidden;
+      // The following hack causes Safari/Chrome to respect overflow hidden for ripples
+      -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC');
+
+    }
   }
 
 
@@ -139,7 +148,7 @@ $icon-button-margin: rem(0.600) !default;
       border-radius: 50%;
       background-clip: padding-box;
       overflow: hidden;
-       // The following hack causes Safari to respect overflow hidden for ripples
+      // The following hack causes Safari/Chrome to respect overflow hidden for ripples
       -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 
     }
