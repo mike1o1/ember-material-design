@@ -90,9 +90,6 @@ var MdTooltip = Ember.Component.extend(LayoutRules, {
         var current = this.$().parent()[0];
         // Look for nearest parent md-content, stopping at the root element
         while (current && current !== this.get('rootElement')[0] && current !== document.body) {
-            if (current.tagName && current.tagName.toLowerCase() === 'md-content') {
-                break;
-            }
             current = current.parentNode;
         }
 
