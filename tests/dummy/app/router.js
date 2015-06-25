@@ -27,4 +27,5 @@ export default Router.map(function() {
   this.route('whiteframe');
   this.route('sidenav');
   this.route('fab-toolbar');
+  this.route('fab-speed-dial');
 });

@@ -1,0 +1,99 @@
+<div class="doc-content" layout="column">
+    <div flex layout="column">
+
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+
+
+            <demo-include class="sidenavdemoBasicUsage">
+
+                <div class="demo-content">
+{{! BEGIN-SNIPPET fab-speed-dial --}}
+<md-content class="md-padding" layout="column">
+    <p>
+        You may supply a direction of <code>left</code>, <code>up</code>, <code>down</code>, or
+        <code>right</code> through the <code>md-direction</code> attribute.
+    </p>
+
+    <div class="lock-size" layout="row" layout-align="center center">
+        {{#md-fab-speed-dial md-open=demo.isOpen md-direction=demo.selectedDirection
+        class=demo.selectedMode}}
+            {{#md-fab-trigger}}
+                {{#md-button aria-label="menu" class="md-fab md-warn"}}
+                    {{md-icon md-svg-src="images/icons/menu.svg"}}
+                {{/md-button}}
+            {{/md-fab-trigger}}
+
+            {{#md-fab-actions}}
+                {{#md-button aria-label="twitter" class="md-fab md-raised md-mini"}}
+                    {{md-icon md-svg-src="images/icons/twitter.svg"}}
+                {{/md-button}}
+                {{#md-button aria-label="facebook" class="md-fab md-raised md-mini"}}
+                    {{md-icon md-svg-src="images/icons/facebook.svg"}}
+                {{/md-button}}
+                {{#md-button aria-label="Google hangout" class="md-fab md-raised md-mini"}}
+                    {{md-icon md-svg-src="images/icons/hangout.svg"}}
+                {{/md-button}}
+            {{/md-fab-actions}}
+        {{/md-fab-speed-dial}}
+    </div>
+
+    <div layout="row" layout-align="space-around">
+        <div layout="column">
+            <b>Direction</b>
+
+            {{#each demo.availableDirections as |direction|}}
+                {{#md-radio-button value=direction class="text-capitalize" selected=demo.selectedDirection}}
+                    {{direction}}
+                {{/md-radio-button}}
+            {{/each}}
+        </div>
+
+        <div layout="column">
+            <b>Open/Closed</b>
+
+            {{#md-radio-button value=true selected=demo.isOpen}}Open{{/md-radio-button}}
+            {{#md-radio-button value=false selected=demo.isOpen}}Closed{{/md-radio-button}}
+        </div>
+
+        <div layout="column">
+            <b>Animation Modes</b>
+
+            {{#each demo.availableModes as |mode|}}
+                {{#md-radio-button value=mode selected=demo.selectedMode}}
+                    {{mode}}
+                {{/md-radio-button}}
+            {{/each}}
+        </div>
+    </div>
+
+    <p class="note">
+        Note that you can also hover over the directive's area or tab through each button to open
+        and
+        activate the speed dial menu.
+    </p>
+</md-content>
+{{! END-SNIPPET --}}
+                </div>
+
+
+            </demo-include>
+
+
+        </section>
+    </div>
+</div>
+

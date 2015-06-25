@@ -21,64 +21,64 @@
             <demo-include class="sidenavdemoBasicUsage">
 
                 <div class="demo-content">
-                    {{! BEGIN-SNIPPET sidebar --}}
-                    <md-content class="md-padding">
-                        <p>
-                            You can use the fabToolbar with a trigger and regular toolbar.
-                        </p>
+{{! BEGIN-SNIPPET fab-toolbar --}}
+<md-content class="md-padding">
+    <p>
+        You can use the fabToolbar with a trigger and regular toolbar.
+    </p>
 
-                        <p>
-                            You may use the <code>md-open</code> attribute to programmatically
-                            control whether or not the control is open, and you may add a class
-                            of <code>md-left</code> or <code>md-right</code> to control the
-                            position of the trigger and toolbar tools.
-                        </p>
-                    </md-content>
+    <p>
+        You may use the <code>md-open</code> attribute to programmatically
+        control whether or not the control is open, and you may add a class
+        of <code>md-left</code> or <code>md-right</code> to control the
+        position of the trigger and toolbar tools.
+    </p>
+</md-content>
 
-                    {{#md-fab-toolbar md-open=demo.isOpen class=demo.selectedAlignment}}
-                        {{#md-fab-trigger class="align-with-text"}}
-                            {{#md-button aria-label="menu" class="md-fab md-primary"}}
-                                {{md-icon md-svg-src="images/icons/menu.svg"}}
-                            {{/md-button}}
-                        {{/md-fab-trigger}}
+{{#md-fab-toolbar md-open=demo.isOpen class=demo.selectedAlignment}}
+    {{#md-fab-trigger class="align-with-text"}}
+        {{#md-button aria-label="menu" class="md-fab md-primary"}}
+            {{md-icon md-svg-src="images/icons/menu.svg"}}
+        {{/md-button}}
+    {{/md-fab-trigger}}
 
-                        {{#md-toolbar}}
-                            {{#md-fab-actions class="md-toolbar-tools"}}
-                                {{#md-button aria-label="comment" class="md-icon-button"}}
-                                    {{md-icon md-svg-src="images/icons/ic_comment_24px.svg"}}
-                                {{/md-button}}
-                                {{#md-button aria-label="label" class="md-icon-button"}}
-                                    {{md-icon md-svg-src="images/icons/ic_label_24px.svg"}}
-                                {{/md-button}}
-                                {{#md-button aria-label="photo" class="md-icon-button"}}
-                                    {{md-icon md-svg-src="images/icons/ic_photo_24px.svg"}}
-                                {{/md-button}}
-                            {{/md-fab-actions}}
-                        {{/md-toolbar}}
-                    {{/md-fab-toolbar}}
+    {{#md-toolbar}}
+        {{#md-fab-actions class="md-toolbar-tools"}}
+            {{#md-button aria-label="comment" class="md-icon-button"}}
+                {{md-icon md-svg-src="images/icons/ic_comment_24px.svg"}}
+            {{/md-button}}
+            {{#md-button aria-label="label" class="md-icon-button"}}
+                {{md-icon md-svg-src="images/icons/ic_label_24px.svg"}}
+            {{/md-button}}
+            {{#md-button aria-label="photo" class="md-icon-button"}}
+                {{md-icon md-svg-src="images/icons/ic_photo_24px.svg"}}
+            {{/md-button}}
+        {{/md-fab-actions}}
+    {{/md-toolbar}}
+{{/md-fab-toolbar}}
 
-                    <md-content class="md-padding" layout="column">
-                        <div layout="row" layout-align="space-around">
-                            <div layout="column">
-                                <b>Open/Closed</b>
+<md-content class="md-padding" layout="column">
+    <div layout="row" layout-align="space-around">
+        <div layout="column">
+            <b>Open/Closed</b>
 
-                                {{#md-radio-button value=true selected=demo.isOpen}}Open{{/md-radio-button}}
-                                {{#md-radio-button value=false selected=demo.isOpen}}Closed{{/md-radio-button}}
-                            </div>
+            {{#md-radio-button value=true selected=demo.isOpen}}Open{{/md-radio-button}}
+            {{#md-radio-button value=false selected=demo.isOpen}}Closed{{/md-radio-button}}
+        </div>
 
-                            <div layout="column">
-                                <b>Alignment</b>
+        <div layout="column">
+            <b>Alignment</b>
 
-                                {{#md-radio-button value="md-left" selected=demo.selectedAlignment}}
-                                    Left
-                                {{/md-radio-button}}
-                                {{#md-radio-button value="md-right" selected=demo.selectedAlignment}}
-                                    Right
-                                {{/md-radio-button}}
-                            </div>
-                        </div>
-                    </md-content>
-                    {{! END-SNIPPET --}}
+            {{#md-radio-button value="md-left" selected=demo.selectedAlignment}}
+                Left
+            {{/md-radio-button}}
+            {{#md-radio-button value="md-right" selected=demo.selectedAlignment}}
+                Right
+            {{/md-radio-button}}
+        </div>
+    </div>
+</md-content>
+{{! END-SNIPPET --}}
                 </div>
 
 

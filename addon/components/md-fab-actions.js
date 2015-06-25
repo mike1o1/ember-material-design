@@ -11,6 +11,9 @@ export default Ember.Component.extend({
   },
 
   setupComponent() {
+
+
+
     this.$().children().wrap('<div class="md-fab-action-item">');
   }
 
