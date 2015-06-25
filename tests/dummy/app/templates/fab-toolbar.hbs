@@ -35,15 +35,15 @@
                         </p>
                     </md-content>
 
-                    {{#md-fab-toolbar md-open="demo.isOpen" count="demo.count" ng-class="demo.selectedAlignment"}}
-                        <md-fab-trigger class="align-with-text">
+                    {{#md-fab-toolbar md-open=demo.isOpen class=demo.selectedAlignment}}
+                        {{#md-fab-trigger class="align-with-text"}}
                             {{#md-button aria-label="menu" class="md-fab md-primary"}}
                                 {{md-icon md-svg-src="images/icons/menu.svg"}}
                             {{/md-button}}
-                        </md-fab-trigger>
+                        {{/md-fab-trigger}}
 
                         {{#md-toolbar}}
-                            <md-fab-actions class="md-toolbar-tools">
+                            {{#md-fab-actions class="md-toolbar-tools"}}
                                 {{#md-button aria-label="comment" class="md-icon-button"}}
                                     {{md-icon md-svg-src="images/icons/ic_comment_24px.svg"}}
                                 {{/md-button}}
@@ -53,7 +53,7 @@
                                 {{#md-button aria-label="photo" class="md-icon-button"}}
                                     {{md-icon md-svg-src="images/icons/ic_photo_24px.svg"}}
                                 {{/md-button}}
-                            </md-fab-actions>
+                            {{/md-fab-actions}}
                         {{/md-toolbar}}
                     {{/md-fab-toolbar}}
 
@@ -62,8 +62,8 @@
                             <div layout="column">
                                 <b>Open/Closed</b>
 
-                                {{#md-radio-button value="true" selected=demo.isOpen}}Open{{/md-radio-button}}
-                                {{#md-radio-button value="false" selected=demo.isOpen}}Closed{{/md-radio-button}}
+                                {{#md-radio-button value=true selected=demo.isOpen}}Open{{/md-radio-button}}
+                                {{#md-radio-button value=false selected=demo.isOpen}}Closed{{/md-radio-button}}
                             </div>
 
                             <div layout="column">
