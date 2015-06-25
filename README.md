@@ -10,6 +10,9 @@ attempts to provide a set of reusable, well-tested and accessible UI components 
 This project is as close to a reference implementation of [Angular Material](http://material.angularjs.org) as 
 I could make it. Most of the credit for this work belongs to that team.
 
+Note that this addon is under a lot of active development. I try to keep breaking changes to a minimum, but no guarantees
+until development slows down and stabilizes and a 1.0 version is released.
+
 
 ## Demo
 
@@ -64,3 +67,7 @@ By default, the `RobotoDraft` font is used from the Google Fonts api. To include
 ```
 
 If you wish to use another font, overwrite the `$font-family` in a .scss file before your `@import "ember-material-design";`.
+
+## Real World Usage
+
+If you're using this addon, I'd love to see an example of your work. Feel free to send me an email, or a pull request with your site listed here!
