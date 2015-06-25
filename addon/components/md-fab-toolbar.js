@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-fab-toolbar';
 
 export default Ember.Component.extend({
-  layout: layout,
   tagName: 'md-fab-toolbar',
   classNames: ['md-fab-toolbar'],
   classNameBindings: ['md-open:md-is-open'],

@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-fab-actions';
 
 export default Ember.Component.extend({
-  layout: layout,
   tagName: 'md-fab-actions',
 
   didInsertElement() {

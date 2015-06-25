@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-progress-circular';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdProgressCircular = Ember.Component.extend(LayoutRules, {
-	layout: layout,
     constants: Ember.inject.service('constants'),
 
     tagName: 'md-progress-circular',

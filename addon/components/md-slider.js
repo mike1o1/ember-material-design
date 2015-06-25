@@ -1,11 +1,9 @@
 import Ember from 'ember';
 import EventsMixin from '../mixins/events';
-import layout from '../templates/components/md-slider';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdSlider = Ember.Component.extend(LayoutRules, EventsMixin, {
 
-	layout: layout,
     constants: Ember.inject.service('constants'),
 
     tagName: 'md-slider',

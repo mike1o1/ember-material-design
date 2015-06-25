@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-fab-trigger';
 
 export default Ember.Component.extend({
-  layout: layout,
   tagName: 'md-fab-trigger',
 
   didInsertElement() {

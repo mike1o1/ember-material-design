@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-fab-speed-dial';
 
 export default Ember.Component.extend({
-  layout: layout,
   tagName: 'md-fab-speed-dial',
   'md-direction': 'down',
   classNameBindings: ['md-open:md-is-open', 'directionClass'],

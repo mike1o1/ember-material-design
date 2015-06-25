@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-tab-content';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdTabContent = Ember.Component.extend(LayoutRules, {
-	layout: layout,
     tagName: 'md-tab-content',
 
     attributeBindings: ['tab', 'active'],

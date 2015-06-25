@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-tab';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdTab = Ember.Component.extend(LayoutRules, {
-	layout: layout,
     tagName: 'md-tab',
 
     attributeBindings: ['label', 'disabled', 'tab', 'active'],

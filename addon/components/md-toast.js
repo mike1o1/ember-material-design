@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-toast';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdToast = Ember.Component.extend(LayoutRules, {
-  layout: layout,
   tagName: 'md-toast',
   classNameBindings: ['toast.capsule:md-capsule',
     'toast.open:ng-enter-active',

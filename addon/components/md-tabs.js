@@ -1,10 +1,8 @@
 import Ember from 'ember';
 import RippleMixin from '../mixins/ripples';
-import layout from '../templates/components/md-tabs';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdTabs = Ember.Component.extend(Ember.Evented, LayoutRules, RippleMixin, {
-	layout: layout,
     tagName: 'md-tabs',
 
     mediaQueries: Ember.inject.service('media-queries'),

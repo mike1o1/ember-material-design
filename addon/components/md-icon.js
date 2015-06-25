@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import layout from '../templates/components/md-icon';
 import LayoutRules from '../mixins/layout-rules';
 
 var MdIcon = Ember.Component.extend(LayoutRules, {
-    layout: layout,
     iconService: Ember.inject.service('icon'),
 
     tagName: 'md-icon',
