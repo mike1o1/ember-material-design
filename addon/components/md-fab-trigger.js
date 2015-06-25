@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     Ember.EnumerableUtils.forEach(this.$().children(), (child) => {
       Ember.$(child).on('focus', this.set('parentView.md-open', true));
       Ember.$(child).on('blur', this.set('parentView.md-open', false));
-    })
+    });
   }
 
 });
