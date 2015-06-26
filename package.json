@@ -1,6 +1,6 @@
 {
   "name": "ember-material-design",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "This addon attempts to implement Google's Material design in an Ember way.",
   "directories": {
     "doc": "doc",
