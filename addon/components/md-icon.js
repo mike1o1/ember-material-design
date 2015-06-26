@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import LayoutRules from '../mixins/layout-rules';
+import StyleSafe from '../mixins/style-safe';
 
-var MdIcon = Ember.Component.extend(LayoutRules, {
+var MdIcon = Ember.Component.extend(LayoutRules, StyleSafe, {
     iconService: Ember.inject.service('icon'),
 
     tagName: 'md-icon',
-
-    attributeBindings: ['style'],
 
     didInsertElement() {
         this._super(...arguments);

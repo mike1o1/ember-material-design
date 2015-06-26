@@ -1,14 +1,13 @@
 import Ember from 'ember';
 import LayoutRules from '../mixins/layout-rules';
+import StyleSafe from '../mixins/style-safe';
 
-var MdInputComponent = Ember.TextField.extend(LayoutRules, {
+var MdInputComponent = Ember.TextField.extend(LayoutRules, StyleSafe, {
 
     classNames: ['md-input'],
 
     inputContainer: Ember.computed.alias('parentView'),
     value: Ember.computed.alias('parentView.value'),
-
-    attributeBindings: ['style'],
 
     originalPlaceholder: '',
 

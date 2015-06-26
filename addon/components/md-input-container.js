@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import LayoutRules from '../mixins/layout-rules';
+import StyleSafe from '../mixins/style-safe';
 
-var MdInputContainer = Ember.Component.extend(LayoutRules, {
+var MdInputContainer = Ember.Component.extend(LayoutRules, StyleSafe, {
     tagName: 'md-input-container',
 
-    attributeBindings: ['style', 'md-no-float'],
+    attributeBindings: ['md-no-float'],
 
     classNameBindings: ['isFocused:md-input-focused',
         'hasValue:md-input-has-value',
