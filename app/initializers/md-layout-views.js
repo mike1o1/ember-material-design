@@ -9,6 +9,10 @@ export function initialize(/* container, application */) {
     flex: null
   });
 
+  Ember.Component.reopen(HasFlex, HasLayout, {
+    flex: null
+  });
+
 }
 
 export default {
