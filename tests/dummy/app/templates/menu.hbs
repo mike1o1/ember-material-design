@@ -1,0 +1,71 @@
+<div class="doc-content" layout="column">
+    <div flex layout="column">
+
+        <section class="demo-container md-whiteframe-z1 {{showSourceClass}}">
+
+            {{#md-toolbar classNames='demo-toolbar'}}
+                <div class="md-toolbar-tools">
+                    <span>Basic Usage</span>
+                    <span flex></span>
+                    {{#md-button action='showSource' layoutType="row" layout-align="center center" style='min-width: 72px;'}}
+                        {{md-icon md-svg-src='images/icons/ic_visibility_24px.svg' style='margin: 0 4px 0 0;'}}
+                        <span>Source</span>
+                    {{/md-button}}
+                </div>
+            {{/md-toolbar}}
+
+            {{code-content sourceFiles=sourceFiles showSource=showSource}}
+
+
+
+            <demo-include class="menudemoBasicUsage">
+
+                <div class="demo-content">
+{{! BEGIN-SNIPPET menu --}}
+
+<div class="menu-demo-container" layout-align="center center" layout="column">
+    <h2 class="md-title">Simple dropdown menu</h2>
+    <p>Note that applying the <code>md-menu-origin</code> and <code>md-menu-align-target</code> attributes ensure that the menu elements align</p>
+
+    {{#md-button class="md-icon-button" action='toggleMenu'}}
+        {{md-icon md-svg-icon="call:phone" md-menu-origin=''}}
+    {{/md-button}}
+
+    {{#md-menu isOpen=isMenuOpen}}
+
+
+        <md-menu-content width="4">
+            <md-menu-item>
+                {{#md-button}}
+                    {{md-icon md-svg-icon="call:dialpad" md-menu-align-target=''}}
+                    Redial
+                {{/md-button}}
+            </md-menu-item>
+            <md-menu-item>
+                {{#md-button disabled="disabled"}}
+                    {{md-icon md-svg-icon="call:voicemail"}}
+                {{/md-button}}
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+                {{#md-button}}
+                    {{md-icon md-svg-icon="social:notifications-on"}}
+                    Notifications
+                {{/md-button}}
+            </md-menu-item>
+        </md-menu-content>
+
+    {{/md-menu}}
+</div>
+
+{{! END-SNIPPET --}}
+                </div>
+
+
+            </demo-include>
+
+
+        </section>
+    </div>
+</div>
+

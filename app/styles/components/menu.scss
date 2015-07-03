@@ -24,7 +24,7 @@
   // enter: menu scales in, then list fade in.
   &.md-active {
     opacity: 1;
-    transition: $swift-ease-out;
+    transition: opacity 200ms $swift-ease-out-timing-function;
     transition-duration: 200ms;
     > md-menu-content > * {
       opacity: 1;
@@ -37,8 +37,7 @@
   // leave: the container fades out
   &.md-leave {
     opacity: 0;
-    transition: $swift-ease-in;
-    transition-duration: 250ms;
+    transition: opacity 250ms $swift-ease-in-timing-function;
   }
 }
 
