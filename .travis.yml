@@ -37,4 +37,4 @@ install:
   - bower install
 
 script:
-  - ember try:testall
+  - ember try $EMBER_TRY_SCENARIO test
