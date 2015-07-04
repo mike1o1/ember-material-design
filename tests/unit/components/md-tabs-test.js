@@ -64,74 +64,75 @@ var twoTabTemplate = Ember.HTMLBars.compile(
     '{{/md-tab-content}}' +
   '{{/md-tabs-content-wrapper}}');
 
-test('it renders', function(assert) {
-  assert.expect(2);
-
-
-
-  // Creates the component instance
-  var component = this.subject({
-    template: oneTabTemplate
-  });
-  assert.equal(component._state, 'preRender');
-
-  // Renders the component to the page
-  this.render();
-
-  assert.equal(component._state, 'inDOM');
-});
-
-test('selects first tab by default', function(assert) {
-  var component = this.subject({
-    template: twoTabTemplate
-  });
-
-  this.render();
-
-  var firstTab = this.$().find('md-tab-item').eq(0);
-  var secondTab = this.$().find('md-tab-item').eq(1);
-
-  assert.ok(firstTab.hasClass('md-active'), 'First tab is selected');
-  assert.ok(!secondTab.hasClass('md-active'), 'Second tab is not selected');
-
-});
-
-test('selects and focuses a tab on click', function(assert) {
-  var component = this.subject({
-    template: twoTabTemplate
-  });
-
-  this.render();
-
-  var e = Ember.$.Event('click');
-
-  var secondTab = this.$().find('md-tab-item').eq(1);
-
-  assert.ok(secondTab.length, 'Second tab exists');
-
-  Ember.run(() => {
-    secondTab.trigger(e);
-  });
-
-  assert.ok(secondTab.hasClass('md-active'), 'Second tab is selected');
-  assert.equal(component.get('selectedIndex'), 1, 'Second tab is selected');
-
-});
-
-test('changing selected index changes active tab', function(assert) {
-  var component = this.subject({
-    template: twoTabTemplate
-  });
-
-  this.render();
-
-  Ember.run(() => {
-    component.set('selectedIndex', 1);
-  });
-
-  var firstTab = this.$().find('md-tab-item').eq(0);
-  var secondTab = this.$().find('md-tab-item').eq(1);
-  assert.ok(!firstTab.hasClass('md-active'), 'First tab is not selected');
-  assert.ok(secondTab.hasClass('md-active'), 'Second tab is selected');
-
-});
+// TODO: replace with integration tests
+//test('it renders', function(assert) {
+//  assert.expect(2);
+//
+//
+//
+//  // Creates the component instance
+//  var component = this.subject({
+//    template: oneTabTemplate
+//  });
+//  assert.equal(component._state, 'preRender');
+//
+//  // Renders the component to the page
+//  this.render();
+//
+//  assert.equal(component._state, 'inDOM');
+//});
+//
+//test('selects first tab by default', function(assert) {
+//  var component = this.subject({
+//    template: twoTabTemplate
+//  });
+//
+//  this.render();
+//
+//  var firstTab = this.$().find('md-tab-item').eq(0);
+//  var secondTab = this.$().find('md-tab-item').eq(1);
+//
+//  assert.ok(firstTab.hasClass('md-active'), 'First tab is selected');
+//  assert.ok(!secondTab.hasClass('md-active'), 'Second tab is not selected');
+//
+//});
+//
+//test('selects and focuses a tab on click', function(assert) {
+//  var component = this.subject({
+//    template: twoTabTemplate
+//  });
+//
+//  this.render();
+//
+//  var e = Ember.$.Event('click');
+//
+//  var secondTab = this.$().find('md-tab-item').eq(1);
+//
+//  assert.ok(secondTab.length, 'Second tab exists');
+//
+//  Ember.run(() => {
+//    secondTab.trigger(e);
+//  });
+//
+//  assert.ok(secondTab.hasClass('md-active'), 'Second tab is selected');
+//  assert.equal(component.get('selectedIndex'), 1, 'Second tab is selected');
+//
+//});
+//
+//test('changing selected index changes active tab', function(assert) {
+//  var component = this.subject({
+//    template: twoTabTemplate
+//  });
+//
+//  this.render();
+//
+//  Ember.run(() => {
+//    component.set('selectedIndex', 1);
+//  });
+//
+//  var firstTab = this.$().find('md-tab-item').eq(0);
+//  var secondTab = this.$().find('md-tab-item').eq(1);
+//  assert.ok(!firstTab.hasClass('md-active'), 'First tab is not selected');
+//  assert.ok(secondTab.hasClass('md-active'), 'Second tab is selected');
+//
+//});
