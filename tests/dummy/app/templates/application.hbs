@@ -50,9 +50,12 @@
                 {{#link-to 'input' class="md-button"}}Input{{/link-to}}
             {{/link-to}}
 
-
             {{#link-to 'list' activeClass='parentActive' tagName='li'}}
                 {{#link-to 'list' class="md-button"}}List{{/link-to}}
+            {{/link-to}}
+
+            {{#link-to 'menu' activeClass='parentActive' tagName='li'}}
+                {{#link-to 'menu' class="md-button"}}Menu{{/link-to}}
             {{/link-to}}
 
             {{#link-to 'progress-circular' activeClass='parentActive' tagName='li'}}
@@ -143,3 +146,7 @@
 
 
 </div>
+
+{{#if isInterimElementVisible}}
+
+{{/if}}

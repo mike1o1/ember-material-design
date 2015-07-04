@@ -7,6 +7,8 @@ var MdIcon = Ember.Component.extend(LayoutRules, StyleSafe, {
 
     tagName: 'md-icon',
 
+    attributeBindings: ['md-menu-origin', 'md-menu-align-target'],
+
     didInsertElement() {
         this._super(...arguments);
         this.setupIcon();
