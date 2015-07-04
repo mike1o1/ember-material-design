@@ -58,6 +58,7 @@ var MdMenuComponent = Ember.Component.extend({
     this.menuContents = this.$().children()[1];
     this.$menuContents = Ember.$(this.menuContents);
     this.menuContainer.append(this.menuContents);
+
   },
 
   toggleVisibility: Ember.observer('isOpen', function() {
@@ -80,6 +81,18 @@ var MdMenuComponent = Ember.Component.extend({
 
     Ember.run.later(this, this.activateInteraction, 75);
 
+    Ember.$(window).on('resize.md-menu', () => {
+      Ember.run.debounce(this, () => {
+        this.positionMenu(this.menuContainer);
+      }, 16);
+
+    });
+    Ember.$(window).on('orientationchange.md-menu', () => {
+      Ember.run.debounce(this, () => {
+        this.positionMenu(this.menuContainer);
+      }, 16);
+    });
+
     this.showMenu();
   },
 
@@ -88,13 +101,14 @@ var MdMenuComponent = Ember.Component.extend({
     this.menuContainer.removeClass('md-active')
       .addClass('md-leave');
 
-
     Ember.run.later(this, () => {
       this.menuContainer.removeClass('md-clickable');
 
       if (this.backdrop) {
         this.backdrop.remove();
       }
+
+      Ember.$(window).off('.md-menu');
 
       this.menuContainer.remove();
 
@@ -126,6 +140,14 @@ var MdMenuComponent = Ember.Component.extend({
 
       this.checkClickTarget(e);
     });
+
+    // kick off initial focus in the menu on the first element
+    var focusTarget = this.menuContents.querySelector('[md-menu-focus-target]');
+    if (!focusTarget) {
+      focusTarget = this.menuContents.firstElementChild.firstElementChild;
+    }
+
+    focusTarget.focus();
 
   },
 
