@@ -38,19 +38,19 @@
 
         <md-menu-content width="4">
             <md-menu-item>
-                {{#md-button }}
+                {{#md-button action='announceClick' param='redial'}}
                     {{md-icon md-svg-icon="call:dialpad" md-menu-align-target=''}}
                     Redial
                 {{/md-button}}
             </md-menu-item>
             <md-menu-item>
-                {{#md-button disabled="disabled"}}
+                {{#md-button disabled="disabled" action='announceClick' param='voicemail'}}
                     {{md-icon md-svg-icon="call:voicemail"}}
                 {{/md-button}}
             </md-menu-item>
             <md-menu-divider></md-menu-divider>
             <md-menu-item>
-                {{#md-button}}
+                {{#md-button action='announceClick' param='notifications'}}
                     {{md-icon md-svg-icon="social:notifications-on"}}
                     Notifications
                 {{/md-button}}
@@ -107,7 +107,7 @@
 
                 <md-menu-content width="6">
                     <md-menu-item>
-                        {{#md-button action='announceClick' param='1'}}
+                        {{#md-button action='announceClick' param='1' }}
                             {{md-icon md-svg-icon="call:no-sim" md-menu-align-target=''}}
                             Option 1
                         {{/md-button}}

@@ -56,6 +56,7 @@ var MdMenuComponent = Ember.Component.extend({
     // move the menu content to a the menu container
     this.menuContainer = Ember.$('<div class="md-open-menu-container md-whiteframe-z2"></div>');
     this.menuContents = this.$().children()[1];
+    this.$menuContents = Ember.$(this.menuContents);
     this.menuContainer.append(this.menuContents);
   },
 
@@ -68,6 +69,8 @@ var MdMenuComponent = Ember.Component.extend({
   }),
 
   openMenu() {
+
+    this.set('isRemoved', false);
 
     this.parent.append(this.backdrop);
 
@@ -85,13 +88,16 @@ var MdMenuComponent = Ember.Component.extend({
     this.menuContainer.removeClass('md-active')
       .addClass('md-leave');
 
-    if (this.backdrop) {
-      this.backdrop.remove();
-    }
 
     Ember.run.later(this, () => {
       this.menuContainer.removeClass('md-clickable');
+
+      if (this.backdrop) {
+        this.backdrop.remove();
+      }
+
       this.menuContainer.remove();
+
     }, 350);
 
   },
@@ -107,14 +113,41 @@ var MdMenuComponent = Ember.Component.extend({
     });
 
     // wite up keyboard listeners
-    this.$().on('keydown', (ev) => {
+    this.$menuContents.on('keydown', (ev) => {
       switch (ev.keyCode) {
         case 27:
-              this.set('isOpen', false);
-              break;
+          this.set('isOpen', false);
+          break;
       }
 
     });
+
+    this.$menuContents.on('click', (e) => {
+
+      this.checkClickTarget(e);
+    });
+
+  },
+
+  checkClickTarget(e) {
+    var target = e.target;
+
+    // Traverse up the event until we get to the menuContainer to see
+    // if there is a click and that the element is not disabled
+    do {
+      if (target === this.menuContents) {
+        return;
+      }
+
+      if (target.hasAttribute('action')) {
+        if (!target.hasAttribute('disabled')) {
+          this.set('isOpen', false);
+        }
+        break;
+      }
+
+    } while (target = target.parentNode);
+
   },
 
   showMenu() {
@@ -179,7 +212,7 @@ var MdMenuComponent = Ember.Component.extend({
       boundryNodeRect = boundryNode.getBoundingClientRect();
 
     var originNode = this.$()[0].querySelector('[md-menu-origin'),
-        originNodeRect = originNode.getBoundingClientRect();
+      originNodeRect = originNode.getBoundingClientRect();
 
     var bounds = {
       left: boundryNodeRect.left + MENU_EDGE_MARGIN,
@@ -208,23 +241,23 @@ var MdMenuComponent = Ember.Component.extend({
 
     switch (positionMode.top) {
       case 'target':
-            position.top = existingOffsets.top + originNodeRect.top - alignTargetRect.top;
-            break;
+        position.top = existingOffsets.top + originNodeRect.top - alignTargetRect.top;
+        break;
       default:
-            throw new Error(`Invalid target mode "${positionMode.top}" specified for md-menu on Y axis.`);
+        throw new Error(`Invalid target mode "${positionMode.top}" specified for md-menu on Y axis.`);
     }
 
     switch (positionMode.left) {
       case 'target':
-            position.left = existingOffsets.left + originNodeRect.left - alignTargetRect.left;
-            transformOrigin += 'left';
-            break;
+        position.left = existingOffsets.left + originNodeRect.left - alignTargetRect.left;
+        transformOrigin += 'left';
+        break;
       case 'target-right':
-            position.left = originNodeRect.right - openMenuNodeRect.width + (openMenuNodeRect.right - alignTargetRect.right);
-            transformOrigin += 'right';
-            break;
+        position.left = originNodeRect.right - openMenuNodeRect.width + (openMenuNodeRect.right - alignTargetRect.right);
+        transformOrigin += 'right';
+        break;
       default:
-            throw new Error(`Invalid target mode "${positionMode.left}" specified for md-menu on X axis.`);
+        throw new Error(`Invalid target mode "${positionMode.left}" specified for md-menu on X axis.`);
     }
 
     var offsets = this.get('offsets');
@@ -244,7 +277,7 @@ var MdMenuComponent = Ember.Component.extend({
     // Animate a scale out if we aren't just repositioning
     if (!this.get('alreadyOpen')) {
       var scaleX = Math.min(originNodeRect.width / containerNode.offsetWidth, 1.0),
-          scaleY = Math.min(originNodeRect.height / containerNode.offsetHeight, 1.0);
+        scaleY = Math.min(originNodeRect.height / containerNode.offsetHeight, 1.0);
 
       containerNode.style.transform = containerNode.style.webkitTransform = `scale(${scaleX}, ${scaleY})`;
     }
