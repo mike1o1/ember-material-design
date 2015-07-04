@@ -22,22 +22,6 @@ export default BaseDemoController.extend({
 
     toggleMenu(menu) {
       menu.toggleProperty('isOpen');
-    },
-
-    toggleTargetModeMenu() {
-      this.toggleProperty('isTargetModeMenuOpen');
-    },
-
-    toggleTargetModeWithOffsetMenu() {
-      this.toggleProperty('isTargetModeWithOffsetMenuOpen');
-    },
-
-    toggleTargetModeWithPositionModeMenu() {
-      this.toggleProperty('isTargetModeWithPositionModeOpen');
     }
-
   }
-
-
-
-})
+});
