@@ -233,7 +233,7 @@ var MdMenuComponent = Ember.Component.extend({
       boundryNode = this.parent[0],
       boundryNodeRect = boundryNode.getBoundingClientRect();
 
-    var originNode = this.$()[0].querySelector('[md-menu-origin'),
+    var originNode = this.$()[0].querySelector('[md-menu-origin]'),
       originNodeRect = originNode.getBoundingClientRect();
 
     var bounds = {
