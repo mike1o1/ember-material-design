@@ -12,6 +12,20 @@ export default BaseDemoController.extend({
     this.setSourceFiles(content);
   },
 
+  showSourcePositionModes: false,
+
+  setSourcePositionModes: Ember.on('init', function() {
+    var sourceFiles = Ember.ArrayProxy.create({
+      content: Ember.A([
+        {name: 'hbs', content: 'menu-position-modes.hbs'},
+        {name: 'controller', content: 'menu-controller.js'}
+      ])
+    });
+
+    this.set('sourceFilesPositionModes', sourceFiles);
+  }),
+
+
   isMenuOpen: false,
   isTargetModeMenuOpen: false,
 
@@ -22,6 +36,10 @@ export default BaseDemoController.extend({
 
     toggleMenu(menu) {
       menu.toggleProperty('isOpen');
+    },
+
+    showSourcePositionModes() {
+      this.toggleProperty('showSourcePositionModes');
     }
   }
 });
