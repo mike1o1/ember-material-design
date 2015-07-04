@@ -26,19 +26,18 @@ const MENU_EDGE_MARGIN = 8;
 
 var MdMenuComponent = Ember.Component.extend({
 
-  tagName: 'div',
+  tagName: 'md-menu',
   mdOffset: '',
   isOpen: false,
   menuContainer: null,
-  menuContent: null,
+  menuContents: null,
   backdrop: null,
   rootElement: null,
   parent: null,
-  isRemoved: true,
-
-  classNames: ['md-open-menu-container', 'md-whiteframe-z2'],
-
-  classNameBindings: ['clickable:md-clickable', 'active:md-active:md-leave'],
+  isRemoved: false,
+  alreadyOpen: false,
+  'md-offset': '',
+  'md-position-mode': '',
 
   didInsertElement() {
     this._super(...arguments);
@@ -54,8 +53,10 @@ var MdMenuComponent = Ember.Component.extend({
     this.rootElement = Ember.$(this.container.lookup('application:main').get('rootElement'));
     this.parent = findParent(this.rootElement);
 
-    this.menuContainer = this.$();
-    this.menuContent = this.menuContainer.children[0];
+    // move the menu content to a the menu container
+    this.menuContainer = Ember.$('<div class="md-open-menu-container md-whiteframe-z2"></div>');
+    this.menuContents = this.$().children()[1];
+    this.menuContainer.append(this.menuContents);
   },
 
   toggleVisibility: Ember.observer('isOpen', function() {
@@ -67,10 +68,12 @@ var MdMenuComponent = Ember.Component.extend({
   }),
 
   openMenu() {
+
     this.parent.append(this.backdrop);
 
-    this.set('isRemoved', false);
+    this.parent.append(this.menuContainer);
 
+    this.menuContainer.removeClass('md-leave');
 
     Ember.run.later(this, this.activateInteraction, 75);
 
@@ -78,22 +81,23 @@ var MdMenuComponent = Ember.Component.extend({
   },
 
   closeMenu() {
-    this.set('active', false);
+    this.set('isRemoved', true);
+    this.menuContainer.removeClass('md-active')
+      .addClass('md-leave');
 
     if (this.backdrop) {
       this.backdrop.remove();
     }
 
     Ember.run.later(this, () => {
-      this.set('clickable', false);
-      this.set('isRemoved', true);
-
+      this.menuContainer.removeClass('md-clickable');
+      this.menuContainer.remove();
     }, 350);
 
   },
 
   activateInteraction() {
-    this.set('clickable', true);
+    this.menuContainer.addClass('md-clickable');
 
     // close on backdrop click
     this.backdrop.on('click', (e) => {
@@ -104,25 +108,27 @@ var MdMenuComponent = Ember.Component.extend({
 
     // wite up keyboard listeners
     this.$().on('keydown', (ev) => {
+      switch (ev.keyCode) {
+        case 27:
+              this.set('isOpen', false);
+              break;
+      }
 
     });
-
-    this.menuContent = this.menuContainer.children()[0];
-
   },
 
   showMenu() {
     Ember.run.schedule('afterRender', () => {
-      this.positionMenu(this.$());
+      this.positionMenu(this.menuContainer);
 
-      Ember.run.schedule('afterRender', () => {
-        console.log('second after render');
-        this.set('active', true);
+      Ember.run.scheduleOnce('afterRender', () => {
+        window.requestAnimationFrame(() => {
+          this.menuContainer.addClass('md-active');
+          this.set('alreadyOpen', true);
+          this.menuContainer[0].style.transform = this.menuContainer[0].style.webkitTransform = '';
+        });
 
-        this.set('alreadyOpen', true);
-        this.$()[0].style.transform = this.$()[0].style.webkitTransform = '';
       });
-
     });
 
   },
@@ -162,6 +168,7 @@ var MdMenuComponent = Ember.Component.extend({
 
   positionMenu(el) {
     if (this.get('isRemoved')) {
+      console.log('its already removed');
       return;
     }
 
@@ -171,7 +178,7 @@ var MdMenuComponent = Ember.Component.extend({
       boundryNode = this.parent[0],
       boundryNodeRect = boundryNode.getBoundingClientRect();
 
-    var originNode = this.parentView.$()[0].querySelector('[md-menu-origin'),
+    var originNode = this.$()[0].querySelector('[md-menu-origin'),
         originNodeRect = originNode.getBoundingClientRect();
 
     var bounds = {
@@ -213,7 +220,7 @@ var MdMenuComponent = Ember.Component.extend({
             transformOrigin += 'left';
             break;
       case 'target-right':
-            position.left = originNodeRect.rigth - openMenuNodeRect.width + (openMenuNodeRect.rigth - alignTargetRect.right);
+            position.left = originNodeRect.right - openMenuNodeRect.width + (openMenuNodeRect.right - alignTargetRect.right);
             transformOrigin += 'right';
             break;
       default:
@@ -234,6 +241,13 @@ var MdMenuComponent = Ember.Component.extend({
     containerNode.style.transformOrigin = containerNode.style.webkitTransformOrigin = transformOrigin;
 
 
+    // Animate a scale out if we aren't just repositioning
+    if (!this.get('alreadyOpen')) {
+      var scaleX = Math.min(originNodeRect.width / containerNode.offsetWidth, 1.0),
+          scaleY = Math.min(originNodeRect.height / containerNode.offsetHeight, 1.0);
+
+      containerNode.style.transform = containerNode.style.webkitTransform = `scale(${scaleX}, ${scaleY})`;
+    }
 
   }
 

@@ -13,11 +13,29 @@ export default BaseDemoController.extend({
   },
 
   isMenuOpen: false,
+  isTargetModeMenuOpen: false,
 
   actions: {
-    toggleMenu() {
-      this.toggleProperty('isMenuOpen');
+    announceClick(number) {
+      console.log('click ', number);
+    },
+
+    toggleMenu(menu) {
+      menu.toggleProperty('isOpen');
+    },
+
+    toggleTargetModeMenu() {
+      this.toggleProperty('isTargetModeMenuOpen');
+    },
+
+    toggleTargetModeWithOffsetMenu() {
+      this.toggleProperty('isTargetModeWithOffsetMenuOpen');
+    },
+
+    toggleTargetModeWithPositionModeMenu() {
+      this.toggleProperty('isTargetModeWithPositionModeOpen');
     }
+
   }
 
 
