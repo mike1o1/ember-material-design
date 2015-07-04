@@ -7,20 +7,6 @@ export function initialize(/* container, application */) {
     // by default we will insert the ripples mixin to links,
     // but ripples will only apply if the class is named 'md-button'
     // and the 'md-no-ink' attribute isn't set
-    Ember.LinkView.reopen(RipplesMixin, {
-        didInsertElement() {
-            this._super();
-
-            var isMdButton = this.get('classNames').contains('md-button');
-            if (!isMdButton || this.get('mdNoInk')) {
-                return;
-            }
-
-            var rs = this.get('rippleService');
-            rs.attachButtonBehavior(this.$());
-        }
-    });
-
     if (Ember.LinkComponent) {
       Ember.LinkComponent.reopen(RipplesMixin, {
         didInsertElement() {
@@ -33,6 +19,20 @@ export function initialize(/* container, application */) {
             return;
           }
 
+          rs.attachButtonBehavior(this.$());
+        }
+      });
+    } else {
+      Ember.LinkView.reopen(RipplesMixin, {
+        didInsertElement() {
+          this._super();
+
+          var isMdButton = this.get('classNames').contains('md-button');
+          if (!isMdButton || this.get('mdNoInk')) {
+            return;
+          }
+
+          var rs = this.get('rippleService');
           rs.attachButtonBehavior(this.$());
         }
       });
