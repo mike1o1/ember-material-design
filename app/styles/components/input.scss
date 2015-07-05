@@ -56,7 +56,6 @@ md-input-container {
     -moz-appearance: none;
     -webkit-appearance: none;
   }
-
   input[type="date"],
   input[type="datetime-local"],
   input[type="month"],
@@ -64,7 +63,6 @@ md-input-container {
   input[type="week"] {
     min-height: $input-line-height;
   }
-
   textarea {
     resize: none;
     overflow: hidden;
@@ -75,8 +73,14 @@ md-input-container {
     -ms-flex-preferred-size: auto;
   }
 
+  label {
+    position: relative;
+    top: -2px;
+  }
+
+
   label:not(.md-no-float),
-  .md-placeholder:not(.md-select-label) {
+  .md-placeholder {
     order: 1;
     pointer-events: none;
     -webkit-font-smoothing: antialiased;
@@ -87,20 +91,21 @@ md-input-container {
 
     @include rtl(transform-origin, left top, right top);
   }
-
-  .md-placeholder:not(.md-select-label) {
+  .md-placeholder {
     position: absolute;
     top: 0;
     opacity: 0;
     transition-property: opacity, transform;
     transform: translate3d(0, $input-placeholder-offset + $baseline-grid * 0.75, 0);
+    &.md-static {
+      position: static;
+    }
   }
-
   &.md-input-focused .md-placeholder {
     opacity: 1;
     transform: translate3d(0, $input-placeholder-offset, 0);
   }
-
+  // Placeholder should immediately disappear when the user starts typing
   .md-input-has-value .md-placeholder {
     transition: none;
     opacity: 0;
@@ -110,13 +115,14 @@ md-input-container {
     color: transparent;
   }
 
+
   /*
    * The .md-input class is added to the input/textarea
    */
   .md-input {
-    flex: 1 1 auto;
     order: 2;
     display: block;
+    margin-top: auto;
 
     background: none;
     padding-top: $input-padding-top;
@@ -131,24 +137,32 @@ md-input-container {
     &:focus {
       outline: none;
     }
-
     &:invalid {
       outline: none;
       box-shadow: none;
     }
   }
 
-  // TODO: validation messages
-
-  .md-char-counter {
+  md-input-messages {
+    order: 3;
+    position: relative;
+  }
+  md-input-message, .md-char-counter {
     -webkit-font-smoothing: antialiased;
     position: absolute;
-    bottom: $input-container-padding;
-    right: $input-container-padding;
+    font-size: $input-error-font-size;
+    line-height: $input-error-height;
 
     &:not(.md-char-counter) {
       padding-right: rem(3);
     }
+
+    // TODO: Animate error messages
+  }
+
+  .md-char-counter {
+    bottom: $input-container-padding;
+    right: $input-container-padding;
   }
 
   &.md-input-focused,
@@ -158,9 +172,8 @@ md-input-container {
     }
   }
 
-  // TODO: replace with validation
   &.md-input-focused .md-input,
-  .md-input.ng-invalid.ng-dirty {
+  .md-input.md-invalid.md-dirty {
     padding-bottom: 0;
     border-width: 0 0 $input-border-width-focused 0;
   }
@@ -169,10 +182,8 @@ md-input-container {
     &[disabled],
     [disabled] & {
       background-position: 0 bottom;
-
       // This background-size is coordinated with a linear-gradient set in input.theme.css
       // to create a dotted line under the input.
-
       background-size: 4px 1px;
       background-repeat: repeat-x;
       margin-bottom: -1px;  // Shift downward so dotted line is positioned the same as other botom borders

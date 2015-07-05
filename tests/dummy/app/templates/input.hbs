@@ -79,11 +79,21 @@
                 <label>State</label>
                 {{md-input}}
             {{/md-input-container}}
-            {{#md-input-container flex='' value=user.postalCode}}
+            {{#md-input-container flex='' value=user.postalCode isInvalid=hasPostalCodeErrors as |ic|}}
                 <label>Postal Code</label>
                 {{md-input }}
+                {{#if ic.displayInvalid}}
+                    <md-input-messages>
+                        {{#each postalCodeValidations as |message|}}
+                            <md-input-message>{{message}}</md-input-message>
+                        {{/each}}
+                    </md-input-messages>
+                {{/if}}
+
             {{/md-input-container}}
         </div>
+
+        {{user.postalCode}}
 
         {{#md-input-container flex='' value=user.biography}}
             <label>Biography</label>
@@ -124,15 +134,16 @@
 
 {{! BEGIN-SNIPPET input-Icons --}}
 <md-content class="md-padding">
-    {{#md-input-container md-no-float='' value=user2.name}}
+    {{#md-input-container class="md-icon-float" value=user2.name}}
+        <label>Name</label>
         {{md-icon md-svg-src="icons/ic_person_24px.svg" class="name"}}
-        {{md-input type="text" placeholder="Name"}}
+        {{md-input type="text"}}
     {{/md-input-container}}
     {{#md-input-container md-no-float='' value=user2.phon}}
         {{md-icon md-svg-src="icons/ic_phone_24px.svg"}}
         {{md-input type="text" placeholder="Phone Number"}}
     {{/md-input-container}}
-    {{#md-input-container}}
+    {{#md-input-container isInvalid=emailInvalid value=user2.email}}
         {{md-icon md-svg-src="icons/ic_email_24px.svg" class="email"}}
         {{md-input type="email" placeholder="Email (required)" required="required"}}
     {{/md-input-container}}

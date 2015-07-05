@@ -41,11 +41,12 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, StyleSafe, {
         //
         //// we don't need this on the element anymore, so get rid of it
         this.set('placeholder', '');
+        this.$().attr('placeholder', null);
 
         var inputContainerJquery = this.get('inputContainer').$();
         if (inputContainerJquery.find('label').length === 0) {
             var placeHolder = '<label>' + this.get('originalPlaceholder') + '</label>';
-            inputContainerJquery.addClass('md-icon-float');
+            this.set('inputContainer.mdIconFloat', true);
             inputContainerJquery.prepend(placeHolder);
         }
 
@@ -61,6 +62,9 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, StyleSafe, {
     setFocused: Ember.on('focusIn', 'focusOut', function(ev) {
         var focused = ev.type === 'focusin';
         this.get('inputContainer').set('isFocused', focused);
+        if (ev.type === 'focusout') {
+          this.get('inputContainer').set('isTouched', true);
+        }
     }),
 
     processInput: Ember.on('input', function() {
@@ -72,10 +76,7 @@ var MdInputComponent = Ember.TextField.extend(LayoutRules, StyleSafe, {
         } else {
             this.get('inputContainer').set('placeholder', this.get('originalPlaceholder'));
         }
-
-
     })
-
 
 });
 

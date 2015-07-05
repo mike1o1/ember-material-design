@@ -33,6 +33,26 @@ export default BaseDemoController.extend({
         this.set('sourceFilesIcons', sourceFiles);
     }),
 
+    emailInvalid: Ember.computed('user2.email', function() {
+      return !this.get('user2.email') || this.get('user2.email').length <= 0;
+    }),
+
+    postalCodeValidations: Ember.computed('user.postalCode', function() {
+      var errors = [];
+
+      if (!this.get('user.postalCode') || this.get('user.postalCode').length === 0) {
+        errors.push('This is required');
+      }
+
+      return Ember.A(errors);
+
+    }),
+
+    hasPostalCodeErrors: Ember.computed('postalCodeValidations.length', function() {
+      return this.get('postalCodeValidations.length') > 0;
+    }),
+
+
     actions: {
         showSourceIcons: function() {
             this.toggleProperty('showSourceIcons');
