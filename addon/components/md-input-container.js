@@ -13,12 +13,12 @@ var MdInputContainer = Ember.Component.extend(LayoutRules, StyleSafe, {
         'mdIconFloat:md-icon-float'],
 
     isInvalid: false,
-    displayInvalid: Ember.computed('isInvalid', 'isTouched', function() {
-      if (!this.get('isTouched')) {
+    displayInvalid: Ember.computed('isInvalid', 'isTouched', 'displayErrors', function() {
+      if (!this.get('isTouched') && !(this.get('displayErrors'))) {
         return false;
       }
 
-      if (this.get('isInvalid')) {
+      if (this.get('isInvalid') || this.get('displayErrors')) {
         return true;
       }
 
@@ -27,6 +27,8 @@ var MdInputContainer = Ember.Component.extend(LayoutRules, StyleSafe, {
     }),
     isFocused: false,
     mdIconFloat: false,
+
+    hasBeenTouched: false,
 
     isTouched: false,
 
