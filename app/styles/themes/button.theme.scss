@@ -20,7 +20,7 @@ a.button,
 
   &.md-fab {
     border-radius: $button-fab-border-radius;
-    background-color: color($accent);
+    background-color: color($accent, 'A200');
     color: color($accent, 'contrast');
 
     md-icon {
@@ -29,7 +29,7 @@ a.button,
 
     &:not([disabled]) {
       &:hover {
-        background-color: color($accent);
+        background-color: color($accent, 'A200');
       }
       &.md-focused {
         background-color: color($accent, 'A700');
@@ -45,7 +45,7 @@ a.button,
     color: color($primary);
     &.md-raised,
     &.md-fab {
-      color: color($primary, contrast);
+      color: color($primary, "contrast");
       background-color: color($primary);
 
       md-icon {
@@ -69,7 +69,7 @@ a.button,
     color: color($accent, contrast);
     &:not([disabled]) {
       &:hover {
-        background-color: color($accent, "A700");
+        background-color: color($accent, "A200");
       }
       &.md-focused {
         background-color: color($accent, "A700");
