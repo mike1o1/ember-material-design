@@ -65,7 +65,7 @@ a.button,
 
   &.md-fab {
     border-radius: $button-fab-border-radius;
-    background-color: color($accent);
+    background-color: color($accent, "A200");
     color: color($accent, contrast);
     &:not([disabled]) {
       &:hover {
