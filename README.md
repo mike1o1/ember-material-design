@@ -1,6 +1,7 @@
-[![Build Status](https://travis-ci.org/mike1o1/ember-material-design.svg?branch=master)](https://travis-ci.org/mike1o1/ember-material-design)
-[![Ember Observer Score](http://emberobserver.com/badges/ember-material-design.svg)](http://emberobserver.com/addons/ember-material-design)
-[![Code Climate](https://codeclimate.com/github/mike1o1/ember-material-design/badges/gpa.svg)](https://codeclimate.com/github/mike1o1/ember-material-design)
+# No longer maintained
+This project is no longer maintained. For an up-to-date material design project, please use [Ember Paper](https://github.com/miguelcobain/ember-paper).
+
+---
 
 # Ember-material-design
 
