@@ -18,7 +18,7 @@ var EventsMixin = Ember.Mixin.create({
         return this.start(e);
     },
 
-    start: Ember.K,
+    start() {},
 
 
     /*
@@ -37,7 +37,7 @@ var EventsMixin = Ember.Mixin.create({
         return this.move(e);
     },
 
-    move: Ember.K,
+    move() {},
 
     /*
      * End events
@@ -67,7 +67,7 @@ var EventsMixin = Ember.Mixin.create({
         return this.end(e);
     },
 
-    end: Ember.K
+    end() {}
 
 });
 

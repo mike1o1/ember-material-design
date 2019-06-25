@@ -53,10 +53,10 @@ function GestureHandler(name) {
 }
 
 GestureHandler.prototype = {
-    onStart: Ember.K,
-    onMove: Ember.K,
-    onEnd: Ember.K,
-    onCancel: Ember.K,
+    onStart() {},
+    onMove() {},
+    onEnd() {},
+    onCancel() {},
     options: {},
 
     start: function(ev, pointer) {
